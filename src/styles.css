@@ -1,0 +1,3686 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Nunito:wght@400;500;600;700;800;900&family=Patrick+Hand&family=Press+Start+2P&display=swap');
+
+/* Vietnamese-safe body font. Keep Press Start 2P only for decorative/game titles. */
+:root {
+  --sky: #69c9df;
+  --sky2: #b8e58e;
+  --grass: #78bd5c;
+  --grass-dark: #55a650;
+  --leaf: #4d9d4d;
+  --leaf-dark: #32783b;
+  --soil: #7c4c2a;
+  --soil-dark: #55341f;
+  --cream: #fff5d5;
+  --cream-2: #fffbe9;
+  --dark: #163622;
+  --dark-2: #0d2417;
+  --lime: #ddff45;
+  --gold: #ffd95c;
+  --brown: #80502d;
+  font-family: 'Be Vietnam Pro', Arial, sans-serif;
+  color: var(--dark);
+  background: var(--sky2);
+  font-synthesis: none;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { margin: 0; min-height: 100%; width: 100%; }
+body { overflow-x: hidden; background: var(--sky2); }
+button { font: inherit; cursor: pointer; }
+
+/* ================= TOP BAR ================= */
+.topbar {
+  height: 62px;
+  padding: 0 clamp(14px, 2.4vw, 34px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  position: relative;
+  z-index: 100;
+  background: #102a1b;
+  color: white;
+  border-bottom: 4px solid #70bf55;
+  box-shadow: 0 4px 0 #183d24;
+}
+
+.brand {
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font: 900 clamp(14px, 1.35vw, 20px) 'Press Start 2P';
+  letter-spacing: -1px;
+  white-space: nowrap;
+}
+.brand span { color: #5ce36b; }
+
+.topTitle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+.topTitle small {
+  color: #8eb58c;
+  font: 7px 'Press Start 2P';
+}
+.topTitle b {
+  color: var(--lime);
+  font: 10px 'Press Start 2P';
+}
+
+.topActions { display: flex; align-items: center; gap: 8px; }
+.topActions button {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #3c6542;
+  background: #15331f;
+  color: white;
+  font-size: 20px;
+}
+.score { font-weight: 900; font-size: 14px; white-space: nowrap; }
+.score i { color: #ffd72e; font-style: normal; margin-right: 5px; }
+.score small { color: #9db69d; font-size: 8px; margin-left: 4px; }
+
+/* ================= GARDEN / SKY ================= */
+.garden {
+  position: relative;
+  min-height: calc(100vh - 62px);
+  overflow: hidden;
+  padding-bottom: 188px;
+  background:
+    linear-gradient(
+      180deg,
+      var(--sky) 0%,
+      #8dd7cb 26%,
+      var(--sky2) 52%,
+      #9dd676 53%,
+      #78bf5d 100%
+    );
+}
+
+.sky { position: absolute; inset: 0 0 38% 0; overflow: hidden; pointer-events: none; }
+.sun {
+  position: absolute;
+  width: clamp(62px, 6vw, 100px);
+  aspect-ratio: 1;
+  right: 8%;
+  top: 7%;
+  border-radius: 50%;
+  background: #fff1a8;
+  box-shadow: 0 0 0 clamp(10px, 1.2vw, 20px) #fff4b344, 0 0 70px #fff5a855;
+}
+.cloud {
+  position: absolute;
+  height: 34px;
+  background: #fffdf0;
+  border-radius: 50px;
+  opacity: .86;
+  filter: drop-shadow(0 5px 0 #b1d6bf);
+}
+.cloud:before, .cloud:after {
+  content: '';
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+}
+.cloud:before { width: 55%; height: 135%; left: 16%; bottom: 10%; }
+.cloud:after { width: 42%; height: 105%; right: 12%; bottom: 5%; }
+.cloud1 { width: 170px; left: 7%; top: 14%; }
+.cloud2 { width: 140px; left: 47%; top: 10%; }
+.cloud3 { width: 160px; right: 7%; top: 25%; }
+
+.hill {
+  position: absolute;
+  bottom: -18%;
+  width: 62%;
+  height: 50%;
+  border-radius: 50% 50% 0 0;
+  background: #66b65e;
+  opacity: .72;
+}
+.hill1 { left: -13%; }
+.hill2 { right: -13%; background: #59a954; }
+
+/* ================= HERO ================= */
+.hero {
+  position: relative;
+  z-index: 4;
+  text-align: center;
+  padding: clamp(28px, 4vw, 48px) 20px 12px;
+}
+.eyebrow {
+  color: #347441;
+  font: 8px 'Press Start 2P';
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+.hero h1 {
+  margin: 0;
+  color: #fffce5;
+  font: 900 clamp(34px, 5.3vw, 72px)/1.02 'Press Start 2P';
+  letter-spacing: -3px;
+  text-shadow: 5px 6px 0 #39733d, 9px 10px 0 #183b22;
+}
+.hero h1 em { display: block; color: var(--lime); font-style: normal; }
+.hero p {
+  margin: 16px auto 0;
+  max-width: 700px;
+  color: #24532f;
+  font-size: clamp(12px, 1.15vw, 18px);
+  font-weight: 900;
+}
+
+/* ================= MISSION ROAD - DESKTOP ================= */
+.missionRoad {
+  position: relative;
+  z-index: 10;
+  width: min(1480px, 94vw);
+  margin: 22px auto 0;
+  padding: 0 1vw;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(10px, 1.3vw, 24px);
+  align-items: end;
+}
+
+.roadLine {
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  top: 42%;
+  height: 16px;
+  z-index: 0;
+  border: 4px solid #a66e31;
+  border-radius: 50%;
+  background: #e2ca66;
+  box-shadow: 0 5px 0 #674327;
+  transform: rotate(-1deg);
+  opacity: .95;
+}
+
+.mission {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  text-align: center;
+  transition: transform .2s ease;
+}
+.mission:hover { transform: translateY(-5px); }
+
+.plantSpot {
+  height: clamp(150px, 12vw, 190px);
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.plant {
+  position: relative;
+  width: 120px;
+  height: 180px;
+  transform-origin: bottom center;
+}
+.soil {
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  width: 115px;
+  height: 30px;
+  transform: translateX(-50%);
+  background: #784927;
+  border-radius: 50%;
+  box-shadow: inset 0 8px 0 #9b6031, 0 5px 0 #4c3522;
+}
+.stem {
+  position: absolute;
+  bottom: 25px;
+  left: 58px;
+  width: 8px;
+  background: #347b39;
+  border-radius: 8px;
+  transition: height .3s ease;
+}
+.leaf {
+  position: absolute;
+  width: 48px;
+  height: 25px;
+  background: #62b947;
+  border: 3px solid #276b34;
+  border-radius: 100% 0 100% 0;
+}
+.leaf1 { left: 20px; bottom: 58px; transform: rotate(25deg); }
+.leaf2 { left: 62px; bottom: 78px; transform: rotate(-25deg) scaleX(-1); }
+.leaf3 { left: 18px; bottom: 100px; transform: rotate(20deg); }
+.leaf4 { left: 63px; bottom: 120px; transform: rotate(-20deg) scaleX(-1); }
+.bud { position: absolute; left: 43px; top: 14px; font-size: 35px; }
+.seed { position: absolute; left: 55px; bottom: 26px; color: #e8c26b; font-size: 28px; }
+.flower {
+  position: absolute;
+  left: 27px;
+  top: -3px;
+  font-size: 60px;
+  filter: drop-shadow(2px 3px 0 #6d4823);
+  animation: bob 2.5s ease-in-out infinite;
+}
+.sparkles { position: absolute; top: 0; right: -8px; color: #fff28b; font-size: 18px; }
+
+.missionBubble {
+  position: absolute;
+  top: 4px;
+  right: calc(50% + 30px);
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  background: #fffef1;
+  border: 4px solid #315b39;
+  border-radius: 50%;
+  box-shadow: 0 5px 0 #1b3822;
+}
+.missionLogo { width: 39px; height: 39px; object-fit: contain; }
+.logoFallback {
+  width: 39px;
+  height: 39px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #162c1c;
+  color: var(--missionColor);
+  font-weight: 900;
+  font-size: 20px;
+}
+
+.missionCard {
+  position: relative;
+  min-height: 174px;
+  padding: 27px 13px 13px;
+  background: var(--cream);
+  border: 4px solid var(--brown);
+  border-radius: 10px;
+  box-shadow: 0 7px 0 #4d3320;
+}
+.missionNo {
+  position: absolute;
+  left: 50%;
+  top: -20px;
+  width: 40px;
+  height: 40px;
+  transform: translateX(-50%);
+  display: grid;
+  place-items: center;
+  background: #ffe16b;
+  border: 4px solid #714a28;
+  border-radius: 50%;
+  color: #4c351f;
+  font: 900 15px 'Press Start 2P';
+}
+.missionAction {
+  font-family: 'Be Vietnam Pro', Arial, sans-serif;
+  color: #6b9c43;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .6px;
+}
+.mission h2 {
+  margin: 6px 0 8px;
+  color: var(--missionColor);
+  font: 900 clamp(13px, 1.2vw, 18px) 'Press Start 2P';
+  line-height: 1.35;
+  text-shadow: 2px 2px 0 #3b3424;
+}
+.mission p {
+  font-family: 'Be Vietnam Pro', Arial, sans-serif;
+  min-height: 39px;
+  margin: 0;
+  color: #4b473b;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+.progress {
+  height: 8px;
+  margin: 11px 0 8px;
+  overflow: hidden;
+  background: #c7b990;
+  border-radius: 10px;
+}
+.progress span { display: block; height: 100%; background: var(--missionColor); border-radius: inherit; }
+.cardBottom { display: flex; justify-content: space-between; align-items: center; gap: 8px; color: #56704d; font-size: 10px; }
+.cardBottom b { font-size: 12px; }
+.cardBottom small { font-weight: 900; }
+.mission.done .missionCard { background: #f1ffd7; border-color: #4c9c48; }
+.mission.active .missionCard {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 0 #365b2f, 0 0 0 4px #e7ff57;
+}
+.mission.active .plant { filter: drop-shadow(0 0 9px #fff29c); }
+
+/* ================= GROUND ================= */
+.ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 174px;
+  z-index: 6;
+  overflow: hidden;
+  background: linear-gradient(#65b64f 0 18%, #936239 18% 24%, #704829 24% 100%);
+  border-top: 7px solid #d3ee69;
+}
+.ground:after {
+  content: '';
+  position: absolute;
+  inset: 32px 0 0;
+  background: repeating-linear-gradient(135deg, #704829 0 20px, #7a4f2d 20px 40px);
+  opacity: .48;
+}
+.fence {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 28px;
+  height: 62px;
+  z-index: 2;
+  border-top: 8px solid #9a6739;
+  border-bottom: 8px solid #9a6739;
+  background: repeating-linear-gradient(90deg, transparent 0 70px, #a97442 70px 88px);
+  opacity: .78;
+}
+.grassBits { position: absolute; left: 9%; top: 6px; z-index: 3; color: #efff9c; font-size: 17px; }
+.tools { position: absolute; right: 10%; top: 22px; z-index: 4; display: flex; gap: 12px; color: #315f35; font-size: 35px; transform: rotate(-8deg); }
+
+/* ================= BOTTOM HUD ================= */
+.bottomPanel {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: 18px;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: 170px minmax(280px, 520px) 150px 200px;
+  gap: 16px;
+  align-items: end;
+}
+.backButton, .totalBox, .currentBox {
+  color: #fff4ce;
+  background: #163322;
+  border: 4px solid #315b39;
+  border-radius: 8px;
+  box-shadow: 5px 5px 0 #102117;
+}
+.backButton { height: 60px; color: #ffe3a0; font-weight: 900; }
+.currentBox { padding: 11px 16px; text-align: center; }
+.currentBox small { display: block; color: #9fc89b; font-size: 10px; font-weight: 900; }
+.currentBox strong {
+  display: block;
+  margin: 5px 0;
+  color: var(--lime);
+  font-family: 'Be Vietnam Pro', Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 900;
+}
+.currentBox span { font-size: 11px; }
+.mascotBox { height: 140px; position: relative; }
+.mascotBox img { display: block; max-width: 140px; max-height: 140px; margin: auto; object-fit: contain; filter: drop-shadow(4px 5px 0 #345126); }
+.mascotFallback { text-align: center; font-size: 68px; }
+.mascotFallback small { display: block; font-size: 11px; font-weight: 900; }
+.totalBox { padding: 13px; text-align: center; }
+.totalBox small { display: block; color: #9fc89b; font-weight: 900; }
+.totalBox b { display: block; margin-top: 7px; color: #ffd64a; font-size: 20px; }
+.totalBox i { color: white; font-size: 9px; font-style: normal; }
+
+.finishBanner {
+  font-family: 'Be Vietnam Pro', Arial, sans-serif;
+  position: absolute;
+  top: 18px;
+  right: 4%;
+  z-index: 25;
+  padding: 9px 13px;
+  color: #4b3a28;
+  background: #fff5cf;
+  border: 3px solid #8a5b30;
+  border-radius: 7px;
+  box-shadow: 4px 4px 0 #70472b;
+  font-size: 12px;
+  font-weight: 900;
+}
+.finishBanner[data-open="true"] { color: #2b6b34; background: #e7ff9d; }
+
+/* ================= MENU / MODAL ================= */
+.menuPanel { position: fixed; inset: 0 0 0 auto; width: min(360px, 90vw); z-index: 150; padding: 75px 25px; color: white; background: #17331f; box-shadow: -10px 0 0 #0d1e13; }
+.menuPanel h2 { color: var(--lime); font: 20px 'Press Start 2P'; }
+.menuPanel button { display: block; width: 100%; margin: 10px 0; padding: 14px; color: white; background: #24492c; border: 2px solid #527a51; text-align: left; }
+.menuPanel .close { position: absolute; top: 15px; right: 15px; width: auto; margin: 0; padding: 0; background: none; border: 0; font-size: 30px; }
+.menuPanel div { position: absolute; bottom: 30px; color: #9fc89b; }
+.menuPanel div b { color: #ffd64a; }
+.overlay { position: fixed; inset: 0; z-index: 140; background: #06100a99; }
+.toast { font-family: 'Be Vietnam Pro', Arial, sans-serif; position: fixed; left: 50%; bottom: 25px; z-index: 220; transform: translateX(-50%); padding: 12px 18px; color: #fff7d8; background: #17331f; border: 3px solid var(--lime); border-radius: 7px; box-shadow: 4px 4px 0 #0d1e13; font-weight: 900; }
+.modalOverlay { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 20px; background: #07130bb8; }
+.modal { position: relative; width: min(480px, 95vw); padding: 30px; color: #3b402f; background: #fff6d6; border: 5px solid #724927; border-radius: 12px; box-shadow: 8px 8px 0 #2b3e24; text-align: center; }
+.modalClose { position: absolute; top: 8px; right: 10px; border: 0; background: none; font-size: 28px; }
+.modal > .missionLogo, .modal > .logoFallback { width: 70px; height: 70px; margin: 0 auto 10px; }
+.modal small { color: #70905b; font-weight: 900; }
+.modal h2 {
+  margin: 10px 0;
+  color: #5a8e38;
+  font-family: 'Be Vietnam Pro', Arial, sans-serif;
+  font-size: 25px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+.modal h3 { margin: 0; font-size: 22px; }
+.modal p { font-size: 15px; font-weight: 700; }
+.modalRule { padding: 10px; background: #e7f0c5; border-radius: 6px; font-weight: 800; }
+.modalProgress { margin: 20px 0; }
+.modalProgress > b { font-size: 30px; }
+.modalProgress > span { font-weight: 900; }
+.modalProgress > i { display: block; height: 12px; margin-top: 10px; overflow: hidden; background: #c9bea1; border-radius: 8px; }
+.modalProgress u { display: block; height: 100%; background: #69bd52; text-decoration: none; }
+.playButton { width: 100%; padding: 14px; color: white; background: #2f713b; border: 3px solid #173d22; font-weight: 900; }
+.playButton:disabled { opacity: .65; }
+
+@keyframes bob { 50% { transform: translateY(-4px) rotate(2deg); } }
+
+/* ============================================================
+   LAPTOP / TABLET LANDSCAPE
+   Keep the garden horizontal. Cards stay readable instead of
+   shrinking too far.
+   ============================================================ */
+@media (max-width: 1180px) and (min-width: 761px) {
+  .missionRoad { width: 96vw; gap: 10px; }
+  .missionCard { min-height: 165px; padding: 26px 9px 11px; }
+  .mission h2 { font-size: 13px; }
+  .mission p { font-size: 10px; }
+  .missionBubble { right: calc(50% + 24px); width: 50px; height: 50px; }
+  .missionLogo, .logoFallback { width: 33px; height: 33px; }
+  .plant { transform: scale(.84); transform-origin: bottom center; }
+  .plantSpot { height: 155px; }
+  .bottomPanel { grid-template-columns: 130px minmax(220px, 1fr) 100px 150px; gap: 10px; }
+  .mascotBox { height: 105px; }
+  .mascotBox img { max-width: 105px; max-height: 105px; }
+  .finishBanner { font-size: 10px; }
+}
+
+/* ============================================================
+   MOBILE PORTRAIT
+   A genuinely vertical garden. The page scrolls instead of
+   squeezing five missions into the viewport.
+   ============================================================ */
+@media (max-width: 760px) {
+  html, body, #root { min-height: 100%; }
+  body { overflow-x: hidden; }
+
+  .topbar { height: 56px; padding: 0 10px; gap: 8px; }
+  .brand { font-size: 13px; }
+  .topTitle { display: none; }
+  .topActions { gap: 5px; }
+  .topActions button { width: 34px; height: 34px; font-size: 18px; }
+  .score { font-size: 11px; }
+
+  .garden {
+    min-height: 0;
+    overflow: visible;
+    padding-bottom: 0;
+    background:
+      linear-gradient(
+        180deg,
+        #68c9e3 0,
+        #9bdccc 24%,
+        #c0e892 43%,
+        #7bc361 43.2%,
+        #76bd5d 100%
+      );
+  }
+
+  .sky { inset: 0 0 auto 0; height: 370px; }
+  .sun { width: 64px; right: 9%; top: 5%; }
+  .cloud1 { width: 115px; height: 27px; left: 5%; top: 13%; }
+  .cloud2 { width: 100px; height: 24px; left: 45%; top: 9%; }
+  .cloud3 { width: 105px; height: 25px; right: 4%; top: 24%; }
+  .hill { bottom: -4%; height: 32%; width: 75%; }
+
+  .hero {
+    padding: 27px 14px 5px;
+  }
+  .eyebrow { font-size: 6px; margin-bottom: 9px; }
+  .hero h1 {
+    font-size: clamp(25px, 8.8vw, 38px);
+    letter-spacing: -2px;
+    text-shadow: 3px 4px 0 #39733d, 5px 6px 0 #183b22;
+  }
+  .hero p {
+    margin-top: 12px;
+    max-width: 360px;
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  /* One vertical route with alternating cards. */
+  .missionRoad {
+    width: 100%;
+    margin: 10px auto 0;
+    padding: 18px 10px 38px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .roadLine {
+    left: 50%;
+    right: auto;
+    top: 42px;
+    bottom: 46px;
+    width: 9px;
+    height: auto;
+    transform: translateX(-50%);
+    border: 0;
+    border-radius: 9px;
+    background: repeating-linear-gradient(
+      to bottom,
+      #e4c95f 0 22px,
+      transparent 22px 39px
+    );
+    box-shadow: none;
+  }
+
+  .mission {
+    width: 100%;
+    min-height: 205px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 74px minmax(0, 1fr);
+    align-items: center;
+    gap: 0;
+  }
+
+  /* Odd: plant left, card right. Even: card left, plant right. */
+  .mission:nth-of-type(odd) .plantSpot { grid-column: 1; grid-row: 1; }
+  .mission:nth-of-type(odd) .missionCard { grid-column: 3; grid-row: 1; }
+  .mission:nth-of-type(even) .missionCard { grid-column: 1; grid-row: 1; }
+  .mission:nth-of-type(even) .plantSpot { grid-column: 3; grid-row: 1; }
+
+  .mission:hover { transform: none; }
+  .plantSpot { height: 180px; }
+  .plant { transform: scale(.68); transform-origin: bottom center; }
+
+  .missionBubble {
+    width: 50px;
+    height: 50px;
+    top: 4px;
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 3px;
+    box-shadow: 0 4px 0 #1b3822;
+  }
+  .missionLogo, .logoFallback { width: 32px; height: 32px; }
+
+  .missionCard {
+    min-height: 154px;
+    padding: 25px 9px 10px;
+    border-width: 3px;
+    border-radius: 9px;
+    box-shadow: 0 5px 0 #4d3320;
+  }
+  .missionNo {
+    width: 34px;
+    height: 34px;
+    top: -17px;
+    border-width: 3px;
+    font-size: 11px;
+  }
+  .missionAction {
+    font-size: 9px;
+    line-height: 1.25;
+    margin-bottom: 5px;
+    white-space: nowrap;
+  }
+
+  .mission h2 {
+    margin: 0 0 9px;
+    font-size: clamp(7px, 2.15vw, 10px);
+    line-height: 1.55;
+    white-space: nowrap;
+    letter-spacing: -0.35px;
+    text-shadow: 1px 1px 0 #3b3424;
+  }
+  .mission p {
+    min-height: 42px;
+    font-size: 9px;
+    line-height: 1.3;
+  }
+  .progress { height: 6px; margin: 8px 0 6px; }
+  .cardBottom { font-size: 8px; }
+  .cardBottom b { font-size: 10px; }
+
+  /* The ground follows the missions in the document flow. */
+  .ground {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    height: 150px;
+    margin-top: 0;
+    border-top-width: 6px;
+  }
+  .fence { top: 24px; height: 54px; }
+  .grassBits { top: 5px; font-size: 13px; }
+  .tools { display: none; }
+
+  /* Mobile HUD is compact and does not cover mission cards. */
+  .bottomPanel {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    z-index: 25;
+    width: 100%;
+    padding: 10px 10px 18px;
+    display: grid;
+    grid-template-columns: 92px minmax(0, 1fr) 86px;
+    gap: 7px;
+    align-items: end;
+    background: #704829;
+  }
+  .backButton { height: 52px; font-size: 10px; border-width: 3px; }
+  .backButton span { display: block; margin-top: 2px; }
+  .currentBox {
+    min-width: 0;
+    min-height: 70px;
+    padding: 8px 7px;
+    border-width: 3px;
+    box-shadow: 3px 3px 0 #102117;
+  }
+  .currentBox small { font-size: 7px; }
+  .currentBox strong { margin: 4px 0; font-size: 10px; line-height: 1.35; }
+  .currentBox span { font-size: 9px; }
+  .mascotBox {
+    height: 88px;
+    width: 86px;
+  }
+  .mascotBox img { max-width: 86px; max-height: 88px; }
+  .mascotFallback { font-size: 45px; }
+  .totalBox { display: none; }
+
+  .finishBanner {
+  font-family: 'Be Vietnam Pro', Arial, sans-serif;
+    position: relative;
+    top: auto;
+    right: auto;
+    left: auto;
+    margin: 0;
+    padding: 9px 10px;
+    border-width: 3px;
+    border-radius: 0;
+    box-shadow: none;
+    text-align: center;
+    font-size: 9px;
+  }
+
+  /* Do not let the message box create a second fixed overlay. */
+  .toast { left: 10px; right: 10px; bottom: 12px; transform: none; text-align: center; font-size: 11px; }
+}
+
+@media (max-width: 430px) {
+  .missionRoad { padding-inline: 6px; }
+  .mission { grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1fr); min-height: 190px; }
+  .plantSpot { height: 165px; }
+  .plant { transform: scale(.58); }
+  .missionCard { min-height: 145px; padding: 23px 7px 8px; }
+  .missionAction {
+    font-size: 8px;
+    line-height: 1.25;
+    margin-bottom: 4px;
+  }
+  .mission h2 {
+    font-size: 7.5px;
+    line-height: 1.5;
+    letter-spacing: -0.3px;
+    margin-bottom: 8px;
+  }
+  .mission p { font-size: 8px; min-height: 38px; }
+  .missionBubble { width: 45px; height: 45px; }
+  .missionLogo, .logoFallback { width: 29px; height: 29px; }
+  .cardBottom { font-size: 7px; }
+  .cardBottom b { font-size: 9px; }
+  .bottomPanel { grid-template-columns: 78px minmax(0, 1fr) 72px; padding-inline: 7px; }
+  .backButton { font-size: 9px; }
+  .mascotBox, .mascotBox img { width: 72px; max-width: 72px; max-height: 78px; }
+}
+
+/* Very narrow phones: prioritize cards over decorative plants. */
+@media (max-width: 360px) {
+  .hero h1 { font-size: 23px; }
+  .hero p { font-size: 10px; }
+  .mission { grid-template-columns: minmax(0, 1fr) 54px minmax(0, 1fr); min-height: 180px; }
+  .plant { transform: scale(.5); }
+  .missionCard { min-height: 138px; }
+  .mission h2 { font-size: 8px; }
+  .mission p { font-size: 7.5px; }
+  .currentBox strong { font-size: 9px; }
+}
+
+/* ============================================================
+   PIXEL FONT LOAD FIX
+   Press Start 2P is used by the game title, platform names,
+   numbering and other pixel-game elements.
+   ============================================================ */
+
+.brand,
+.topTitle small,
+.topTitle b,
+.eyebrow,
+.hero h1,
+.missionNo,
+.mission h2,
+.menuPanel h2 {
+  font-family: 'Press Start 2P', monospace !important;
+}
+
+/* Vietnamese UI text stays readable and supports all diacritics. */
+.missionAction,
+.mission p,
+.cardBottom,
+.currentBox small,
+.currentBox strong,
+.currentBox span,
+.finishBanner,
+.modal > small,
+.modal h2,
+.modal p,
+.modalRule,
+.playButton,
+.toast {
+  font-family: 'Be Vietnam Pro', Arial, sans-serif !important;
+}
+
+/* ============================================================
+   FINAL MOBILE PLATFORM TEXT FIX
+   The previous shadow still looked offset on small screens.
+   Use a centered outline instead of a directional shadow.
+   ============================================================ */
+
+@media (max-width: 760px) {
+  .mission h2 {
+    font-family: 'Press Start 2P', monospace !important;
+    text-shadow: none !important;
+    -webkit-text-stroke: 0.45px #3b3424;
+    paint-order: stroke fill;
+    transform: translateZ(0);
+  }
+}
+
+@media (max-width: 400px) {
+  .mission h2 {
+    font-family: 'Press Start 2P', monospace !important;
+    text-shadow: none !important;
+    -webkit-text-stroke: 0.35px #3b3424;
+    paint-order: stroke fill;
+    transform: translateZ(0);
+  }
+}
+
+/* FINAL: clean mobile platform names — pixel font, no artificial shadow/stroke */
+@media (max-width: 760px) {
+  .mission h2 {
+    font-family: 'Press Start 2P', monospace !important;
+    font-weight: 900 !important;
+    text-shadow: none !important;
+    -webkit-text-stroke: 0 !important;
+    paint-order: normal !important;
+    transform: none !important;
+    filter: none !important;
+    letter-spacing: -0.35px !important;
+    line-height: 1.35 !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .mission h2 {
+    font-size: 7px !important;
+    text-shadow: none !important;
+    -webkit-text-stroke: 0 !important;
+    letter-spacing: -0.25px !important;
+  }
+}
+
+/* ============================================================
+   PLATFORM NAME — CLEAN PIXEL TEXT
+   iTUNES / YOUTUBE / FACEBOOK / TIKTOK / SPOTIFY
+   No offset shadow, no stroke, no filter.
+   ============================================================ */
+
+.mission h2 {
+  font-family: 'Press Start 2P', monospace !important;
+  font-weight: 900 !important;
+  text-shadow: none !important;
+  -webkit-text-stroke: 0 !important;
+  filter: none !important;
+  transform: none !important;
+  paint-order: normal !important;
+}
+
+/* Keep the same clean treatment on every responsive breakpoint. */
+@media (max-width: 760px) {
+  .mission h2 {
+    text-shadow: none !important;
+    -webkit-text-stroke: 0 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .mission h2 {
+    text-shadow: none !important;
+    -webkit-text-stroke: 0 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+}
+
+
+
+/* ============================================================
+   SUNFLOWER JOURNEY v2
+   Clean growth illustrations + softer mission road
+   ============================================================ */
+
+.missionRoad {
+  margin-top: 30px;
+  padding-bottom: 18px;
+}
+
+.roadLine {
+  top: 37%;
+  left: 4%;
+  right: 4%;
+  height: 10px;
+  border: 0;
+  border-radius: 0;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      #c99b45 0 24px,
+      transparent 24px 42px
+    );
+  box-shadow: none;
+  opacity: .9;
+  transform: rotate(-1deg);
+}
+
+.plantSpot {
+  height: clamp(155px, 13vw, 190px);
+  overflow: visible;
+}
+
+.growthPlant {
+  position: relative;
+  width: 116px;
+  height: 145px;
+  margin: 0 auto;
+  transform-origin: center bottom;
+  transition: transform .25s ease;
+}
+
+.mission:hover .growthPlant {
+  transform: translateY(-3px) scale(1.025);
+}
+
+.plantActive {
+  filter: drop-shadow(0 5px 8px rgba(255, 222, 84, .35));
+}
+
+/* Soil */
+.growthSoil {
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 92px;
+  height: 24px;
+  transform: translateX(-50%);
+  background: #86502a;
+  border: 3px solid #66391f;
+  border-radius: 50%;
+  box-shadow: inset 0 5px 0 #a76835, 0 4px 0 rgba(54, 43, 27, .32);
+  z-index: 2;
+}
+
+.soilDot {
+  position: absolute;
+  width: 5px;
+  height: 4px;
+  border-radius: 50%;
+  background: #68401f;
+}
+.dot1 { left: 19px; top: 9px; }
+.dot2 { right: 22px; top: 6px; }
+
+/* Seed */
+.growth-1 .seedStage {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  width: 30px;
+  height: 21px;
+  transform: translateX(-50%);
+  z-index: 5;
+}
+
+.growth-1 .seed {
+  position: absolute;
+  inset: 2px 1px;
+  display: block;
+  background: #9a632f;
+  border: 3px solid #60391e;
+  border-radius: 62% 38% 55% 45%;
+  transform: rotate(-12deg);
+  box-shadow: inset -4px -3px 0 #75461f;
+}
+
+.seedHighlight {
+  position: absolute;
+  width: 6px;
+  height: 4px;
+  left: 9px;
+  top: 5px;
+  background: #d79543;
+  border-radius: 50%;
+  transform: rotate(-12deg);
+}
+
+/* Shared stem */
+.growthPlant .stem {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  width: 8px;
+  transform: translateX(-50%);
+  background: #4b913e;
+  border: 2px solid #327133;
+  border-radius: 8px;
+  z-index: 3;
+}
+
+.sproutStem {
+  height: 45px;
+}
+
+.youngStem {
+  height: 83px;
+}
+
+.tallStem,
+.fullStem {
+  height: 105px;
+}
+
+/* Sprout */
+.growth-2 .sproutStage {
+  position: absolute;
+  inset: 0;
+}
+
+.sproutLeaf {
+  position: absolute;
+  width: 30px;
+  height: 17px;
+  background: #78bd49;
+  border: 2px solid #3b7e36;
+  border-radius: 100% 0 100% 0;
+  z-index: 5;
+}
+
+.sproutLeafLeft {
+  left: 29px;
+  top: 72px;
+  transform: rotate(-24deg);
+}
+
+.sproutLeafRight {
+  right: 29px;
+  top: 63px;
+  transform: scaleX(-1) rotate(-24deg);
+}
+
+/* Young plant / bud / bloom leaves */
+.plantLeaf {
+  position: absolute;
+  width: 42px;
+  height: 21px;
+  background: #65ad42;
+  border: 3px solid #347b37;
+  border-radius: 100% 0 100% 0;
+  z-index: 5;
+}
+
+.plantLeaf.left.top {
+  left: 2px;
+  top: 53px;
+  transform: rotate(-25deg);
+}
+
+.plantLeaf.right.top {
+  right: 2px;
+  top: 42px;
+  transform: scaleX(-1) rotate(-25deg);
+}
+
+.plantLeaf.left.bottom {
+  left: 3px;
+  top: 79px;
+  transform: rotate(-16deg) scale(.88);
+}
+
+.plantLeaf.right.bottom {
+  right: 3px;
+  top: 68px;
+  transform: scaleX(-1) rotate(-16deg) scale(.88);
+}
+
+/* Bud */
+.growth-4 .budStage,
+.growth-5 .bloomStage {
+  position: absolute;
+  inset: 0;
+}
+
+.flowerBud {
+  position: absolute;
+  left: 50%;
+  top: 7px;
+  width: 39px;
+  height: 39px;
+  transform: translateX(-50%);
+  background: #8caf43;
+  border: 3px solid #3d7332;
+  border-radius: 48% 52% 45% 55%;
+  z-index: 9;
+  box-shadow: inset -4px -4px 0 rgba(52, 104, 43, .25);
+}
+
+.flowerBud:before,
+.flowerBud:after {
+  content: '';
+  position: absolute;
+  width: 17px;
+  height: 10px;
+  background: #6ea63e;
+  border: 2px solid #3d7332;
+  border-radius: 100% 0 100% 0;
+  bottom: -2px;
+}
+
+.flowerBud:before {
+  left: -9px;
+  transform: rotate(-28deg);
+}
+
+.flowerBud:after {
+  right: -9px;
+  transform: scaleX(-1) rotate(-28deg);
+}
+
+.flowerBud i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 13px;
+  height: 13px;
+  transform: translate(-50%, -50%);
+  background: #c88e28;
+  border: 2px solid #8e631e;
+  border-radius: 50%;
+}
+
+/* Bloom */
+.sunflowerFlower {
+  position: absolute;
+  left: 50%;
+  top: -4px;
+  width: 66px;
+  height: 66px;
+  transform: translateX(-50%);
+  z-index: 12;
+  animation: sunflowerSway 3s ease-in-out infinite;
+}
+
+.sunflowerFlower .petal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 21px;
+  height: 31px;
+  margin-left: -10.5px;
+  margin-top: -15.5px;
+  background: #ffd84b;
+  border: 3px solid #d69b25;
+  border-radius: 55% 55% 48% 48%;
+  transform-origin: 10.5px 15.5px;
+  box-shadow: inset -2px -2px 0 rgba(224, 164, 34, .25);
+}
+
+.sunflowerFlower .p1 { transform: rotate(0deg) translateY(-18px); }
+.sunflowerFlower .p2 { transform: rotate(45deg) translateY(-18px); }
+.sunflowerFlower .p3 { transform: rotate(90deg) translateY(-18px); }
+.sunflowerFlower .p4 { transform: rotate(135deg) translateY(-18px); }
+.sunflowerFlower .p5 { transform: rotate(180deg) translateY(-18px); }
+.sunflowerFlower .p6 { transform: rotate(225deg) translateY(-18px); }
+.sunflowerFlower .p7 { transform: rotate(270deg) translateY(-18px); }
+.sunflowerFlower .p8 { transform: rotate(315deg) translateY(-18px); }
+
+.flowerCenter {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 28px;
+  height: 28px;
+  transform: translate(-50%, -50%);
+  background: #70431f;
+  border: 4px solid #4e2d19;
+  border-radius: 50%;
+  z-index: 20;
+}
+
+.flowerCenter i {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  left: 6px;
+  top: 5px;
+  border-radius: 50%;
+  background: #b87927;
+  box-shadow:
+    8px 2px 0 #b87927,
+    3px 9px 0 #b87927,
+    11px 11px 0 #b87927;
+}
+
+.growthSparkles {
+  position: absolute;
+  left: 50%;
+  top: -10px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  color: #fff09a;
+  font-size: 13px;
+  z-index: 30;
+  animation: sparkleFloat2 1.8s ease-in-out infinite;
+}
+
+.growthSparkles span:nth-child(2) {
+  margin-top: 6px;
+}
+
+@keyframes sunflowerSway {
+  0%, 100% { transform: translateX(-50%) rotate(-1deg); }
+  50% { transform: translateX(-50%) rotate(2deg); }
+}
+
+@keyframes sparkleFloat2 {
+  0%, 100% { opacity: .55; transform: translateX(-50%) translateY(0); }
+  50% { opacity: 1; transform: translateX(-50%) translateY(-4px); }
+}
+
+/* Make the five stages visually distinct but part of one journey. */
+.stage1 .plantSpot { transform: translateY(4px); }
+.stage2 .plantSpot { transform: translateY(0); }
+.stage3 .plantSpot { transform: translateY(-2px); }
+.stage4 .plantSpot { transform: translateY(-3px); }
+.stage5 .plantSpot { transform: translateY(-5px); }
+
+/* Cards: a little lighter and less heavy than the old version. */
+.missionCard {
+  background: #fff7d9;
+  border-color: #85562f;
+  box-shadow: 0 6px 0 #5a3923;
+}
+
+.mission.done .missionCard {
+  background: #efffd4;
+}
+
+.missionAction {
+  color: #659448;
+}
+
+.missionNo {
+  background: #ffe273;
+}
+
+/* Tablet */
+@media (max-width: 1180px) and (min-width: 761px) {
+  .growthPlant {
+    transform: scale(.84);
+    transform-origin: center bottom;
+  }
+
+  .mission:hover .growthPlant {
+    transform: translateY(-2px) scale(.86);
+  }
+
+  .plantSpot {
+    height: 160px;
+  }
+}
+
+/* Mobile: keep one vertical journey, with plants small and clean. */
+@media (max-width: 760px) {
+  .missionRoad {
+    padding-top: 12px;
+  }
+
+  .roadLine {
+    top: 38px;
+    bottom: 42px;
+    left: 50%;
+    right: auto;
+    width: 7px;
+    height: auto;
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        #dfc75d 0 20px,
+        transparent 20px 36px
+      );
+    transform: translateX(-50%);
+  }
+
+  .growthPlant {
+    width: 100px;
+    height: 128px;
+    transform: scale(.82);
+    transform-origin: center bottom;
+  }
+
+  .mission:hover .growthPlant {
+    transform: scale(.82);
+  }
+
+  .plantSpot {
+    height: 170px;
+  }
+
+  .missionCard {
+    background: #fff6d5;
+  }
+}
+
+@media (max-width: 430px) {
+  .growthPlant {
+    transform: scale(.72);
+  }
+
+  .mission:hover .growthPlant {
+    transform: scale(.72);
+  }
+
+  .plantSpot {
+    height: 158px;
+  }
+}
+
+@media (max-width: 360px) {
+  .growthPlant {
+    transform: scale(.64);
+  }
+
+  .mission:hover .growthPlant {
+    transform: scale(.64);
+  }
+
+  .plantSpot {
+    height: 150px;
+  }
+}
+
+/* ============================================================
+   FINAL PLATFORM NAMES
+   Clean pixel type without displaced shadow/stroke.
+   ============================================================ */
+
+.mission h2 {
+  font-family: 'Press Start 2P', monospace !important;
+  text-shadow: none !important;
+  -webkit-text-stroke: 0 !important;
+  filter: none !important;
+  transform: none !important;
+}
+
+/* ============================================================
+   FINAL LOGO ALIGNMENT + KEEP GROWTH PLANTS VISIBLE
+   ============================================================ */
+.missionSpot,
+.plantSpot {
+  position: relative;
+}
+
+/* Logo sits directly above the plant, centered on the same axis. */
+.missionBubble {
+  top: 0 !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translate(-50%, -8px) !important;
+  width: 58px !important;
+  height: 58px !important;
+  z-index: 30 !important;
+}
+
+.missionLogo,
+.logoFallback {
+  width: 39px !important;
+  height: 39px !important;
+  object-fit: contain !important;
+}
+
+/* Do not let old mobile rules hide the growth illustration. */
+.growthPlant {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Keep the whole plant area above the road and cards. */
+.plantSpot {
+  z-index: 3;
+}
+.growthPlant {
+  z-index: 4;
+}
+
+@media (max-width: 1180px) and (min-width: 761px) {
+ .missionBubble {
+  top: 0 !important;
+  left: 50% !important;
+  right: auto !important;
+
+  /* Đẩy logo lên cao hơn */
+  transform: translate(-50%, -24px) !important;
+}
+  .missionLogo,
+  .logoFallback {
+    width: 33px !important;
+    height: 33px !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .missionBubble {
+    width: 50px !important;
+    height: 50px !important;
+    transform: translate(-50%, -5px) !important;
+  }
+  .missionLogo,
+  .logoFallback {
+    width: 32px !important;
+    height: 32px !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .missionBubble {
+    width: 45px !important;
+    height: 45px !important;
+    transform: translate(-50%, -4px) !important;
+  }
+  .missionLogo,
+  .logoFallback {
+    width: 29px !important;
+    height: 29px !important;
+  }
+}
+
+/* ============================================================
+   FINAL PLANT / CARD ALIGNMENT
+   - keep each plant centered on its mission
+   - move the plant artwork upward so soil does not cover
+     the mission number
+   - keep the logo directly above the plant
+   ============================================================ */
+
+/* Keep the plant and logo on the same center axis. */
+.mission .plantSpot {
+  position: relative !important;
+  overflow: visible !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+}
+
+/* New PNG stage wrapper, when present. */
+.mission .plantAssetWrapper {
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
+
+  width: 92px !important;
+  height: 108px !important;
+
+  margin: 0 auto !important;
+
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+
+  transform: translateY(-22px) !important;
+  transform-origin: center bottom !important;
+
+  z-index: 4 !important;
+}
+
+/* Actual five PNGs. */
+.mission .plantAssetWrapper .plantAsset,
+.mission .plantAsset {
+  display: block !important;
+
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+
+  object-fit: contain !important;
+  object-position: center bottom !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+
+  background: transparent !important;
+}
+
+/* Legacy CSS plant shapes must not interfere with PNG stages. */
+.mission .plantAssetWrapper .growthSoil,
+.mission .plantAssetWrapper .seedStage,
+.mission .plantAssetWrapper .sproutStage,
+.mission .plantAssetWrapper .youngStage,
+.mission .plantAssetWrapper .budStage,
+.mission .plantAssetWrapper .bloomStage,
+.mission .plantAssetWrapper .soil,
+.mission .plantAssetWrapper .stem,
+.mission .plantAssetWrapper .leaf,
+.mission .plantAssetWrapper .flower {
+  display: none !important;
+}
+
+/* Put the mission number clearly in front of the soil. */
+.missionCard {
+  z-index: 8 !important;
+}
+
+.missionNo {
+  z-index: 20 !important;
+}
+
+/* Logo stays above the plant and centered. */
+.mission .missionBubble {
+  z-index: 30 !important;
+  left: 50% !important;
+  right: auto !important;
+  top: 0 !important;
+  transform: translate(-50%, -6px) !important;
+}
+
+/* Desktop: the plant should visually sit between logo and card. */
+@media (min-width: 1181px) {
+  .mission .plantSpot {
+    height: 175px !important;
+  }
+
+  .mission .plantAssetWrapper {
+    width: 80px !important;
+    height: 96px !important;
+    transform: translateY(-22px) !important;
+  }
+
+  .mission.stage1 .plantAssetWrapper {
+    width: 80px !important;
+    height: 94px !important;
+  }
+
+  .mission.stage2 .plantAssetWrapper {
+    width: 84px !important;
+    height: 98px !important;
+  }
+
+  .mission.stage3 .plantAssetWrapper {
+    width: 88px !important;
+    height: 102px !important;
+  }
+
+  .mission.stage4 .plantAssetWrapper {
+    width: 90px !important;
+    height: 106px !important;
+  }
+
+  .mission.stage5 .plantAssetWrapper {
+    width: 96px !important;
+    height: 112px !important;
+  }
+}
+
+/* Tablet landscape */
+@media (max-width: 1180px) and (min-width: 761px) {
+  .mission .plantSpot {
+    height: 155px !important;
+  }
+
+  .mission .plantAssetWrapper {
+    width: 80px !important;
+    height: 96px !important;
+    transform: translateY(-18px) !important;
+  }
+
+  .mission.stage1 .plantAssetWrapper {
+    width: 70px !important;
+    height: 84px !important;
+  }
+
+  .mission.stage5 .plantAssetWrapper {
+    width: 84px !important;
+    height: 98px !important;
+  }
+}
+
+/* Mobile portrait */
+@media (max-width: 760px) {
+  .mission .plantSpot {
+    height: 165px !important;
+  }
+
+  .mission .plantAssetWrapper {
+    width: 70px !important;
+    height: 84px !important;
+    transform: translateY(-18px) !important;
+  }
+
+  .mission.stage1 .plantAssetWrapper {
+    width: 61px !important;
+    height: 73px !important;
+  }
+
+  .mission.stage5 .plantAssetWrapper {
+    width: 76px !important;
+    height: 92px !important;
+  }
+}
+
+/* Small phones */
+@media (max-width: 430px) {
+  .mission .plantSpot {
+    height: 150px !important;
+  }
+
+  .mission .plantAssetWrapper {
+    width: 61px !important;
+    height: 75px !important;
+    transform: translateY(-16px) !important;
+  }
+
+  .mission.stage1 .plantAssetWrapper {
+    width: 54px !important;
+    height: 67px !important;
+  }
+
+  .mission.stage5 .plantAssetWrapper {
+    width: 59px !important;
+    height: 74px !important;
+  }
+}
+
+/* Very narrow phones */
+@media (max-width: 360px) {
+  .mission .plantAssetWrapper {
+    width: 54px !important;
+    height: 67px !important;
+    transform: translateY(-15px) !important;
+  }
+
+  .mission.stage1 .plantAssetWrapper {
+    width: 54px !important;
+    height: 66px !important;
+  }
+
+  .mission.stage5 .plantAssetWrapper {
+    width: 59px !important;
+    height: 74px !important;
+  }
+}
+
+
+
+/* FINAL SMALLER PLANT SCALE */
+.mission .plantAssetWrapper {
+  width: clamp(65px, 6.5vw, 88px) !important;
+  height: clamp(76px, 8vw, 102px) !important;
+}
+
+@media (max-width: 1180px) and (min-width: 761px) {
+  .mission .plantAssetWrapper {
+    width: 78px !important;
+    height: 92px !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .mission .plantAssetWrapper {
+    width: 68px !important;
+    height: 82px !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .mission .plantAssetWrapper {
+    width: 60px !important;
+    height: 72px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .mission .plantAssetWrapper {
+    width: 54px !important;
+    height: 66px !important;
+  }
+}
+
+/* ============================================================
+   FINAL LOGO → FLOWER SPACING
+   Keep the platform logo clearly separated from the plant.
+   Desktop/laptop gets the largest gap; mobile keeps a compact gap.
+   ============================================================ */
+
+/* Laptop / desktop */
+@media (min-width: 1181px) {
+  .mission .missionBubble {
+    top: -18px !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    z-index: 40 !important;
+  }
+
+  .mission .plantSpot {
+    padding-top: 8px !important;
+  }
+}
+
+/* Tablet landscape */
+@media (max-width: 1180px) and (min-width: 761px) {
+  .mission .missionBubble {
+    top: -18px !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    z-index: 40 !important;
+  }
+
+  .mission .plantSpot {
+    padding-top: 7px !important;
+  }
+}
+
+/* Mobile portrait */
+@media (max-width: 760px) {
+  .mission .missionBubble {
+    top: -10px !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    z-index: 40 !important;
+  }
+
+  .mission .plantSpot {
+    padding-top: 5px !important;
+  }
+}
+
+/* Small phones */
+@media (max-width: 430px) {
+  .mission .missionBubble {
+    top: -8px !important;
+  }
+}
+
+/* ============================================================
+   BOTTOM HUD — LAPTOP / TABLET ALIGNMENT
+   Keep all four blocks on one visual baseline and center the
+   mascot within its own column.
+   ============================================================ */
+
+@media (min-width: 1181px) {
+  .bottomPanel {
+    left: 4%;
+    right: 4%;
+    bottom: 18px;
+
+    display: grid;
+    grid-template-columns:
+      minmax(150px, 180px)
+      minmax(360px, 1fr)
+      minmax(110px, 150px)
+      minmax(180px, 210px);
+
+    align-items: center;
+    gap: 18px;
+  }
+
+  .backButton,
+  .currentBox,
+  .totalBox {
+    align-self: center;
+  }
+
+  .backButton {
+    min-height: 62px;
+    height: 62px;
+  }
+
+  .currentBox {
+    min-height: 92px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .mascotBox {
+    height: 118px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .mascotBox img {
+    width: 118px;
+    max-width: 118px;
+    max-height: 118px;
+    margin: 0 auto;
+    object-fit: contain;
+    object-position: center bottom;
+  }
+
+  .totalBox {
+    min-height: 92px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+
+/* ============================================================
+   TABLET LANDSCAPE
+   ============================================================ */
+
+@media (max-width: 1180px) and (min-width: 761px) {
+  .bottomPanel {
+    left: 3%;
+    right: 3%;
+    bottom: 16px;
+
+    display: grid;
+    grid-template-columns:
+      130px
+      minmax(240px, 1fr)
+      105px
+      155px;
+
+    gap: 10px;
+    align-items: center;
+  }
+
+  .backButton {
+    height: 56px;
+    min-height: 56px;
+  }
+
+  .currentBox {
+    min-height: 82px;
+    padding: 9px 12px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .mascotBox {
+    height: 100px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .mascotBox img {
+    width: 96px;
+    max-width: 96px;
+    max-height: 100px;
+    margin: 0 auto;
+    object-fit: contain;
+    object-position: center bottom;
+  }
+
+  .totalBox {
+    min-height: 82px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+
+/* Prevent the mascot from visually dropping below the HUD. */
+@media (min-width: 761px) {
+  .bottomPanel .mascotBox {
+    overflow: visible;
+  }
+
+  .bottomPanel .currentBox,
+  .bottomPanel .totalBox {
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================
+   SUBMISSION WORKFLOW
+   User submits URL + one or more screenshots.
+   Admin approval is the only thing that completes the mission.
+   ============================================================ */
+
+.loadingScreen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 14px;
+  background: linear-gradient(180deg, #69c9df, #b8e58e);
+  color: #163622;
+  text-align: center;
+  font-family: 'Be Vietnam Pro', Arial, sans-serif;
+}
+
+.loadingScreen b {
+  font: 900 22px 'Press Start 2P', monospace;
+  color: #f9ffe9;
+  text-shadow: 3px 3px 0 #39733d;
+}
+
+.loadingScreen span {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.syncIndicator {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 260;
+  padding: 8px 12px;
+  border: 2px solid #315b39;
+  border-radius: 6px;
+  background: #163322;
+  color: #fff5d5;
+  font: 700 11px 'Be Vietnam Pro', Arial, sans-serif;
+  box-shadow: 3px 3px 0 #102117;
+}
+
+.submissionModal {
+  max-height: min(90vh, 760px);
+  overflow: auto;
+}
+
+.submissionState {
+  margin: 14px 0;
+  padding: 11px 12px;
+  border: 3px solid #315b39;
+  border-radius: 7px;
+  font-family: 'Be Vietnam Pro', Arial, sans-serif;
+  font-weight: 900;
+  line-height: 1.4;
+}
+
+.submissionState.success {
+  color: #245e2c;
+  background: #e7ffad;
+}
+
+.submissionState.pending {
+  color: #5a4b1d;
+  background: #fff0a6;
+}
+
+.submissionState.rejected {
+  color: #6f2c26;
+  background: #ffe2d8;
+}
+
+.submissionState.rejected p {
+  margin: 7px 0 4px;
+  font-size: 13px;
+}
+
+.submissionState.locked {
+  color: #4e4a3d;
+  background: #ece9d8;
+}
+
+.submissionForm {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+  text-align: left;
+}
+
+.submissionForm label {
+  display: grid;
+  gap: 6px;
+}
+
+.submissionForm label > span {
+  color: #53774a;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.submissionForm label em {
+  color: #827e6e;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.submissionForm input[type="url"],
+.submissionForm textarea {
+  width: 100%;
+  border: 2px solid #98704a;
+  border-radius: 6px;
+  padding: 10px 11px;
+  background: #fffdf0;
+  color: #2d372b;
+  font: 600 13px 'Be Vietnam Pro', Arial, sans-serif;
+  outline: none;
+}
+
+.submissionForm input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  border: 2px dashed #9e9a7e;
+  border-radius: 6px;
+  background: #f6f1d5;
+  color: #3f4537;
+  font: 600 12px 'Be Vietnam Pro', Arial, sans-serif;
+}
+
+.submissionForm input:focus,
+.submissionForm textarea:focus {
+  border-color: #4c8d49;
+}
+
+.evidenceList {
+  display: grid;
+  gap: 6px;
+  max-height: 175px;
+  overflow: auto;
+}
+
+.evidenceRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 150px 32px;
+  gap: 7px;
+  align-items: center;
+  padding: 7px;
+  border: 2px solid #d0c59f;
+  border-radius: 6px;
+  background: #fffbe9;
+}
+
+.evidenceName {
+  min-width: 0;
+}
+
+.evidenceName b,
+.evidenceName small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.evidenceName b {
+  font-size: 10px;
+  color: #3e4938;
+}
+
+.evidenceName small {
+  margin-top: 2px;
+  color: #857d69;
+  font-size: 9px;
+}
+
+.evidenceRow select {
+  min-width: 0;
+  width: 100%;
+  border: 2px solid #b8af8d;
+  border-radius: 5px;
+  padding: 6px 7px;
+  background: #fff;
+  color: #3d4539;
+  font: 700 10px 'Be Vietnam Pro', Arial, sans-serif;
+}
+
+.evidenceRow > button {
+  width: 30px;
+  height: 30px;
+  border: 2px solid #9b6247;
+  border-radius: 5px;
+  background: #ffe9dc;
+  color: #79372a;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.submitButton {
+  margin-top: 2px;
+  font-family: 'Be Vietnam Pro', Arial, sans-serif !important;
+  letter-spacing: 0 !important;
+}
+
+.latestSubmission {
+  display: grid;
+  gap: 4px;
+  margin-top: 14px;
+  padding-top: 11px;
+  border-top: 2px dashed #c5ba93;
+  text-align: left;
+}
+
+.latestSubmission small {
+  color: #6f7c61;
+  font-weight: 900;
+  font-size: 9px;
+}
+
+.latestSubmission span {
+  color: #3d4d3a;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.latestSubmission em {
+  color: #7d796a;
+  font-size: 9px;
+  font-style: normal;
+}
+
+@media (max-width: 600px) {
+  .submissionModal {
+    width: min(96vw, 480px);
+    padding: 20px 15px;
+  }
+
+  .evidenceRow {
+    grid-template-columns: minmax(0, 1fr) 112px 30px;
+  }
+
+  .evidenceRow select {
+    font-size: 8px;
+  }
+}
+
+@media (max-width: 390px) {
+  .evidenceRow {
+    grid-template-columns: minmax(0, 1fr) 94px 28px;
+  }
+
+  .evidenceRow select {
+    padding: 5px;
+    font-size: 7px;
+  }
+}
+
+/* ============================================================
+   AUTH SCREEN
+   ============================================================ */
+
+.loadingScreen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 12px;
+  background: linear-gradient(
+    180deg,
+    #65c7df 0%,
+    #8fd7cb 40%,
+    #c0e78f 100%
+  );
+  text-align: center;
+}
+
+.loadingScreen b {
+  color: #fffce7;
+  font: 900 22px 'Press Start 2P', monospace;
+  text-shadow:
+    3px 4px 0 #39733d,
+    5px 6px 0 #183b22;
+}
+
+.loadingScreen span {
+  color: #24552f;
+  font-weight: 900;
+}
+
+.authPage {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  padding: 32px 18px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #65c7df 0%,
+      #8fd7cb 38%,
+      #c0e78f 67%,
+      #72ba59 100%
+    );
+}
+
+.authSky {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.authSun {
+  position: absolute;
+  width: clamp(70px, 9vw, 120px);
+  aspect-ratio: 1;
+  right: 9%;
+  top: 7%;
+  border-radius: 50%;
+  background: #fff3ac;
+
+  box-shadow:
+    0 0 0 18px #fff5ba55,
+    0 0 80px #fff9bf66;
+}
+
+.authCloud {
+  position: absolute;
+  height: 30px;
+  background: #fffef2;
+  border-radius: 999px;
+  opacity: .85;
+  filter: drop-shadow(0 4px 0 #b2d7bf);
+}
+
+.authCloud::before,
+.authCloud::after {
+  content: '';
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+}
+
+.authCloud::before {
+  width: 55%;
+  height: 145%;
+  left: 14%;
+  bottom: 8%;
+}
+
+.authCloud::after {
+  width: 40%;
+  height: 110%;
+  right: 10%;
+  bottom: 3%;
+}
+
+.authCloud1 {
+  width: 170px;
+  left: 7%;
+  top: 14%;
+}
+
+.authCloud2 {
+  width: 145px;
+  left: 43%;
+  top: 9%;
+}
+
+.authCloud3 {
+  width: 150px;
+  right: 8%;
+  top: 25%;
+}
+
+.authHill {
+  position: absolute;
+  bottom: -13%;
+  width: 58%;
+  height: 36%;
+  border-radius: 50% 50% 0 0;
+  background: #69b45d;
+  opacity: .68;
+}
+
+.authHill1 {
+  left: -11%;
+}
+
+.authHill2 {
+  right: -11%;
+  background: #58a750;
+}
+
+.authShell {
+  position: relative;
+  z-index: 2;
+  width: min(1020px, 96vw);
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(360px, 460px);
+
+  align-items: center;
+  gap: clamp(30px, 5vw, 76px);
+}
+
+.authBrandBlock {
+  text-align: center;
+  padding: 22px 10px;
+}
+
+.authMiniLogo {
+  display: inline-block;
+  color: white;
+
+  font:
+    900 16px 'Press Start 2P',
+    monospace;
+
+  letter-spacing: -1px;
+
+  padding: 9px 13px;
+
+  background: #122b1c;
+
+  border: 4px solid #70bf55;
+
+  box-shadow: 6px 6px 0 #294b2c;
+}
+
+.authMiniLogo span {
+  color: #5ce36b;
+}
+
+.authWorld {
+  margin-top: 24px;
+  color: #2d6b3a;
+
+  font:
+    9px 'Press Start 2P',
+    monospace;
+
+  letter-spacing: 1px;
+}
+
+.authBrandBlock h1 {
+  margin: 18px 0 16px;
+
+  color: #fffce7;
+
+  font:
+    900 clamp(28px, 4.2vw, 54px)/1.08
+    'Press Start 2P',
+    monospace;
+
+  letter-spacing: -3px;
+
+  text-shadow:
+    5px 6px 0 #39733d,
+    9px 10px 0 #183b22;
+}
+
+.authBrandBlock h1 em {
+  display: block;
+  color: #ddff45;
+  font-style: normal;
+}
+
+.authBrandBlock p {
+  margin: 0 auto;
+  max-width: 500px;
+
+  color: #255731;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.45;
+}
+
+.authCard {
+  width: 100%;
+  padding: 25px;
+
+  background: #fff6d6;
+
+  border: 5px solid #724927;
+  border-radius: 14px;
+
+  box-shadow: 9px 10px 0 #2c4528;
+}
+
+.authCardHeader {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.authSeed {
+  flex: 0 0 56px;
+
+  width: 56px;
+  height: 56px;
+
+  display: grid;
+  place-items: center;
+
+  background: #e8f2c6;
+
+  border: 3px solid #79a64f;
+  border-radius: 10px;
+
+  font-size: 27px;
+}
+
+.authEyebrow {
+  color: #7a9b55;
+
+  font:
+    7px 'Press Start 2P',
+    monospace;
+}
+
+.authCard h2 {
+  margin: 7px 0 5px;
+
+  color: #4e7f36;
+
+  font:
+    900 20px
+    'Be Vietnam Pro',
+    sans-serif;
+}
+
+.authCardHeader p {
+  margin: 0;
+
+  color: #5a5948;
+
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.googleButton {
+  width: 100%;
+  min-height: 48px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 10px;
+
+  border: 3px solid #3e493f;
+  border-radius: 7px;
+
+  background: #fffdf8;
+  color: #2d352d;
+
+  font-size: 13px;
+  font-weight: 900;
+
+  box-shadow: 0 4px 0 #c8bfa4;
+}
+
+.googleButton:hover {
+  transform: translateY(-1px);
+}
+
+.googleButton:disabled {
+  opacity: .65;
+  cursor: wait;
+}
+
+.googleIcon {
+  width: 21px;
+  height: 21px;
+  flex: none;
+}
+
+.authDivider {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+  margin: 18px 0;
+
+  color: #948765;
+
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.authDivider::before,
+.authDivider::after {
+  content: '';
+  height: 2px;
+  flex: 1;
+  background: #d4c89f;
+}
+
+.authDivider span {
+  white-space: nowrap;
+}
+
+.authForm {
+  display: grid;
+  gap: 12px;
+}
+
+.authForm label {
+  display: grid;
+  gap: 6px;
+}
+
+.authForm label > span {
+  color: #6c7357;
+
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .5px;
+}
+
+.authForm input {
+  width: 100%;
+  min-height: 44px;
+
+  border: 3px solid #8f815f;
+  border-radius: 7px;
+
+  padding: 10px 12px;
+
+  outline: none;
+
+  color: #2d3b2e;
+  background: #fffdf4;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.authForm input:focus {
+  border-color: #4d8e4b;
+  box-shadow: 0 0 0 3px #dff3a4;
+}
+
+.authForm input:disabled {
+  opacity: .7;
+}
+
+.authSubmit {
+  width: 100%;
+  min-height: 50px;
+  margin-top: 3px;
+
+  border: 4px solid #173d22;
+  border-radius: 7px;
+
+  background: #2f713b;
+  color: white;
+
+  font-size: 12px;
+  font-weight: 900;
+
+  box-shadow: 0 5px 0 #1d4325;
+}
+
+.authSubmit:hover {
+  transform: translateY(-1px);
+}
+
+.authSubmit:disabled {
+  opacity: .68;
+  cursor: wait;
+}
+
+.authMessage {
+  padding: 10px 11px;
+
+  border-radius: 7px;
+
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.authMessage.error {
+  color: #8b3029;
+  background: #ffe7df;
+  border: 2px solid #d98e7c;
+}
+
+.authMessage.success {
+  color: #276b35;
+  background: #eaffc9;
+  border: 2px solid #88bb60;
+}
+
+.authLinks {
+  margin-top: 16px;
+
+  display: flex;
+  flex-wrap: wrap;
+
+  justify-content: center;
+  gap: 7px;
+  align-items: center;
+
+  color: #8a7954;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.authLinks button {
+  border: 0;
+  background: none;
+
+  padding: 0;
+
+  color: #397f3d;
+
+  font-weight: 900;
+
+  text-decoration: underline;
+
+  cursor: pointer;
+}
+
+.authFooter {
+  margin-top: 17px;
+  padding-top: 13px;
+
+  border-top: 2px dashed #d1c39b;
+
+  color: #968968;
+
+  text-align: center;
+
+  font-size: 7px;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.authDecor {
+  position: absolute;
+  z-index: 1;
+
+  color: #f6ff9d;
+
+  text-shadow: 2px 2px 0 #5f8e44;
+
+  pointer-events: none;
+}
+
+.authFlower {
+  font-size: clamp(24px, 4vw, 44px);
+}
+
+.authFlower1 {
+  left: 7%;
+  bottom: 13%;
+  transform: rotate(-12deg);
+}
+
+.authFlower2 {
+  right: 9%;
+  bottom: 9%;
+  transform: rotate(10deg);
+}
+
+.authStar {
+  font-size: 21px;
+}
+
+.authStar1 {
+  left: 35%;
+  top: 20%;
+}
+
+.authStar2 {
+  right: 32%;
+  top: 14%;
+}
+
+@media (max-width: 840px) {
+  .authPage {
+    padding: 24px 12px 32px;
+    overflow: auto;
+  }
+
+  .authShell {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    width: min(520px, 96vw);
+  }
+
+  .authBrandBlock {
+    padding: 0 8px;
+  }
+
+  .authWorld {
+    margin-top: 15px;
+  }
+
+  .authBrandBlock h1 {
+    margin: 13px 0 10px;
+    font-size: clamp(23px, 7vw, 38px);
+  }
+
+  .authBrandBlock p {
+    font-size: 11px;
+  }
+
+  .authCard {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .authPage {
+    place-items: start center;
+    padding-top: 18px;
+  }
+
+  .authMiniLogo {
+    font-size: 12px;
+    border-width: 3px;
+    box-shadow: 4px 4px 0 #294b2c;
+  }
+
+  .authCard {
+    border-width: 4px;
+    box-shadow: 6px 7px 0 #2c4528;
+    padding: 17px 14px;
+  }
+
+  .authCardHeader {
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .authSeed {
+    flex-basis: 46px;
+    width: 46px;
+    height: 46px;
+    font-size: 22px;
+  }
+
+  .authEyebrow {
+    font-size: 6px;
+  }
+
+  .authCard h2 {
+    font-size: 18px;
+  }
+
+  .authCardHeader p {
+    font-size: 10px;
+  }
+
+  .googleButton {
+    min-height: 46px;
+    font-size: 12px;
+  }
+
+  .authDecor {
+    display: none;
+  }
+}
+/* ===== REMOVE TEXT SHADOW FROM ALL MAIN TEXT ===== */
+
+.hero h1,
+.authBrandBlock h1,
+.mission h2,
+.brand,
+.topTitle small,
+.topTitle b,
+.eyebrow,
+.missionNo,
+.menuPanel h2 {
+  text-shadow: none !important;
+  -webkit-text-stroke: 0 !important;
+  filter: none !important;
+}
+.hero h1 {
+  color: #FFC928 !important;
+  text-shadow: none !important;
+}
+
+.hero h1 em {
+  color: #59D96A !important;
+}
+.authBrandBlock h1 {
+  color: #FFC928 !important;
+  text-shadow: none !important;
+}
+
+.authBrandBlock h1 em {
+  color: #59D96A !important;
+}
+/* ===== TITLE COLORS ===== */
+
+.hero h1 {
+  color: #FFC928 !important;
+  text-shadow: none !important;
+}
+
+.hero h1 em {
+  color: #2bffb5 !important;
+  font-style: normal;
+}
+.authBrandBlock h1 {
+  color: #FFC928 !important;
+  text-shadow: none !important;
+}
+
+.authBrandBlock h1 em {
+  color: #2bffb5 !important;
+  font-style: normal;
+}
+.musicButton {
+  width: auto !important;
+  min-width: 72px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  padding: 0 10px;
+
+  color: #fff5cf;
+  background: #15331f;
+  border: 2px solid #3c6542;
+}
+
+.musicButton span {
+  font-size: 17px;
+  line-height: 1;
+}
+
+.musicButton b {
+  font:
+    8px 'Press Start 2P',
+    monospace;
+  color: #dfffa0;
+}
+
+.musicButton:hover {
+  background: #1d4027;
+}
+
+@media (max-width: 760px) {
+  .musicButton {
+    min-width: 58px;
+    padding: 0 7px;
+    gap: 4px;
+  }
+
+  .musicButton span {
+    font-size: 15px;
+  }
+
+  .musicButton b {
+    font-size: 6px;
+  }
+}
+
+/* ============================================================
+   QUEST MODAL / SUBMISSION UI
+   Based on the uploaded game stylesheet.
+   These rules intentionally keep the existing garden style and
+   give the mission + bonus forms a softer game-card appearance.
+   ============================================================ */
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: clamp(10px, 2vw, 24px);
+  background: rgba(8, 21, 12, .72);
+  backdrop-filter: blur(4px);
+}
+
+.modal {
+  position: relative;
+  width: min(540px, 96vw);
+  max-height: min(92vh, 900px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 22px;
+  color: #294332;
+  background:
+    radial-gradient(circle at 15% 5%, rgba(255,255,255,.75), transparent 28%),
+    linear-gradient(180deg, #fff9df 0%, #fff3cf 100%);
+  border: 3px solid #3f6947;
+  border-radius: 24px;
+  box-shadow: 0 7px 0 #203c25, 0 22px 50px rgba(12, 28, 15, .32);
+  text-align: left;
+  scrollbar-width: thin;
+  scrollbar-color: #80ad6c #edf2d6;
+}
+
+.modal::-webkit-scrollbar { width: 8px; }
+.modal::-webkit-scrollbar-track { background: #edf2d6; border-radius: 99px; }
+.modal::-webkit-scrollbar-thumb { background: #80ad6c; border-radius: 99px; }
+
+.modalClose {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: #36563d;
+  background: #eef5d7;
+  border: 2px solid #789a6f;
+  border-radius: 50%;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+  transition: transform .15s ease, background .15s ease;
+}
+
+.modalClose:hover { transform: rotate(8deg) scale(1.04); background: #e4efc5; }
+
+.modal > .missionLogo,
+.modal > .logoFallback {
+  width: 72px;
+  height: 72px;
+  margin: 2px auto 9px;
+  display: grid;
+  place-items: center;
+}
+
+.modal > small {
+  display: block;
+  margin-top: 4px;
+  color: #679052;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.modal h2 {
+  margin: 4px 0 8px;
+  color: #365f3c;
+  font: 900 24px/1.15 'Press Start 2P', monospace;
+  text-align: center;
+  letter-spacing: -.5px;
+}
+
+.modal h3 {
+  margin: 0;
+  color: #315a37;
+  font-size: 18px;
+  line-height: 1.2;
+  font-weight: 900;
+}
+
+.modal p {
+  margin: 7px 0;
+  color: #5e6d5b;
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+.modalRule {
+  margin: 12px 0;
+  padding: 11px 12px;
+  color: #47683f;
+  background: #edf6d8;
+  border: 1px solid #cadcae;
+  border-radius: 14px;
+  font-size: 11px;
+  line-height: 1.45;
+  font-weight: 800;
+}
+
+.modalProgress {
+  margin: 14px 0 12px;
+  padding: 11px 12px;
+  background: rgba(255,255,255,.62);
+  border: 1px solid #dbe4c9;
+  border-radius: 14px;
+}
+
+.modalProgress > b { font-size: 28px; color: #356b3e; }
+.modalProgress > span { color: #78936a; font-size: 12px; font-weight: 900; }
+.modalProgress > i {
+  display: block;
+  height: 12px;
+  margin-top: 9px;
+  overflow: hidden;
+  background: #d7dfc6;
+  border: 2px solid #bbcaac;
+  border-radius: 999px;
+}
+.modalProgress u {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #76bf57, #c8ea53);
+  border-radius: inherit;
+  text-decoration: none;
+  transition: width .3s ease;
+}
+
+.submissionForm {
+  display: grid;
+  gap: 11px;
+}
+
+.submissionForm label,
+.bonusFieldGrid label {
+  display: grid;
+  gap: 5px;
+}
+
+.submissionForm label > span,
+.bonusFieldGrid label > span {
+  color: #547548;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .04em;
+}
+
+.submissionForm input[type="url"],
+.submissionForm input[type="text"],
+.submissionForm input[type="number"],
+.submissionForm input[type="date"],
+.submissionForm textarea,
+.bonusFieldGrid input,
+.bonusEvidenceCard > input[type="url"] {
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 12px;
+  color: #2e4933;
+  background: #fffef8;
+  border: 2px solid #c7d6b7;
+  border-radius: 12px;
+  outline: none;
+  font: 700 12px/1.3 'Be Vietnam Pro', Arial, sans-serif;
+  transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+
+.submissionForm input:focus,
+.submissionForm textarea:focus,
+.bonusFieldGrid input:focus,
+.bonusEvidenceCard > input[type="url"]:focus {
+  border-color: #6eaa60;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(120, 189, 92, .14);
+}
+
+.submissionForm textarea { min-height: 90px; resize: vertical; }
+
+.playButton,
+.submitButton {
+  min-height: 46px;
+  width: 100%;
+  margin-top: 6px;
+  padding: 12px 16px;
+  color: #fffef2;
+  background: linear-gradient(180deg, #43a04f 0%, #2f783c 100%);
+  border: 0;
+  border-bottom: 4px solid #1d5529;
+  border-radius: 14px;
+  box-shadow: 0 3px 0 #9dbe6d;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: .02em;
+  transition: transform .12s ease, filter .12s ease;
+}
+
+.playButton:hover:not(:disabled),
+.submitButton:hover:not(:disabled) { filter: brightness(1.04); transform: translateY(-1px); }
+.playButton:active:not(:disabled),
+.submitButton:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
+.playButton:disabled { opacity: .6; cursor: not-allowed; }
+
+/* ===== BONUS QUEST ===== */
+.bonusFormPanel {
+  margin-top: 10px;
+  padding: 13px;
+  background: linear-gradient(180deg, #f4f8dc 0%, #edf5d3 100%);
+  border: 2px solid #a9c889;
+  border-radius: 20px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.8);
+}
+
+.bonusFormHeader {
+  display: grid;
+  grid-template-columns: 46px minmax(0,1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 8px 4px 12px;
+  border-bottom: 1px dashed #aec390;
+}
+
+.bonusFormIcon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  background: #fff8d0;
+  border: 2px solid #dfc55c;
+  border-radius: 14px;
+  font-size: 23px;
+  box-shadow: 0 3px 0 #c5a94a;
+}
+
+.bonusFormKicker,
+.bonusQuestBadge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 3px 8px;
+  color: #557943;
+  background: #e1efc4;
+  border: 1px solid #b7d092;
+  border-radius: 999px;
+  font-size: 8px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: .06em;
+}
+
+.bonusFormHeader h3 {
+  margin: 6px 0 2px;
+  color: #31583a;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.bonusFormHeader p {
+  margin: 0;
+  color: #69805d;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.bonusSection { margin-top: 12px; }
+
+.bonusSectionTop,
+.bonusItemsHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 9px;
+  margin-bottom: 9px;
+}
+
+.bonusQuestTop { align-items: center; }
+.bonusQuestLead { min-width: 0; display: grid; gap: 5px; }
+.bonusQuestLead > b,
+.bonusItemsHeader b {
+  color: #35583d;
+  font-size: 11px;
+  font-weight: 900;
+}
+.bonusQuestLead > small,
+.bonusItemsHeader small {
+  color: #718368;
+  font-size: 9px;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+.softActionButton,
+.addEvidenceButton {
+  flex: 0 0 auto;
+  min-height: 34px;
+  padding: 7px 10px;
+  color: #3e653c;
+  background: #fffdf0;
+  border: 2px solid #90ad7d;
+  border-radius: 11px;
+  font-size: 9px;
+  font-weight: 900;
+  white-space: nowrap;
+  box-shadow: 0 2px 0 #c1d09f;
+}
+
+.softActionButton:hover,
+.addEvidenceButton:hover { background: #f7f8dc; transform: translateY(-1px); }
+
+.bonusItemList { display: grid; gap: 9px; }
+
+.bonusEvidenceCard {
+  padding: 11px;
+  background: rgba(255,255,255,.74);
+  border: 1px solid #d2dfc0;
+  border-radius: 15px;
+  box-shadow: 0 2px 0 rgba(102, 135, 83, .12);
+}
+
+.bonusEvidenceCardGame {
+  background: #fffdf0;
+  border: 2px solid #d5dfb9;
+  border-radius: 16px;
+}
+
+.bonusEvidenceTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.bonusEvidenceTitleRow > div {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.bonusEvidenceTitleRow b {
+  color: #3a5b3e;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.bonusStepNo {
+  width: 28px;
+  height: 28px;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  color: #6e632f;
+  background: #ffe77e;
+  border: 2px solid #d3b64f;
+  border-radius: 9px;
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.removeEvidenceButton {
+  padding: 5px 7px;
+  color: #8b544a;
+  background: #fff4ef;
+  border: 1px solid #d7aa9e;
+  border-radius: 9px;
+  font-size: 8px;
+  font-weight: 900;
+}
+.removeEvidenceButton:hover { background: #ffe9e1; }
+
+.bonusChoicePanel {
+  margin-top: 12px;
+  padding: 14px;
+  background: linear-gradient(180deg, #fffdf1, #f6f7dc);
+  border: 2px solid #d8d99e;
+  border-radius: 18px;
+}
+
+.bonusChoiceMessage {
+  margin-bottom: 10px;
+  color: #506148;
+  font-size: 11px;
+  line-height: 1.5;
+  font-weight: 800;
+}
+
+.bonusChoiceActions,
+.bonusFormActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.bonusChoiceYes,
+.bonusChoiceNo,
+.softBackButton {
+  min-height: 42px;
+  padding: 9px 10px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.bonusChoiceYes {
+  color: #fffef3;
+  background: #4a9a4b;
+  border: 2px solid #2e6f35;
+  box-shadow: 0 3px 0 #245428;
+}
+
+.bonusChoiceNo,
+.softBackButton {
+  color: #4f5f4a;
+  background: #fffef6;
+  border: 2px solid #abbca0;
+  box-shadow: 0 3px 0 #d1d7c8;
+}
+
+.bonusChoiceYes:hover,
+.bonusChoiceNo:hover,
+.softBackButton:hover { transform: translateY(-1px); }
+
+/* ===== GAME FILE PICKER ===== */
+.proofUploadBox {
+  display: grid;
+  gap: 7px;
+  padding: 9px;
+  background: #fffdf3;
+  border: 1px dashed #b8c99a;
+  border-radius: 12px;
+}
+
+.proofUploadTitle {
+  display: grid;
+  gap: 2px;
+}
+.proofUploadTitle span {
+  color: #446642;
+  font-size: 9px;
+  font-weight: 900;
+}
+.proofUploadTitle small {
+  color: #819177;
+  font-size: 8px;
+  line-height: 1.35;
+}
+
+.gameFilePicker {
+  min-height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 7px 9px;
+  color: #48663f;
+  background: #f2f3d9;
+  border: 2px dashed #aebc88;
+  border-radius: 11px;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease;
+}
+.gameFilePicker:hover { background: #ebf0cf; border-color: #8ea869; }
+.gameFilePicker input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.gameFilePickerButton {
+  padding: 6px 9px;
+  color: white;
+  background: #4b8e4a;
+  border: 0;
+  border-radius: 8px;
+  font-size: 8px;
+  font-weight: 900;
+}
+.gameFilePickerHint {
+  color: #7b896d;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.selectedProofFile {
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 9px;
+  color: #3f6240;
+  background: #ecf5da;
+  border: 1px solid #b7cd9d;
+  border-radius: 9px;
+  font-size: 9px;
+  font-weight: 800;
+}
+.selectedProofFile span { min-width: 0; overflow-wrap: anywhere; }
+.selectedProofFile button {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  border: 1px solid #caa4a0;
+  border-radius: 8px;
+  color: #8e4e49;
+  background: #fff3ef;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.bonusItunesSection .bonusQuestAction { align-self: center; }
+.bonusQuestList { margin-top: 2px; }
+.bonusProofUploadGame { margin-top: 2px; }
+
+.submissionState {
+  margin: 10px 0;
+  padding: 10px 11px;
+  border-radius: 12px;
+  font-size: 10px;
+  line-height: 1.45;
+  font-weight: 900;
+}
+
+.submissionState.locked { color: #705d35; background: #fff0bf; border: 1px solid #e3cd81; }
+.submissionState.success { color: #3f6c3e; background: #ecf6d3; border: 1px solid #bbd69d; }
+.submissionState.pending { color: #756332; background: #fff4c9; border: 1px solid #ead38d; }
+.submissionState.rejected { color: #8a5148; background: #fff0eb; border: 1px solid #dfb1a5; }
+
+/* Native file inputs used outside the dedicated game picker. */
+.proofUploadBox > input[type="file"],
+.submissionForm input[type="file"] {
+  width: 100%;
+  min-height: 42px;
+  padding: 7px;
+  color: #58654f;
+  background: #f4f1da;
+  border: 1px dashed #b6b98c;
+  border-radius: 10px;
+  font-size: 10px;
+}
+
+@media (max-width: 760px) {
+  .modalOverlay { padding: 8px; align-items: center; }
+  .modal {
+    width: min(540px, 97vw);
+    max-height: 94vh;
+    padding: 17px 14px 16px;
+    border-radius: 20px;
+  }
+  .modal > .missionLogo,
+  .modal > .logoFallback { width: 58px; height: 58px; margin-bottom: 7px; }
+  .modal h2 { font-size: 18px; }
+  .modal p { font-size: 11px; }
+  .modalRule { font-size: 10px; }
+  .bonusFormPanel { padding: 10px; border-radius: 17px; }
+  .bonusSectionTop,
+  .bonusItemsHeader { align-items: stretch; flex-direction: column; }
+  .softActionButton,
+  .addEvidenceButton { width: 100%; }
+  .bonusChoiceActions,
+  .bonusFormActions { grid-template-columns: 1fr; }
+  .bonusFormHeader { grid-template-columns: 40px minmax(0,1fr); }
+  .bonusFormIcon { width: 40px; height: 40px; font-size: 20px; }
+}
+
+
+
+/* ============================================================
+   SOFT GAME TYPOGRAPHY + POLISHED IMAGE PICKER
+   ============================================================ */
+:root {
+  --ui-font: 'Nunito', 'Be Vietnam Pro', Arial, sans-serif;
+  --hand-font: 'Patrick Hand', 'Nunito', 'Be Vietnam Pro', sans-serif;
+}
+
+html, body, #root,
+button, input, textarea, select {
+  font-family: var(--ui-font);
+}
+
+/* Keep the main game title/logo pixelated, but make the actual UI
+   softer and more playful/readable. */
+.brand,
+.topTitle small,
+.topTitle b,
+.eyebrow,
+.hero h1,
+.missionNo {
+  font-family: 'Press Start 2P', monospace !important;
+}
+
+/* Mission cards + modal + forms: handwritten/playful feel. */
+.missionAction,
+.mission h2,
+.mission p,
+.cardBottom,
+.currentBox,
+.finishBanner,
+.modal,
+.modal h2,
+.modal h3,
+.modal p,
+.modalRule,
+.playButton,
+.submitButton,
+.submissionForm,
+.submissionForm label,
+.submissionForm input,
+.submissionForm textarea,
+.bonusFormPanel,
+.bonusFormHeader,
+.bonusFormHeader h3,
+.bonusFormHeader p,
+.bonusFormKicker,
+.bonusQuestBadge,
+.bonusQuestLead,
+.bonusItemsHeader,
+.bonusEvidenceCard,
+.bonusEvidenceTitleRow,
+.bonusChoicePanel,
+.bonusChoiceMessage,
+.bonusChoiceYes,
+.bonusChoiceNo,
+.softBackButton,
+.softActionButton,
+.addEvidenceButton,
+.proofUploadBox,
+.proofUploadTitle,
+.gameFilePicker,
+.gameFilePickerButton,
+.gameFilePickerHint,
+.selectedProofFile,
+.removeEvidenceButton,
+.bonusFieldGrid,
+.bonusFieldGrid label,
+.bonusFieldGrid input,
+.toast {
+  font-family: var(--hand-font) !important;
+  letter-spacing: normal;
+}
+
+/* Slightly larger/airier UI typography so Vietnamese text feels soft,
+   not cramped or bureaucratic. */
+.modal h2,
+.bonusFormHeader h3 {
+  font-size: 1.35em;
+  line-height: 1.05;
+  font-weight: 400;
+}
+
+.modal p,
+.modalRule,
+.bonusFormHeader p,
+.bonusQuestLead > small,
+.bonusItemsHeader small,
+.bonusChoiceMessage,
+.submissionState {
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.bonusQuestLead > b,
+.bonusItemsHeader b,
+.bonusEvidenceTitleRow b,
+.proofUploadTitle span,
+.proofUploadTitle small,
+.bonusFieldGrid label > span {
+  font-family: var(--ui-font) !important;
+  font-weight: 800;
+}
+
+/* Bonus panel: less like a form, more like a game quest. */
+.bonusFormPanel {
+  border-radius: 22px;
+  padding: 14px;
+}
+
+.bonusEvidenceCardGame {
+  border-radius: 18px;
+  padding: 13px;
+}
+
+.bonusEvidenceTitleRowGame {
+  margin-bottom: 10px;
+}
+
+.bonusStepNo {
+  border-radius: 50%;
+  font-family: var(--hand-font) !important;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Image upload: turn it into a centered, friendly game button. */
+.gameFilePicker {
+  min-height: 58px;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  padding: 9px 12px;
+  text-align: center;
+  color: #fffdf4 !important;
+  background: linear-gradient(180deg, #579c56 0%, #438848 100%);
+  border: 2px dashed #aeca7d;
+  border-radius: 14px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 3px 0 rgba(55,104,48,.18);
+}
+
+.gameFilePicker:hover {
+  background: linear-gradient(180deg, #63aa61 0%, #4a904d 100%);
+  border-color: #d6e7a2;
+  transform: translateY(-1px);
+}
+
+.gameFilePicker:active {
+  transform: translateY(1px);
+}
+
+.gameFilePickerButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 112px;
+  min-height: 31px;
+  margin: 0 auto;
+  padding: 5px 15px;
+  color: #fffdf5 !important;
+  background: rgba(255,255,255,.14);
+  border: 1px solid rgba(255,255,255,.45);
+  border-radius: 999px;
+  font-family: var(--ui-font) !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  line-height: 1;
+  text-align: center;
+  text-shadow: 0 1px 1px rgba(0,0,0,.15);
+}
+
+.gameFilePickerHint {
+  display: block;
+  margin: 0 auto;
+  color: rgba(255,255,255,.88) !important;
+  font-family: var(--ui-font) !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  line-height: 1.2;
+  text-align: center;
+}
+
+/* Selected file chip remains soft and readable. */
+.selectedProofFileGame {
+  min-height: 42px;
+  border-radius: 12px;
+  font-family: var(--ui-font) !important;
+  font-weight: 700;
+}
+
+.selectedProofFileGame button {
+  font-family: var(--ui-font) !important;
+  font-weight: 900;
+}
+
+/* Buttons should feel like game controls, not browser controls. */
+.softActionButton,
+.addEvidenceButton,
+.bonusChoiceYes,
+.bonusChoiceNo,
+.softBackButton,
+.playButton,
+.submitButton {
+  font-family: var(--ui-font) !important;
+  font-weight: 900;
+}
+
+.softActionButton,
+.addEvidenceButton {
+  min-height: 38px;
+  border-radius: 999px;
+  padding-inline: 14px;
+}
+
+.playButton,
+.submitButton {
+  font-family: var(--hand-font) !important;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: .01em;
+}
+
+@media (max-width: 760px) {
+  .modal h2,
+  .bonusFormHeader h3 {
+    font-size: 1.45em;
+  }
+
+  .gameFilePicker {
+    min-height: 60px;
+  }
+
+  .gameFilePickerButton {
+    min-width: 118px;
+  }
+}
