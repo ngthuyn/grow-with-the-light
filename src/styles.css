@@ -3684,3 +3684,118 @@ button, input, textarea, select {
     min-width: 118px;
   }
 }
+
+
+/* ============================================================
+   FINAL MOBILE TOPBAR FIX
+   The previous mobile rules only reduced sizes; they did not
+   constrain the flex row's min-content width. This version
+   makes the top bar physically fit the viewport.
+   ============================================================ */
+@media (max-width: 760px) {
+  html,
+  body,
+  #root {
+    width: 100%;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .topbar {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 56px !important;
+    box-sizing: border-box !important;
+    padding: 0 6px !important;
+    gap: 4px !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .brand {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    max-width: 86px !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: 10px !important;
+    letter-spacing: -1px !important;
+    white-space: nowrap !important;
+  }
+
+  .topTitle {
+    display: none !important;
+  }
+
+  .topActions {
+    flex: 1 1 auto !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    justify-content: flex-end !important;
+    gap: 2px !important;
+    overflow: hidden !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .topActions .score {
+    flex: 0 1 auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    font-size: 8px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  .topActions .score i {
+    margin-right: 1px !important;
+  }
+
+  .topActions .score small {
+    font-size: 6px !important;
+    margin-left: 1px !important;
+  }
+
+  .topActions > div {
+    flex: 0 0 auto !important;
+    min-width: 0 !important;
+  }
+
+  .topActions > button,
+  .topActions > div > button:not(.musicButton) {
+    flex: 0 0 30px !important;
+    width: 30px !important;
+    min-width: 30px !important;
+    max-width: 30px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    max-height: 30px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: 16px !important;
+    box-sizing: border-box !important;
+  }
+
+  .topActions .musicButton {
+    flex: 0 0 48px !important;
+    width: 48px !important;
+    min-width: 48px !important;
+    max-width: 48px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    padding: 0 4px !important;
+    gap: 2px !important;
+  }
+
+  .topActions .musicButton span {
+    font-size: 13px !important;
+  }
+
+  .topActions .musicButton b {
+    font-size: 5px !important;
+  }
+}

@@ -9,9 +9,20 @@ import { supabase } from './lib/supabase';
 
 const MISSIONS = [
   {
+    id: 'youtube',
+    name: 'YOUTUBE',
+    action: 'GIEO MẦM',
+    target: 3,
+    points: 10,
+    logo: '/assets/youtube.png',
+    color: '#ff5757',
+    rule: 'Mỗi tài khoản cần: 1 ảnh đã subscribe kênh lighT_, 1 ảnh Like và 1 ảnh Comment.',
+    hint: 'Mỗi tài khoản cần 3 ảnh: đã subscribe kênh lighT_, Like và Comment.'
+  },
+  {
     id: 'itunes',
     name: 'iTUNES',
-    action: 'GIEO MẦM',
+    action: 'TƯỚI MÁT',
     target: 3,
     points: 10,
     logo: '/assets/itunes.png',
@@ -20,17 +31,6 @@ const MISSIONS = [
     hint: 'Mỗi lượt cần ảnh minh chứng rõ ràng. Lấy code từ web hoặc chụp màn hình giao dịch mua có Account ID.',
     resourceUrl: 'https://light-itunes-code.vercel.app/',
     proofNote: 'Không cần nhập email. Nếu tự mua, chỉ cần Account ID hiển thị trên ảnh.'
-  },
-  {
-    id: 'youtube',
-    name: 'YOUTUBE',
-    action: 'TƯỚI MÁT',
-    target: 3,
-    points: 10,
-    logo: '/assets/youtube.png',
-    color: '#ff5757',
-    rule: 'Mỗi tài khoản cần: 1 ảnh đã subscribe kênh lighT_, 1 ảnh Like và 1 ảnh Comment.',
-    hint: 'Mỗi tài khoản cần 3 ảnh: đã subscribe kênh lighT_, Like và Comment.'
   },
   {
     id: 'facebook',
@@ -935,6 +935,7 @@ function AuthScreen() {
   );
 }
 
+
 /* =========================================================
    APP
    ========================================================= */
@@ -1109,6 +1110,7 @@ function App() {
         }
 
         setAuthUser(nextUser);
+
       }
     );
 
@@ -1311,11 +1313,7 @@ function App() {
 
       const mergedNotifications = (notificationsRes.data || []).map(n => ({
         ...n,
-        read_at: n.read_at || (
-          locallyReadSet.has(n.id)
-            ? new Date().toISOString()
-            : null
-        )
+        read_at: n.read_at || null
       }));
 
       // Keep local read markers only for notifications we still know about.
@@ -1623,15 +1621,13 @@ function App() {
       console.warn('local notification read state:', error);
     }
 
-    // 3) Persist permanently in Supabase. This is what makes the read state
-    // survive logout/login and page reloads.
+    // 3) Persist the read state on the server.
+    // Do not rely on localStorage for cross-device state.
     if (!authUser?.id) return;
 
-    const { error } = await supabase
-      .from('user_notifications')
-      .update({ read_at: now })
-      .eq('id', id)
-      .eq('user_id', authUser.id);
+    const { error } = await supabase.rpc('mark_user_notification_read_v2', {
+      p_notification_id: id
+    });
 
     if (error) {
       console.error('mark notification read:', error);
@@ -1724,6 +1720,7 @@ function App() {
 
   return (
     <div className="app">
+
       <header className="topbar">
         <button className="brand" onClick={() => setMenu(false)}>
           MINI<span>GAME</span>
@@ -3192,8 +3189,8 @@ function LeaderboardModal({ onClose }) {
                   alignItems: 'center',
                   padding: 12,
                   borderRadius: 14,
-                  border: row.rank <= 3 ? '2px solid #efc84f' : '1px solid #d7ddd3',
-                  background: row.rank <= 3 ? '#fff7cf' : '#fff'
+                  border: '1px solid #d5d9cf',
+                  background: '#fffdf7'
                 }}
               >
                 <b>#{row.rank}</b>
@@ -4399,10 +4396,8 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
                     alignItems: 'center',
                     padding: 12,
                     borderRadius: 14,
-                    background: row.rank <= 3 ? '#fff8d8' : '#fffdf7',
-                    border: row.rank <= 3
-                      ? '2px solid #ecc64b'
-                      : '1px solid #d5d9cf'
+                    background: '#fffdf7',
+                    border: '1px solid #d5d9cf'
                   }}
                 >
                   <b>#{row.rank}</b>
@@ -6655,7 +6650,7 @@ function MissionModal({
             }}
           >
             <img
-              src="/assets/statsfm.png"
+              src="/assets/lastfm-guide.png"
               alt="Hướng dẫn minh chứng lượt nghe bằng stats.fm"
               style={{
                 display: 'block',
