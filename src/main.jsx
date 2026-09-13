@@ -653,7 +653,7 @@ function AuthScreen() {
           <h1>
             GROW
             <em>WITH THE lighT</em>
-          </h1>
+          </h1>{/\+\d+/.test(selectedNotification.message || '') ? ` ${selectedNotification.message.match(/\+\d+[^.]*\.?/)?.[0] || ''}` : ''}
 
           <p>
             Grow a little · Shine a little · Grow with the lighT
@@ -2617,7 +2617,9 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
                     }}
                   >
                     {selectedNotification.type === 'mission_approved'
-                      ? `${selectedNotification.mission?.mission_type === 'bonus' ? 'Bonus' : 'Nhiệm vụ'} ${selectedNotification.mission?.name || 'này'} đã được Admin duyệt.${/\+\d+/.test(selectedNotification.message || '') ? ` ${selectedNotification.message.match(/\+\d+[^.]*\.?/)?.[0] || ''}` : ''}`.trim()
+                      ? `${selectedNotification.mission?.mission_type === 'bonus' ? 'Bonus' : 'Nhiệm vụ'} ${selectedNotification.mission?.name || 'này'} đã được Admin duyệt.${/\+\d+(?:\.\d+)?/.test(selectedNotification.message || '')
+  ? ` ${selectedNotification.message.match(/\+\d+(?:\.\d+)?[^.]*\.?/)?.[0] || ''}`
+  : ''}`.trim()
                       : selectedNotification.type === 'mission_rejected'
                         ? `${selectedNotification.mission?.mission_type === 'bonus' ? 'Bonus' : 'Nhiệm vụ'} ${selectedNotification.mission?.name || 'này'} đã bị Admin từ chối.\n\n${selectedNotification.message || 'Vui lòng kiểm tra lại minh chứng và submit lại 1 lần duy nhất.'}`
                         : selectedNotification.message}
