@@ -653,7 +653,7 @@ function AuthScreen() {
           <h1>
             GROW
             <em>WITH THE lighT</em>
-          </h1>{/\+\d+/.test(selectedNotification.message || '') ? ` ${selectedNotification.message.match(/\+\d+[^.]*\.?/)?.[0] || ''}` : ''}
+          </h1>
 
           <p>
             Grow a little · Shine a little · Grow with the lighT
@@ -2053,10 +2053,9 @@ function App() {
       return;
     }
 
-    setAuthUser(null);
-    setSelected(null);
-    setMenu(false);
-    setAdminOpen(false);
+    // Logout xong thì quay về URL sạch, xoá toàn bộ OAuth error/state
+    // còn sót trên address bar và tránh render trung gian với session cũ.
+    window.location.replace(window.location.origin);
   };
 
   const advanceToNextDay = async () => {
