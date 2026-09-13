@@ -11,7 +11,7 @@ const MISSIONS = [
   {
     id: 'youtube',
     name: 'YOUTUBE',
-    action: 'GIEO MẦM',
+    action: "GIEO MẦM",
     target: 3,
     points: 10,
     logo: '/assets/youtube.png',
@@ -139,7 +139,7 @@ const BONUS_MISSIONS = [
     max_points: 10,
     logo: '/assets/youtube.png',
     color: '#ff5757',
-    rule: '1 Subcribe + 1 Like + 1 Comment = +2 điểm · tối đa 10 điểm',
+    rule: '1 Subscribe + 1 Like + 1 Comment = +2 điểm · tối đa 10 điểm',
     hint: 'Mỗi gói Like + Comment hợp lệ = +2 điểm.',
     mission_type: 'bonus'
   }
@@ -147,16 +147,34 @@ const BONUS_MISSIONS = [
 
 const ALL_MISSIONS = [...MISSIONS, ...BONUS_MISSIONS];
 
+/* =========================================================
+   IMAGE ASSETS — thay ảnh tại /public/assets/ theo đúng tên này
+   ========================================================= */
+const GROWTH_IMAGE_ASSETS = {
+  1: '/assets/plant-seed.png',        // hạt
+  2: '/assets/plant-sprout.png',      // mầm
+  3: '/assets/plant-young.png',       // chồi + lá
+  4: '/assets/plant-bud.png',         // cây cao + nụ
+  5: '/assets/plant-bloom.png',       // hoa hướng dương nở
+};
+
+const SKY_IMAGE_ASSETS = {
+  sun: '/assets/sun.png',
+  cloud1: '/assets/cloud-1.png',
+  cloud2: '/assets/cloud-2.png',
+};
+
+const TINIE_IMAGE_ASSET = '/assets/tinie.png';
+
+
+// Round 2 là round BONUS riêng. Progress/target của bonus KHÔNG cộng với Round 1.
 
 const initialCounts = Object.fromEntries(
   MISSIONS.map(m => [m.id, 0])
 );
 
 const initialStatuses = Object.fromEntries(
-  MISSIONS.map((m, i) => [
-    m.id,
-    i === 0 ? 'in_progress' : 'locked'
-  ])
+  MISSIONS.map(m => [m.id, 'in_progress'])
 );
 
 const EVIDENCE_TYPES = [
@@ -585,7 +603,7 @@ function AuthScreen() {
           ? 'ĐỔI MẬT KHẨU'
           : mode === 'admin-login'
             ? 'ADMIN LOGIN'
-            : 'CHÀO MỪNG BẠN';
+            : 'CHÀO MỪNG tinie iu';
 
   const subtitle =
     mode === 'signup'
@@ -595,19 +613,17 @@ function AuthScreen() {
         : mode === 'update-password'
           ? 'Đặt mật khẩu mới cho tài khoản của bạn.'
           : mode === 'admin-login'
-            ? 'Khu vực quản trị · chỉ dành cho admin.'
-            : 'Đăng nhập để tiếp tục hành trình cùng tinie.';
+            ? 'Khu vực chỉ dành cho admin.'
+            : 'Đăng nhập để tiếp tục hành trình nhé.';
 
   return (
     <div className="authPage">
 
       <div className="authSky">
-        <span className="authSun" />
-
-        <span className="authCloud authCloud1" />
-        <span className="authCloud authCloud2" />
-        <span className="authCloud authCloud3" />
-
+        <img className="authImage authSunImage" src="/assets/sun.png" alt="" aria-hidden="true" draggable="false" />
+        <img className="authImage authCloudImage authCloudImage1" src="/assets/cloud-1.png" alt="" aria-hidden="true" draggable="false" />
+        <img className="authImage authCloudImage authCloudImage2" src="/assets/cloud-2.png" alt="" aria-hidden="true" draggable="false" />
+       { /*<img className="authImage authCloudImage authCloudImage3" src="/assets/cloud-3.png" alt="" aria-hidden="true" draggable="false" />*/}
         <span className="authHill authHill1" />
         <span className="authHill authHill2" />
       </div>
@@ -620,13 +636,7 @@ function AuthScreen() {
         ✿
       </div>
 
-      <div className="authDecor authStar authStar1">
-        ✦
-      </div>
-
-      <div className="authDecor authStar authStar2">
-        ✧
-      </div>
+     
 
       <main className="authShell">
 
@@ -637,7 +647,7 @@ function AuthScreen() {
           </div>
 
           <div className="authWorld">
-            WORLD 01
+            OUR WORLD
           </div>
 
           <h1>
@@ -646,8 +656,7 @@ function AuthScreen() {
           </h1>
 
           <p>
-            Chăm một bông hoa · Gieo điều tốt đẹp ·
-            Cùng nhau tỏa sáng
+            Grow a little · Shine a little · Grow with the lighT
           </p>
 
         </section>
@@ -657,7 +666,7 @@ function AuthScreen() {
           <div className="authCardHeader">
 
             <div className="authSeed">
-              🌱
+              <img src="/assets/icon_huongduong.png" alt="" aria-hidden="true" draggable="false" />
             </div>
 
             <div>
@@ -665,13 +674,30 @@ function AuthScreen() {
                 YOUR JOURNEY
               </span>
 
-              <h2>
-                {title}
-              </h2>
-
-              <p>
-                {subtitle}
-              </p>
+              <div className="authTitleRow">
+                <h2>{title}</h2>
+                {mode === 'login' && (
+                  <button
+                    type="button"
+                    className="authAdminButton"
+                    onClick={() => switchMode('admin-login')}
+                    disabled={submitting}
+                  >
+                    ADMIN
+                  </button>
+                )}
+                {mode === 'admin-login' && (
+                  <button
+                    type="button"
+                    className="authAdminButton"
+                    onClick={() => switchMode('login')}
+                    disabled={submitting}
+                  >
+                    ← USER
+                  </button>
+                )}
+              </div>
+              <p>{subtitle}</p>
             </div>
 
           </div>
@@ -705,7 +731,7 @@ function AuthScreen() {
               {message && <div className="authMessage success">{message}</div>}
 
               <button className="authSubmit" type="submit" disabled={submitting}>
-                {submitting ? 'ĐANG XỬ LÝ...' : '🔐 VÀO ADMIN'}
+                {submitting ? 'ĐANG XỬ LÝ...' : '🔐 ĐĂNG NHẬP'}
               </button>
             </form>
           ) : (
@@ -727,20 +753,6 @@ function AuthScreen() {
 
               <form className="authForm" onSubmit={handleSubmit}>
 
-            {mode === 'login' && (
-              <>
-                <span>·</span>
-                <button type="button" onClick={() => switchMode('admin-login')}>
-                  Admin
-                </button>
-              </>
-            )}
-
-            {mode === 'admin-login' && (
-              <button type="button" onClick={() => switchMode('login')}>
-                ← Quay lại đăng nhập user
-              </button>
-            )}
 
             {mode === 'signup' && (
               <label>
@@ -850,7 +862,7 @@ function AuthScreen() {
                     ? '📨 GỬI EMAIL ĐẶT LẠI'
                     : mode === 'update-password'
                       ? '🔐 LƯU MẬT KHẨU MỚI'
-                      : '🌻 VÀO GAME'}
+                      : '🌻 ĐĂNG NHẬP'}
             </button>
 
               </form>
@@ -941,6 +953,110 @@ function AuthScreen() {
    ========================================================= */
 
 
+
+/* =========================================================
+   PIXEL LOADING SCREEN
+   ========================================================= */
+function PixelLoadingScreen({ message = 'Đang mở khu vườn...' }) {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    // Loading animation is intentionally slower and steady.
+    // The App also keeps the loading screen visible for at least 3 seconds.
+    const startedAt = performance.now();
+    const MIN_LOADING_MS = 3000;
+
+    const timer = window.setInterval(() => {
+      const elapsed = performance.now() - startedAt;
+      const nextProgress = Math.min(
+        96,
+        Math.round((elapsed / MIN_LOADING_MS) * 96)
+      );
+      setProgress(nextProgress);
+    }, 40);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="pixelLoadingScreen">
+      <div className="pixelLoadingSky">
+        <img src="/assets/login-sun.png" alt="" aria-hidden="true" className="pixelLoadingSun" draggable="false" />
+        <img src="/assets/login-cloud-1.png" alt="" aria-hidden="true" className="pixelLoadingCloud pixelLoadingCloud1" draggable="false" />
+        <img src="/assets/login-cloud-3.png" alt="" aria-hidden="true" className="pixelLoadingCloud pixelLoadingCloud2" draggable="false" />
+      </div>
+
+      <div className="pixelLoadingContent">
+        <div
+          className="pixelLoadingTitle"
+          style={{
+            textShadow: 'none',
+            filter: 'none',
+            WebkitFilter: 'none'
+          }}
+        >
+          <span style={{ textShadow: 'none', filter: 'none' }}>GROW</span>
+          <strong style={{ textShadow: 'none', filter: 'none' }}>WITH THE lighT</strong>
+        </div>
+
+        <img
+          src="/assets/light-sunflower.png"
+          alt="lighT cầm bó hoa hướng dương"
+          className="pixelLoadingLight"
+          draggable="false"
+          onError={e => {
+            e.currentTarget.style.display = 'none';
+          }}
+        />
+
+        <div className="pixelLoadingMessage">{message}</div>
+
+        <div
+          className="pixelProgress"
+          role="progressbar"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow={progress}
+        >
+          <div
+            className="pixelProgressFill"
+            style={{ width: `${progress}%` }}
+          />
+          <span className="pixelProgressFlower">🌻</span>
+        </div>
+
+        <div className="pixelProgressText">{progress}%</div>
+        <div className="pixelLoadingHint">
+          “Cùng nhau gieo những điều tốt đẹp”
+        </div>
+
+        <div
+          className="pixelLoadingCredit"
+          style={{
+            position: 'fixed',
+            left: '0',
+            right: '0',
+            bottom: '18px',
+            width: '100%',
+            textAlign: 'center',
+            margin: '0',
+            padding: '0 12px',
+            boxSizing: 'border-box',
+            fontSize: '12px',
+            lineHeight: 1.4,
+            fontWeight: 700,
+            letterSpacing: '0.04em',
+            color: '#24552b',
+            zIndex: 20
+          }}
+        >
+          A project by TINcredible - All for lighT
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function App() {
   const [counts, setCounts] = useState(initialCounts);
   const [statuses, setStatuses] = useState(initialStatuses);
@@ -958,10 +1074,19 @@ function App() {
   const [sound, setSound] = useState(false);
   const [toast, setToast] = useState('');
   const [loading, setLoading] = useState(true);
+  const loadingStartedAtRef = useRef(performance.now());
   const [refreshing, setRefreshing] = useState(false);
   const [bonusStates, setBonusStates] = useState({});
   const [bonusFlow, setBonusFlow] = useState(null);
   const [bonusStarting, setBonusStarting] = useState(false);
+  const [round2Ready, setRound2Ready] = useState(false);
+  const [mandatorySubmittedToday, setMandatorySubmittedToday] = useState({});
+  // Round 1 first-completion celebration:
+  // 1 = congratulate +1 sunflower, 2 = explain/open Round 2.
+  const [round1CelebrationStep, setRound1CelebrationStep] = useState(0);
+  // Chuyển qua lại giữa 2 round bằng nút; hoàn thành Round 1 KHÔNG tự nhảy sang Round 2.
+  const [activeRound, setActiveRound] = useState('round1');
+  const harvestedDayRef = useRef(null);
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [selectedNotification, setSelectedNotification] = useState(null);
@@ -976,13 +1101,128 @@ function App() {
     return a;
   });
 
-  const cleared = MISSIONS.filter(m => statuses[m.id] === 'completed').length;
+  // Submit = đã làm. Admin approve/reject chỉ quyết định điểm.
+  // IMPORTANT: statuses/submissions below are already scoped to the current
+  // game day, so yesterday's completed state cannot make today full.
+  const hasWorkedMission = missionId => {
+    const missionStatus = statuses[missionId];
+    if (['pending_review', 'completed', 'rejected'].includes(missionStatus)) {
+      return true;
+    }
+
+    // Rejected submissions may leave user_missions in an old status.
+    // Only count the latest submission if it belongs to the current game day.
+    const latest = submissions[missionId];
+    if (!latest || !['pending', 'pending_review', 'completed', 'rejected'].includes(latest.status)) {
+      return false;
+    }
+
+    const todayKst = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Asia/Seoul',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).format(new Date());
+
+    const sameGameDay = latest.game_day != null && Number(latest.game_day) === Number(dayNumber);
+    const sameActivityDate = latest.activity_date === todayKst;
+    const sameSubmittedDate = latest.submitted_at
+      ? new Intl.DateTimeFormat('en-CA', {
+          timeZone: 'Asia/Seoul',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        }).format(new Date(latest.submitted_at)) === todayKst
+      : false;
+
+    return sameGameDay || sameActivityDate || sameSubmittedDate;
+  };
+
+  // Round 1 is finished as soon as EACH mandatory mission has been
+  // submitted at least once. Approval/rejection does not matter.
+  // Use BOTH sources because old/current DB rows can be represented in
+  // user_missions before mission_submissions is refreshed (and vice versa).
+  // ROUND 1 unlock source of truth:
+  // ONLY submissions belonging to the CURRENT game day count.
+  // Do not use user_missions/status here because that table can retain
+  // yesterday's state and would incorrectly unlock Round 2.
+  const isMandatorySubmitted = missionId =>
+    Boolean(mandatorySubmittedToday[missionId]);
+
+  const cleared = MISSIONS.filter(m => isMandatorySubmitted(m.id)).length;
   const finished = cleared === MISSIONS.length;
 
+  // Round 2 must never be visible/active before all 5 Round-1 missions
+  // are submitted for the current game day.
   useEffect(() => {
-    if (!finished || !authUser?.id) return;
-    setBonusFlow('congrats');
-  }, [finished, authUser?.id]);
+    if (!finished || !round2Ready) {
+      setActiveRound('round1');
+    }
+  }, [finished, round2Ready]);
+
+  // Round 2 is never a valid visible state unless Round 1 is complete.
+  const canShowRound2 = finished && activeRound === 'round2';
+
+  // ROUND 1 -> ROUND 2:
+  // Khi đủ 5 nhiệm vụ đã submit, server tự cộng đúng 1 bông cho ngày đó
+  // và mở toàn bộ nhiệm vụ bonus. Không cần Admin duyệt trước.
+  useEffect(() => {
+    if (!finished || !authUser?.id) {
+      setRound2Ready(false);
+      return;
+    }
+
+    // IMPORTANT: Round 2 must unlock in the UI immediately after the 5th
+    // mandatory submission. The +1 flower RPC is separate and must NEVER
+    // be able to keep the Round 2 tab disabled when the RPC has an error.
+    setRound2Ready(true);
+
+    if (harvestedDayRef.current === dayNumber) {
+      return;
+    }
+
+    let cancelled = false;
+
+    const unlockRound2 = async () => {
+      const { data, error } = await supabase.rpc('harvest_round1_if_ready');
+
+      if (cancelled) return;
+
+      if (error) {
+        // Round 2 is already unlocked locally from `finished`.
+        // This error only means the server-side +1 flower could not be
+        // recorded yet; do not lock the Bonus tab because of it.
+        console.error('harvest_round1_if_ready:', error);
+        notify(`Round 2 đã mở. Chưa ghi được +1 🌻: ${error.message || 'lỗi server'}`);
+        return;
+      }
+
+      const result = Array.isArray(data) ? data[0] : data;
+      const returnedDay = Number(result?.day_number ?? result?.result_day_number ?? dayNumber);
+      const returnedFlowers = Number(result?.sunflower_count ?? result?.result_sunflower_count ?? sunflowerCount);
+
+      harvestedDayRef.current = returnedDay;
+      setSunflowerCount(returnedFlowers);
+      setRound2Ready(true);
+      // Giữ người chơi ở round hiện tại; chỉ mở khóa nút Round 2.
+      setActiveRound(prev => prev === 'round2' ? 'round2' : 'round1');
+      setBonusFlow(null);
+
+      await loadGame(true);
+
+      if (result?.harvested_now) {
+        // This is the first Round-1 completion/harvest for this game day.
+        // Show the two-step congratulations flow only here, not on every refresh.
+        setRound1CelebrationStep(1);
+      }
+    };
+
+    unlockRound2();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [finished, authUser?.id, dayNumber]);
 
   const rememberBonusIntro = () => {
     if (!authUser?.id) return;
@@ -1024,7 +1264,7 @@ function App() {
       return;
     }
 
-    setBonusFlow('active');
+    setBonusFlow(null);
     await loadGame(true);
     requestAnimationFrame(() => {
       document.querySelector('.bonusArea')?.scrollIntoView({
@@ -1082,6 +1322,9 @@ function App() {
       setProfile(null);
       setSelected(null);
       setAdminOpen(false);
+      if (nextUser) {
+        loadingStartedAtRef.current = performance.now();
+      }
       setLoading(Boolean(nextUser));
       setAuthUser(nextUser);
       setAuthReady(true);
@@ -1106,6 +1349,9 @@ function App() {
           setAdminOpen(false);
           setLeaderboardOpen(false);
           setMenu(false);
+          if (nextUser) {
+            loadingStartedAtRef.current = performance.now();
+          }
           setLoading(Boolean(nextUser));
         }
 
@@ -1162,11 +1408,14 @@ function App() {
         notify('Không thể khởi tạo dữ liệu game.');
       }
 
+      const currentProfileDay = Number(roleProfile?.day_number ?? 1);
+
       const [
         profileRes,
         missionsRes,
         submissionsRes,
-        notificationsRes
+        notificationsRes,
+        harvestRes
       ] = await Promise.all([
         supabase
           .from('profiles')
@@ -1211,33 +1460,203 @@ function App() {
             external_action_id,
             quantity,
             activity_date,
+            game_day,
             points_awarded,
             note,
             status,
             admin_comment,
             submitted_at,
             reviewed_at,
-            verified_at
+            verified_at,
+            round2_harvest_id,
+            mission:missions(slug, mission_type)
           `)
           .eq('user_id', user.id)
           .order('submitted_at', { ascending: false }),
 
         supabase
           .from('user_notifications')
-          .select('id, type, title, message, submission_id, mission_id, read_at, created_at')
+          .select('id, type, title, message, submission_id, mission_id, read_at, created_at, mission:missions(name, action, mission_type)')
           .eq('user_id', user.id)
           .order('created_at', { ascending: false })
-          .limit(30)
+          .limit(30),
+
+        supabase
+          .from('user_round1_harvests')
+          .select('id, day_number, harvested_at')
+          .eq('user_id', user.id)
+          .eq('day_number', currentProfileDay)
+          .order('harvested_at', { ascending: false })
+          .limit(1)
       ]);
 
       if (profileRes.error) console.error('profiles:', profileRes.error);
       if (missionsRes.error) console.error('user_missions:', missionsRes.error);
       if (submissionsRes.error) console.error('mission_submissions:', submissionsRes.error);
       if (notificationsRes.error) console.error('notifications:', notificationsRes.error);
+      if (harvestRes.error) console.error('round1 harvest:', harvestRes.error);
 
       const nextCounts = { ...initialCounts };
       const nextStatuses = { ...initialStatuses };
       const nextBonuses = {};
+
+      // Round 2 is COMPLETELY independent from Round 1.
+      // Never read a bonus card's progress from the mandatory mission progress.
+      // Bonus progress is reconstructed only from submissions whose mission itself
+      // is a bonus mission, for the current game day. This also repairs old rows
+      // where bonus user_missions accidentally inherited Round 1 progress.
+      const todayKst = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Asia/Seoul',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }).format(new Date());
+
+      const bonusSubmissionTotals = {};
+      const bonusPending = {};
+      const currentGameDay = Number(profileRes.data?.day_number ?? 1);
+      const round1HarvestId = harvestRes.data?.[0]?.id || null;
+      const round1HarvestAt = harvestRes.data?.[0]?.harvested_at || null;
+
+      // ROUND 1 unlock condition — STRICT:
+      // Only a mission_submission whose game_day exactly equals the user's
+      // CURRENT profile day can count. Do NOT use user_missions, activity_date,
+      // submitted_at date, or any legacy fallback here. user_missions has no
+      // game_day column in the current schema, so using it can carry yesterday's
+      // completed state into a new day and incorrectly unlock Round 2.
+      const submittedMandatoryToday = {};
+      for (const mission of MISSIONS) submittedMandatoryToday[mission.id] = false;
+
+      for (const sub of submissionsRes.data || []) {
+        const slug = sub.mission?.slug;
+        if (!slug || !MISSIONS.some(m => m.id === slug)) continue;
+
+        const sameGameDay =
+          sub.game_day != null &&
+          Number(sub.game_day) === Number(currentGameDay);
+
+        if (sameGameDay) {
+          submittedMandatoryToday[slug] = true;
+        }
+      }
+
+      setMandatorySubmittedToday(submittedMandatoryToday);
+
+      /*
+       * IMPORTANT — PER-DAY ROUND 1 STATE
+       * Do NOT use user_missions.progress/status for mandatory cards here.
+       * That table is persistent per user/mission in the current schema and
+       * can contain the previous day's completed state. The source of truth
+       * for a new day is mission_submissions.game_day (with a date fallback
+       * only for legacy rows).
+       */
+      const currentMandatorySubmissions = {};
+      for (const mission of MISSIONS) {
+        currentMandatorySubmissions[mission.id] = null;
+      }
+
+      for (const sub of submissionsRes.data || []) {
+        const slug = sub.mission?.slug;
+        if (!slug || !MISSIONS.some(m => m.id === slug)) continue;
+
+        const submissionDateKst = new Intl.DateTimeFormat('en-CA', {
+          timeZone: 'Asia/Seoul',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        }).format(new Date(sub.submitted_at));
+
+        const sameGameDay =
+          sub.game_day != null && Number(sub.game_day) === currentGameDay;
+        const sameLegacyDate =
+          sub.game_day == null &&
+          (sub.activity_date === todayKst || submissionDateKst === todayKst);
+
+        if (!sameGameDay && !sameLegacyDate) continue;
+
+        const existing = currentMandatorySubmissions[slug];
+        if (
+          !existing ||
+          new Date(sub.submitted_at).getTime() >
+            new Date(existing.submitted_at).getTime()
+        ) {
+          currentMandatorySubmissions[slug] = sub;
+        }
+      }
+
+      // Build a clean Round-1 state for THIS game day only.
+      for (const mission of MISSIONS) {
+        const sub = currentMandatorySubmissions[mission.id];
+
+        if (!sub) {
+          nextCounts[mission.id] = 0;
+          nextStatuses[mission.id] = 'in_progress';
+          continue;
+        }
+
+        // A valid Round-1 submission represents completion of that mission's
+        // required quantity for the current day. Approval only controls points.
+        nextCounts[mission.id] = Number(mission.target || sub.quantity || 1);
+        nextStatuses[mission.id] =
+          sub.status === 'approved'
+            ? 'completed'
+            : sub.status === 'rejected'
+              ? 'rejected'
+              : 'pending_review';
+      }
+
+      for (const sub of submissionsRes.data || []) {
+        const slug = sub.mission?.slug;
+
+        // ONLY an exact BONUS mission slug can contribute to Round 2.
+        // Mandatory mission progress can never leak into Bonus progress.
+        const isBonusSubmission = BONUS_MISSIONS.some(m => m.id === slug);
+        if (!isBonusSubmission || !slug) continue;
+
+        // A Bonus submission belongs to exactly one Round-2 instance: the
+        // current Round-1 harvest that opened Bonus. Old test submissions and
+        // old rounds have no matching round2_harvest_id and are ignored.
+        if (!round1HarvestId || sub.round2_harvest_id !== round1HarvestId) continue;
+
+        // Prefer the DB game_day. Fall back to date only for legacy rows.
+        if (sub.game_day != null) {
+          if (Number(sub.game_day) !== currentGameDay) continue;
+        } else {
+          const submissionDay = sub.activity_date ||
+            new Intl.DateTimeFormat('en-CA', {
+              timeZone: 'Asia/Seoul',
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit'
+            }).format(new Date(sub.submitted_at));
+
+          if (submissionDay !== todayKst) continue;
+        }
+
+        // game_day alone cannot separate Round 1 and Round 2 because both
+        // happen on the same game day. A Bonus submission is valid for this
+        // Round 2 only if it was submitted AFTER Round 1 was harvested.
+        // This prevents old/corrupted Bonus rows from inheriting Round 1 data.
+        if (round1HarvestAt && new Date(sub.submitted_at).getTime() < new Date(round1HarvestAt).getTime()) {
+          continue;
+        }
+
+        if (sub.status === 'rejected') continue;
+
+        // A Bonus card represents the latest approved standalone Round-2
+        // submission for this day. Never accumulate Round-1/old-day/old-attempt data.
+        if (sub.parent_submission_id) continue;
+        if (sub.status === 'pending') bonusPending[slug] = true;
+        if (sub.status === 'approved') {
+          const existing = bonusSubmissionTotals[slug];
+          if (!existing || new Date(sub.submitted_at).getTime() > existing.submittedAt) {
+            bonusSubmissionTotals[slug] = {
+              quantity: Number(sub.quantity || 0),
+              submittedAt: new Date(sub.submitted_at).getTime()
+            };
+          }
+        }
+      }
 
       for (const row of missionsRes.data || []) {
         const mission = row.missions;
@@ -1245,43 +1664,125 @@ function App() {
         if (!slug) continue;
 
         if (mission.mission_type === 'bonus') {
+          const target = Number(mission.target || 1);
+          const submissionProgress = Math.min(
+            target,
+            Number(bonusSubmissionTotals[slug]?.quantity || 0)
+          );
+          const progress = submissionProgress;
+          // IMPORTANT:
+          // A Bonus is a one-submission-per-day mission. Once Admin approves
+          // that Bonus today, the Bonus is LOCKED for the rest of today,
+          // even if the approved quantity is below the nominal target.
+          const approvedToday = Boolean(bonusSubmissionTotals[slug]);
+          const status = approvedToday
+            ? 'approved_locked'
+            : progress >= target
+              ? 'completed'
+              : bonusPending[slug]
+                ? 'pending_review'
+                : 'in_progress';
+
           nextBonuses[slug] = {
             ...mission,
-            progress: row.progress ?? 0,
-            status: row.status ?? 'locked',
-            completed_at: row.completed_at
+            progress,
+            status,
+            completed_at:
+              approvedToday || progress >= target
+                ? (row.completed_at || new Date().toISOString())
+                : null
           };
-        } else if (Object.prototype.hasOwnProperty.call(nextCounts, slug)) {
-          nextCounts[slug] = row.progress ?? 0;
-          nextStatuses[slug] = row.status ?? 'locked';
+        }
+        // Mandatory missions intentionally do NOT read row.progress/status
+        // from user_missions. That would carry yesterday's full progress into
+        // the new game day.
+      }
+
+      // Ensure every configured bonus appears as a separate zero-based state.
+      for (const bonus of BONUS_MISSIONS) {
+        if (!nextBonuses[bonus.id]) {
+          nextBonuses[bonus.id] = {
+            ...bonus,
+            progress: 0,
+            status: 'in_progress',
+            completed_at: null
+          };
         }
       }
 
+      /*
+       * Latest submission must be scoped to the CURRENT game round.
+       * A rejected Bonus submission from an older round/day must never make
+       * today's Bonus modal look rejected or consume today's retry.
+       */
       const latestSubmissions = {};
       for (const sub of submissionsRes.data || []) {
         const mission = ALL_MISSIONS.find(
           m => m.id === (sub.mission?.slug || sub.mission_id)
         );
         const slug = mission?.id || sub.mission?.slug;
-        if (slug && !latestSubmissions[slug]) {
-          latestSubmissions[slug] = sub;
-        } else if (!slug) {
-          const matched = (missionsRes.data || []).find(
-            row => row.mission_id === sub.mission_id
+        if (!slug) continue;
+
+        let belongsToCurrentRound = false;
+
+        if (mission?.mission_type === 'bonus') {
+          belongsToCurrentRound = Boolean(
+            round1HarvestId &&
+            sub.round2_harvest_id === round1HarvestId &&
+            sub.game_day != null &&
+            Number(sub.game_day) === currentGameDay &&
+            round1HarvestAt &&
+            new Date(sub.submitted_at).getTime() >= new Date(round1HarvestAt).getTime()
           );
-          const matchedSlug = matched?.missions?.slug;
-          if (matchedSlug && !latestSubmissions[matchedSlug]) {
-            latestSubmissions[matchedSlug] = sub;
-          }
+        } else {
+          belongsToCurrentRound =
+            sub.game_day != null &&
+            Number(sub.game_day) === currentGameDay;
+        }
+
+        if (!belongsToCurrentRound) continue;
+
+        const existing = latestSubmissions[slug];
+        if (
+          !existing ||
+          new Date(sub.submitted_at).getTime() >
+            new Date(existing.submitted_at).getTime()
+        ) {
+          latestSubmissions[slug] = sub;
         }
       }
 
       const mappedSubmissions = {};
       for (const sub of submissionsRes.data || []) {
+        const subSlug = sub.mission?.slug;
+
+        if (BONUS_MISSIONS.some(m => m.id === subSlug)) {
+          if (sub.round2_harvest_id !== round1HarvestId) continue;
+        } else if (MISSIONS.some(m => m.id === subSlug)) {
+          // Mandatory submission shown in the UI must also belong to THIS day.
+          const submissionDateKst = new Intl.DateTimeFormat('en-CA', {
+            timeZone: 'Asia/Seoul',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+          }).format(new Date(sub.submitted_at));
+
+          const sameGameDay =
+            sub.game_day != null && Number(sub.game_day) === currentGameDay;
+          const sameLegacyDate =
+            sub.game_day == null &&
+            (sub.activity_date === todayKst || submissionDateKst === todayKst);
+
+          if (!sameGameDay && !sameLegacyDate) continue;
+        } else {
+          continue;
+        }
+
         const matched = (missionsRes.data || []).find(
           row => row.mission_id === sub.mission_id
         );
-        const slug = matched?.missions?.slug;
+        const slug = matched?.missions?.slug || subSlug;
+
         if (slug && !mappedSubmissions[slug]) {
           mappedSubmissions[slug] = sub;
         }
@@ -1338,6 +1839,17 @@ function App() {
       console.error('loadGame error:', error);
       notify('Không thể tải dữ liệu game.');
     } finally {
+      // Do not let a fast Supabase response make the loading screen
+      // disappear at 10–20%. Keep the initial loading screen for at
+      // least 3 seconds, then reveal the game.
+      const MIN_LOADING_MS = 3000;
+      const elapsed = performance.now() - loadingStartedAtRef.current;
+      const remaining = Math.max(0, MIN_LOADING_MS - elapsed);
+
+      if (remaining > 0) {
+        await new Promise(resolve => window.setTimeout(resolve, remaining));
+      }
+
       setLoading(false);
       setRefreshing(false);
     }
@@ -1548,7 +2060,7 @@ function App() {
   };
 
   const advanceToNextDay = async () => {
-    if (!finished || advancingDay) return;
+    if (advancingDay) return;
 
     setAdvancingDay(true);
 
@@ -1558,16 +2070,22 @@ function App() {
       if (error) throw error;
 
       const result = Array.isArray(data) ? data[0] : data;
-      setSunflowerCount(Number(result?.sunflower_count ?? sunflowerCount + 1));
-      setDayNumber(Number(result?.day_number ?? dayNumber + 1));
+      setSunflowerCount(Number(result?.sunflower_count ?? result?.result_sunflower_count ?? sunflowerCount));
+      setDayNumber(Number(result?.day_number ?? result?.result_day_number ?? dayNumber + 1));
       setBonusFlow(null);
       setSelected(null);
+      setRound2Ready(false);
+      setActiveRound('round1');
+      harvestedDayRef.current = null;
+      setRound1CelebrationStep(0);
 
       await loadGame(true);
-      notify(`🌻 Sang ngày ${Number(result?.day_number ?? dayNumber + 1)}! Chúc bạn tiếp tục chăm hoa thật vui.`);
+      notify(`🌻 Sang ngày ${Number(result?.day_number ?? result?.result_day_number ?? dayNumber + 1)}! Chúc bạn tiếp tục chăm hoa thật vui.`);
     } catch (error) {
       console.error('advance_to_next_day:', error);
-      notify(error?.message || 'Không thể chuyển sang ngày tiếp theo.');
+      const message = error?.message || error?.details || error?.hint || 'Không thể chuyển sang ngày tiếp theo.';
+      notify(`❌ ${message}`);
+      window.alert(`Không thể chuyển ngày.\n\n${message}`);
     } finally {
       setAdvancingDay(false);
     }
@@ -1640,7 +2158,7 @@ function App() {
   const unreadCount = unreadNotifications.length;
 
   const firstIncompleteIndex = MISSIONS.findIndex(
-    m => statuses[m.id] !== 'completed'
+    m => !hasWorkedMission(m.id)
   );
 
   const currentIndex = Math.min(
@@ -1652,54 +2170,23 @@ function App() {
 
   const currentMission = MISSIONS[currentIndex];
 
-  const canOpenMission = mission => {
-    const index = MISSIONS.findIndex(m => m.id === mission.id);
-    if (index < 0) return true;
-
-    // Only the current mandatory mission may be submitted.
-    // A later mission stays locked until every earlier mission is APPROVED.
-    if (finished) return true;
-    return index === currentIndex;
-  };
+  // Cả 5 nhiệm vụ chính luôn mở, không phụ thuộc thứ tự hay duyệt.
+  const canOpenMission = mission =>
+    MISSIONS.some(m => m.id === mission.id);
 
   const openMission = mission => {
-    if (!canOpenMission(mission)) {
-      const current = MISSIONS[currentIndex];
-      const currentStatus = statuses[current?.id];
-
-      notify(
-        currentStatus === 'pending_review'
-          ? `Nhiệm vụ ${currentIndex + 1} đang chờ Admin duyệt.`
-          : `Hãy hoàn thành và chờ Admin duyệt nhiệm vụ ${currentIndex}.`
-      );
-      return;
-    }
-
+    if (!canOpenMission(mission)) return;
     setSelected(mission);
   };
 
   if (!authReady) {
-    return (
-      <div className="app">
-        <div className="loadingScreen">
-          <b>GROW WITH THE lighT</b>
-          <span>Đang mở cánh cửa khu vườn...</span>
-        </div>
-      </div>
-    );
+    return <PixelLoadingScreen message="Đang mở cánh cửa khu vườn..." />;
   }
 
   if (!authUser) return <AuthScreen />;
 
   if (loading) {
-    return (
-      <div className="app">
-        <div className="loadingScreen">
-          <b>GROW WITH THE lighT</b>
-          <span>Đang tải hành trình...</span>
-        </div>
-      </div>
-    );
+    return <PixelLoadingScreen message="Đang gieo ánh sáng vào khu vườn..." />;
   }
 
   /* =======================================================
@@ -2079,7 +2566,15 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
                           overflowWrap: 'anywhere'
                         }}
                       >
-                        {selectedNotification.title}
+                        {selectedNotification.mission?.mission_type === 'bonus' ? 'BONUS' : 'NHIỆM VỤ'}
+                        {' · '}
+                        {selectedNotification.mission?.name || 'Submission'}
+                        {' · '}
+                        {selectedNotification.type === 'mission_approved'
+                          ? 'ĐÃ ĐƯỢC DUYỆT'
+                          : selectedNotification.type === 'mission_rejected'
+                            ? 'ĐÃ BỊ TỪ CHỐI'
+                            : selectedNotification.title}
                       </h3>
                     </div>
 
@@ -2121,7 +2616,11 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
                       wordBreak: 'break-word'
                     }}
                   >
-                    {selectedNotification.message}
+                    {selectedNotification.type === 'mission_approved'
+                      ? `${selectedNotification.mission?.mission_type === 'bonus' ? 'Bonus' : 'Nhiệm vụ'} ${selectedNotification.mission?.name || 'này'} đã được Admin duyệt.${/\+\d+/.test(selectedNotification.message || '') ? ` ${selectedNotification.message.match(/\+\d+[^.]*\.?/)?.[0] || ''}` : ''}`.trim()
+                      : selectedNotification.type === 'mission_rejected'
+                        ? `${selectedNotification.mission?.mission_type === 'bonus' ? 'Bonus' : 'Nhiệm vụ'} ${selectedNotification.mission?.name || 'này'} đã bị Admin từ chối.\n\n${selectedNotification.message || 'Vui lòng kiểm tra lại minh chứng và submit lại 1 lần duy nhất.'}`
+                        : selectedNotification.message}
                   </div>
 
                   <small
@@ -2162,16 +2661,41 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
 
       <main className="garden"> 
         <div className="sky">
-          <span className="sun" />
-          <span className="cloud cloud1" />
-          <span className="cloud cloud2" />
-          <span className="cloud cloud3" />
-          <span className="hill hill1" />
-          <span className="hill hill2" />
+          <img
+            className="skyImage skySunImage"
+            src={SKY_IMAGE_ASSETS.sun}
+            alt=""
+            aria-hidden="true"
+            draggable="false"
+            onError={e => { e.currentTarget.style.display = 'none'; }}
+          />
+          <img
+            className="skyImage skyCloudImage skyCloudImage1"
+            src={SKY_IMAGE_ASSETS.cloud1}
+            alt=""
+            aria-hidden="true"
+            draggable="false"
+            onError={e => { e.currentTarget.style.display = 'none'; }}
+          />
+          <img
+            className="skyImage skyCloudImage skyCloudImage2"
+            src={SKY_IMAGE_ASSETS.cloud2}
+            alt=""
+            aria-hidden="true"
+            draggable="false"
+            onError={e => { e.currentTarget.style.display = 'none'; }}
+          />
+          <div className="sunflowerField" aria-hidden="true">
+            {Array.from({ length: 18 }, (_, i) => (
+              <span key={i} className={`fieldSunflower fieldSunflower${(i % 6) + 1}`}>
+                <i className="fieldStem" />
+                <b className="fieldBloom">✿</b>
+              </span>
+            ))}
+          </div>
         </div>
 
-        {bonusFlow !== 'active' && (
-          <>
+        <>
             <section className="hero">
               <div className="eyebrow">
                 OUR WORLD · GROW WITH EVERY ACTION
@@ -2187,181 +2711,173 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
               </p>
             </section>
 
-            <section
-              className="missionRoad"
-              aria-label="5 nhiệm vụ"
-            >
-          <div className="roadLine" />
-
-          {MISSIONS.map((m, i) => {
-            const done = statuses[m.id] === 'completed';
-            const pending = statuses[m.id] === 'pending_review';
-            const rejected = submissions[m.id]?.status === 'rejected';
-            const active = i === currentIndex && !finished;
-            const lockedBySequence = !finished && i !== currentIndex;
-            const growthStage = i + 1;
-
-            let label = 'CHƯA MỞ';
-
-            if (done) label = '✓ HOÀN THÀNH';
-            else if (pending) label = '⏳ CHỜ DUYỆT';
-            else if (rejected) label = '↻ SUBMIT LẠI';
-            else if (active) label = 'ĐANG CHĂM';
-
-            return (
-              <article
-                key={m.id}
-                className={[
-                  'mission',
-                  done ? 'done' : '',
-                  active ? 'active' : '',
-                  pending ? 'pending' : '',
-                  rejected ? 'rejected' : '',
-                  lockedBySequence ? 'locked-sequence' : '',
-                  `stage${i + 1}`
-                ].join(' ')}
-                onClick={() => openMission(m)}
+            <div className="roundTabs" role="tablist" aria-label="Chuyển round">
+              <button
+                type="button"
+                className={`roundTab ${activeRound === 'round1' ? 'active' : ''}`}
+                onClick={() => setActiveRound('round1')}
               >
-                <div className="plantSpot">
-                  <Plant
-                    growthStage={growthStage}
-                    done={done}
-                    active={active}
-                  />
-
-                  <div className="missionBubble">
-                    <Logo mission={m} />
-                  </div>
-                </div>
-
-                <div
-                  className="missionCard"
-                  style={{
-                    '--missionColor': m.color,
-                    opacity: lockedBySequence ? 0.72 : 1,
-                    cursor: lockedBySequence ? 'not-allowed' : 'pointer'
-                  }}
-                >
-                  <div className="missionNo">{i + 1}</div>
-                  <div className="missionAction">{m.action}</div>
-
-                  <h2>{m.name}</h2>
-                  <p>{m.rule}</p>
-
-                  <div className="progress">
-                    <span
-                      style={{
-                        width: `${Math.min(
-                          100,
-                          (counts[m.id] / m.target) * 100
-                        )}%`
-                      }}
-                    />
-                  </div>
-
-                  <div className="cardBottom">
-                    <b>
-                      {counts[m.id]}/{m.target}
-                    </b>
-                    <small>{label}</small>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
-            </section>
-          </>
-        )}
-
-        {false && finished && bonusFlow === 'active' && (
-          <section className="bonusArea bonusAreaWide bonusStandalonePage" aria-label="5 thử thách thưởng">
-            <div className="bonusHeaderRow">
-              <div className="bonusHeaderCopy">
-                <div className="eyebrow">BONUS AREA</div>
-                <h2>🌻 HOA ĐÃ NỞ — KIẾM THÊM ĐIỂM</h2>
-                <p>Chọn thử thách nhỏ bạn muốn tham gia nhé!</p>
-              </div>
-
-              <div className="bonusSign" aria-hidden="true">
-                <span>Cùng tinie</span>
-                <b>lan tỏa thêm
-                nhiều ánh sáng
-                nhé! 💛</b>
-              </div>
+                <span>ROUND 1</span>
+                <b>NHIỆM VỤ CHÍNH</b>
+              </button>
+              <span className="roundTabArrow" aria-hidden="true">→</span>
+              <button
+                type="button"
+                className={`roundTab ${activeRound === 'round2' ? 'active' : ''} ${!finished ? 'disabled' : ''}`}
+                onClick={() => finished && setActiveRound('round2')}
+                disabled={!finished}
+                title={finished ? 'Mở Round 2' : 'Hoàn thành đủ 5 nhiệm vụ Round 1 để mở'}
+              >
+                <span>ROUND 2</span>
+                <b>BONUS</b>
+              </button>
             </div>
 
-            <div className="bonusInteractionRow">
-              <div className="bonusMascotSide">
-                <img
-                  src="/assets/tinie.png"
-                  alt="Tinie ôm giỏ hoa hướng dương"
-                  className="bonusMascot"
-                />
-              </div>
+            <div className={`currentRoundLabel ${activeRound === 'round2' ? 'is-round2' : 'is-round1'}`}>
+              <span>{activeRound === 'round2' ? 'ROUND 2' : 'ROUND 1'}</span>
+              <b>{activeRound === 'round2' ? 'BONUS' : 'NHIỆM VỤ CHÍNH'}</b>
+              <small>
+                {activeRound === 'round2'
+                  ? '🌻tinie ơiii, góp thêm thật nhiều tia nắng và kiếm thêm điểm nhé!'
 
-              <div className="bonusCardsGrid">
-                {BONUS_MISSIONS.filter(m => m.id !== 'spotify_extra').map(m => {
-                  const state = bonusStates[m.id] || { progress: 0, status: 'locked' };
-                  const latest = submissions[m.id];
-                  const pending = state.status === 'pending_review';
-                  const rejected = latest?.status === 'rejected';
-                  const completed = Number(state.progress || 0) >= Number(m.target || 0);
+                  : finished
+                    ? 'Round 1 đã hoàn thành · Bạn có thể xem lại Round 1 hoặc bấm ROUND 2 để làm Bonus'
+                    : '5 nhiệm vụ chính · Làm theo thứ tự nào cũng được · Submit là cây lớn'}
+              </small>
+            </div>
+
+            <section
+              className={`missionRoad ${activeRound === 'round2' ? 'is-round2' : 'is-round1'}`}
+              aria-label={activeRound === 'round2' ? 'Round 2 - nhiệm vụ bonus' : 'Round 1 - nhiệm vụ chính'}
+            >
+              <div className="roadLine" />
+
+               {!canShowRound2 ? (
+                MISSIONS.map((m, i) => {
+                  const approved = statuses[m.id] === 'completed';
+                  const pending = statuses[m.id] === 'pending_review';
+                  const rejected =
+                    statuses[m.id] === 'rejected' ||
+                    submissions[m.id]?.status === 'rejected';
+                  const done = hasWorkedMission(m.id);
+                  const active = !done && !finished;
+                  const growthStage = i + 1;
+
+                  let label = 'ĐANG MỞ';
+                  if (approved) label = '✓ ĐÃ DUYỆT · CÓ ĐIỂM';
+                  else if (pending) label = '⏳ ĐÃ LÀM · CHỜ DUYỆT';
+                  else if (rejected) label = '↻ ĐÃ LÀM · SUBMIT LẠI';
+                  else if (active) label = 'CHƯA LÀM';
 
                   return (
-                    <button
+                    <article
                       key={m.id}
-                      type="button"
-                      className={`bonusMissionCard ${completed ? 'is-completed' : ''} ${pending ? 'is-pending' : ''}`}
-                      onClick={() => setSelected(m)}
+                      className={[
+                        'mission',
+                        done ? 'done' : '',
+                        active ? 'active' : '',
+                        pending ? 'pending' : '',
+                        rejected ? 'rejected' : '',
+                        `stage${i + 1}`
+                      ].join(' ')}
+                      onClick={() => openMission(m)}
                     >
-                      <div className="bonusCardLogo">
-                        <img src={m.logo} alt="" />
+                      <div className="plantSpot">
+                        <Plant growthStage={growthStage} done={done} active={active} />
                       </div>
 
-                      <div className="bonusCardAction">{m.action}</div>
-                      <h3>{m.name}</h3>
-                      <p>{m.rule}</p>
-
-                      <div className="bonusCardProgress">
-                        <div className="progressTrack">
+                      <div
+                        className="missionCard"
+                        style={{ '--missionColor': m.color, cursor: 'pointer' }}
+                      >
+                        <div className="missionNo">{i + 1}</div>
+                        <div className="missionAction">{m.action}</div>
+                        <h2>{m.name}</h2>
+                        <p>{m.rule}</p>
+                        <div className="progress">
                           <span
                             style={{
-                              width: `${Math.min(100, (Number(state.progress || 0) / Number(m.target || 1)) * 100)}%`
+                              width: `${Math.min(100, ((done ? m.target : counts[m.id]) / m.target) * 100)}%`
                             }}
                           />
                         </div>
-                        <div className="bonusCardBottom">
-                          <b>{Number(state.progress || 0)}/{m.target}</b>
-                          <small>
-                            {completed
-                              ? '✓ MAX'
-                              : pending
-                                ? '⏳ CHỜ DUYỆT'
-                                : rejected
-                                  ? '↻ SUBMIT LẠI'
-                                  : 'ĐANG MỞ'}
-                          </small>
+                        <div className="cardBottom">
+                          <b>{done ? m.target : counts[m.id]}/{m.target}</b>
+                          <small>{label}</small>
                         </div>
                       </div>
-
-                      <span className="bonusStartButton">
-                        {completed ? 'XEM' : pending ? 'CHỜ DUYỆT' : 'BẮT ĐẦU'}
-                      </span>
-                    </button>
+                    </article>
                   );
-                })}
-              </div>
-            </div>
+                })
+              ) : (
+                <>
+                  <div className="bonusTinieHero">
+                    <img
+                      src="/assets/tinie_sunflower.png"
+                      alt="Tinie cầm hoa hướng dương"
+                      draggable="false"
+                      onError={e => {
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
+                   {/* <div>
+                      <strong>ROUND 2 · BONUS TỰ 🌻</strong>
+                      <span>🌻tinie ơiii, góp thêm thật nhiều tia nắng và kiếm thêm điểm nhé!</span>
+                    </div>
+                    */}
+                  </div>
 
-            <button
-              type="button"
-              className="bonusFinishButton"
-              onClick={requestFinishBonus}
-            >
-              🏁 KẾT THÚC THỬ THÁCH
-            </button>
-          </section>
-        )}
+                  {BONUS_MISSIONS.map((m, i) => {
+                  const state = bonusStates[m.id] || { progress: 0, status: 'in_progress' };
+                  const latest = submissions[m.id];
+                  const bonusProgress = Number(state.progress || 0);
+                  // Round 2 hiển thị hoàn toàn độc lập với Round 1.
+                  // Round 1 đã hoàn thành chỉ là điều kiện mở khóa Bonus, không cộng progress.
+                  const progress = bonusProgress;
+                  const target = Number(m.target || 1);
+                  const maxed = progress >= target;
+                  const approvedToday = state.status === 'approved_locked' || latest?.status === 'approved';
+                  const pending = !approvedToday && (state.status === 'pending_review' || latest?.status === 'pending');
+                  const rejected = !approvedToday && (state.status === 'rejected' || latest?.status === 'rejected');
+                  const label = approvedToday
+                    ? '✓ ĐÃ ĐƯỢC DUYỆT · KHÓA HÔM NAY'
+                    : maxed
+                      ? '✓ ĐÃ ĐỦ · CHỜ DUYỆT'
+                      : pending
+                        ? '⏳ ĐÃ SUBMIT · CHỜ DUYỆT'
+                        : rejected
+                          ? '↻ SUBMIT LẠI'
+                          : 'BONUS';
+
+                  return (
+                    <article
+                      key={m.id}
+                      className={`mission bonusRoundMission ${maxed ? 'done' : ''} ${approvedToday ? 'approvedLocked' : ''} ${pending ? 'pending' : ''} ${rejected ? 'rejected' : ''}`}
+                      onClick={() => setSelected(m)}
+                    >
+                      <div
+                        className="missionCard"
+                        style={{ '--missionColor': m.color, cursor: 'pointer' }}
+                      >
+                        <div className="missionNo">{i + 1}</div>
+                        <div className="missionAction">{m.action}</div>
+                        <h2>{m.name}</h2>
+                        <p>{m.rule}</p>
+                        <div className="progress">
+                          <span style={{ width: `${Math.min(100, (progress / target) * 100)}%` }} />
+                        </div>
+                        <div className="cardBottom">
+                          <b>{Math.min(progress, target)}/{target}</b>
+                          <small>{label}</small>
+                        </div>
+                      </div>
+                    </article>
+                  );
+                  })}
+                </>
+              )}
+            </section>
+          </>
 
         <div className="ground">
           <div className="fence" />
@@ -2385,23 +2901,37 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
 
           <div className="currentBox">
             <small>
-              {finished ? '🌻 HOA ĐÃ NỞ!' : '🌱 BẠN ĐANG Ở NHIỆM VỤ'}
+              {activeRound === 'round2'
+                ? (
+                    <>
+                      <img
+                        src="/assets/icon_huongduong.png"
+                        alt=""
+                        aria-hidden="true"
+                        draggable="false"
+                        style={{ width: 18, height: 18, objectFit: 'contain', verticalAlign: 'middle', marginRight: 5 }}
+                      />
+                      ROUND 2 · HOA ĐÃ NỞ!
+                    </>
+                  )
+                : '🌱 ROUND 1 · NHIỆM VỤ CHÍNH'}
             </small>
 
             <strong>
-              {finished ? 'HOÀN THÀNH TẤT CẢ' : currentMission.action}
+              {activeRound === 'round2' ? 'BONUS · TỰ CHỌN' : currentMission.action}
             </strong>
 
             <span>
-              {finished
-                ? 'Cảm ơn bạn đã cùng chăm sóc bông hoa!'
+              {activeRound === 'round2'
+                ? 'Thêm một tia nắng nhỏ, để bông hoa thêm khoe sắc!'
                 : currentMission.name}
             </span>
           </div>
 
           <div className="mascotBox">
             <img
-              src="/assets/tinie.png"
+              className="tinieImageAsset"
+              src={TINIE_IMAGE_ASSET}
               alt="Tinie"
               onError={e => {
                 e.currentTarget.style.display = 'none';
@@ -2419,6 +2949,15 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
         </section>
 
         <style>{`
+          .tinieImageAsset {
+            display: block;
+            width: auto;
+            height: 112px;
+            max-width: 150px;
+            object-fit: contain;
+            object-position: bottom center;
+          }
+
           .tinieMissionWrapper {
             display: flex;
             align-items: flex-end;
@@ -2459,6 +2998,169 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
 
 
       <style>{`
+        /* =====================================================
+           CUSTOM IMAGE ASSETS
+           Các ảnh đều nằm trong /public/assets/
+           ===================================================== */
+
+        /* Remove old CSS decorations: PNGs are the only plant artwork. */
+        .mission .growthSoil,
+        .mission .sunflowerFlower,
+        .mission .fieldSunflower,
+        .mission .soil,
+        .mission .seedStage,
+        .mission .sproutStage,
+        .mission .youngStage,
+        .mission .budStage,
+        .mission .bloomStage {
+          display: none !important;
+        }
+
+        .growthPlantImage {
+          transition: transform .18s ease;
+          user-select: none;
+        
+          /* Keep the original pixel artwork, but do not enlarge each source
+             pixel into a visible checkerboard block. */
+          image-rendering: auto;
+          image-rendering: smooth;
+        }
+
+        .plantActive .growthPlantImage {
+          animation: plantAssetBob 1.8s ease-in-out infinite;
+          transform: translateX(-50%) translateY(-3px);
+        }
+
+        @keyframes plantAssetBob {
+          0%, 100% { margin-top: 0; }
+          50% { margin-top: -3px; }
+        }
+
+        .skyImage {
+          position: absolute;
+          display: block;
+          width: auto;
+          height: auto;
+          max-width: none;
+          pointer-events: none;
+          user-select: none;
+          z-index: 1;
+        }
+
+        .skySunImage {
+          top: 18px;
+          right: 5.5%;
+          width: 118px;
+        }
+
+        .skyCloudImage1 {
+          top: 14%;
+          left: 7%;
+          width: 150px;
+        }
+
+        .skyCloudImage2 {
+          top: 9%;
+          left: 45%;
+          width: 125px;
+        }
+
+        @media (max-width: 760px) {
+          .skySunImage {
+            top: 12px;
+            right: 3%;
+            width: 88px;
+          }
+
+          .skyCloudImage1 {
+            top: 14%;
+            left: 7%;
+            width: 110px;
+          }
+
+          .skyCloudImage2 {
+            top: 9%;
+            left: 45%;
+            width: 92px;
+          }
+        }
+
+        @media (max-width: 430px) {
+          .skySunImage {
+            width: 40px !important;
+            right: 3% !important;
+            top: 34px !important;
+          }
+
+          .skyCloudImage1 {
+            width: 66px !important;
+            left: 5% !important;
+            top: 90px !important;
+          }
+
+          .skyCloudImage2 {
+            width: 54px !important;
+            right: 1% !important;
+            left: auto !important;
+            top: 275px !important;
+          }
+        }
+
+        .currentRoundLabel {
+          width: min(100%, 620px);
+          margin: 8px auto 18px;
+          padding: 9px 16px 10px;
+          border: 2px solid #c7d7a8;
+          border-radius: 14px;
+          background: rgba(255, 255, 245, .92);
+          box-shadow: 0 4px 0 rgba(74, 105, 55, .10);
+          text-align: center;
+          display: grid;
+          grid-template-columns: auto auto;
+          justify-content: center;
+          align-items: baseline;
+          column-gap: 8px;
+          row-gap: 2px;
+          color: #31533b;
+        }
+
+        .currentRoundLabel span {
+          font-size: 13px;
+          font-weight: 1000;
+          letter-spacing: .08em;
+        }
+
+        .currentRoundLabel b {
+          font-size: 12px;
+          font-weight: 900;
+          letter-spacing: .04em;
+        }
+
+        .currentRoundLabel small {
+          grid-column: 1 / -1;
+          font-size: 10px;
+          line-height: 1.35;
+          color: #637660;
+          font-weight: 700;
+        }
+
+        .currentRoundLabel.is-round2 {
+          border-color: #d8b83d;
+          background: #fff7cf;
+        }
+
+        @media (max-width: 600px) {
+          .currentRoundLabel {
+            width: calc(100% - 24px);
+            margin-bottom: 12px;
+            padding: 8px 10px;
+          }
+
+          .currentRoundLabel span { font-size: 11px; }
+          .currentRoundLabel b { font-size: 10px; }
+          .currentRoundLabel small { font-size: 9px; }
+        }
+
         .bonusFlowOverlay {
           position: fixed;
           inset: 0;
@@ -2707,6 +3409,49 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
           filter: drop-shadow(0 10px 15px rgba(46, 78, 42, .13));
         }
 
+        .bonusTinieHero {
+          width: min(100%, 760px);
+          margin: 0 auto 16px;
+          padding: 10px 18px;
+          box-sizing: border-box;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 14px;
+          border: 2px solid #d6b84b;
+          border-radius: 16px;
+          background: #fff8d7;
+          color: #31533b;
+          text-align: left;
+        }
+
+        .bonusTinieHero img {
+          display: block;
+          width: auto;
+          height: 88px;
+          max-width: 120px;
+          object-fit: contain;
+          flex: 0 0 auto;
+        }
+
+        .bonusTinieHero strong,
+        .bonusTinieHero span {
+          display: block;
+        }
+
+        .bonusTinieHero strong {
+          font-size: 14px;
+          line-height: 1.25;
+          color: #315f3d;
+        }
+
+        .bonusTinieHero span {
+          margin-top: 4px;
+          font-size: 11px;
+          line-height: 1.4;
+          color: #61715f;
+        }
+
         .bonusCardsGrid {
           display: grid;
           grid-template-columns: repeat(5, minmax(120px, 1fr));
@@ -2869,6 +3614,24 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
         }
 
         @media (max-width: 720px) {
+          .bonusTinieHero {
+            padding: 8px 12px;
+            gap: 9px;
+          }
+
+          .bonusTinieHero img {
+            height: 70px;
+            max-width: 92px;
+          }
+
+          .bonusTinieHero strong {
+            font-size: 12px;
+          }
+
+          .bonusTinieHero span {
+            font-size: 9px;
+          }
+
           .bonusAreaWide {
             padding: 16px 12px 16px;
             border-radius: 18px;
@@ -2892,142 +3655,155 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
             grid-template-columns: 1fr;
           }
         }
+        .round1CelebrationOverlay {
+          position: fixed;
+          inset: 0;
+          z-index: 1900;
+          display: grid;
+          place-items: center;
+          padding: 18px;
+          box-sizing: border-box;
+          background: rgba(20, 31, 26, .58);
+          backdrop-filter: blur(5px);
+        }
+
+        .round1CelebrationModal {
+          position: relative;
+          width: min(500px, calc(100vw - 28px));
+          box-sizing: border-box;
+          padding: 26px 24px 22px;
+          border: 3px solid #2c4738;
+          border-radius: 24px;
+          background: #fffdf4;
+          color: #18372a;
+          text-align: center;
+          box-shadow: 0 18px 0 rgba(44, 71, 56, .14), 0 28px 70px rgba(0, 0, 0, .28);
+        }
+
+        .round1CelebrationClose {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          width: 34px;
+          height: 34px;
+          border: 2px solid #2c4738;
+          border-radius: 10px;
+          background: #17382a;
+          color: #fff;
+          font-size: 20px;
+          line-height: 1;
+          cursor: pointer;
+        }
+
+        .round1CelebrationEyebrow {
+          margin: 2px 28px 7px;
+          font-size: 12px;
+          font-weight: 900;
+          letter-spacing: .12em;
+          color: #5b7b5d;
+        }
+
+        .round1CelebrationModal h2 {
+          margin: 4px 26px 10px;
+          font-size: clamp(22px, 5vw, 30px);
+          line-height: 1.15;
+          color: #285536;
+        }
+
+        .round1CelebrationFlower {
+          display: block;
+          width: 118px;
+          height: 118px;
+          margin: 4px auto 8px;
+          object-fit: contain;
+        }
+
+        .round1CelebrationFlower.small {
+          width: 92px;
+          height: 92px;
+        }
+
+        .round1CelebrationLead {
+          margin: 8px auto;
+          font-size: 17px;
+          line-height: 1.45;
+          color: #31583b;
+        }
+
+        .round1CelebrationText {
+          max-width: 410px;
+          margin: 8px auto 14px;
+          font-size: 13px;
+          line-height: 1.55;
+          color: #536658;
+        }
+
+        .round1CelebrationActions {
+          display: grid;
+          gap: 9px;
+        }
+
+        .round1CelebrationPrimary,
+        .round1CelebrationSecondary {
+          width: 100%;
+          min-height: 44px;
+          padding: 10px 14px;
+          border-radius: 13px;
+          font-size: 13px;
+          font-weight: 900;
+          cursor: pointer;
+        }
+
+        .round1CelebrationPrimary {
+          border: 2px solid #2c4738;
+          background: #2f7d4f;
+          color: #fff;
+        }
+
+        .round1CelebrationSecondary {
+          border: 2px solid #9cb39d;
+          background: #fffdf6;
+          color: #294536;
+        }
+
+        @media (max-width: 470px) {
+          .round1CelebrationModal {
+            padding: 22px 16px 18px;
+          }
+
+          .round1CelebrationFlower {
+            width: 94px;
+            height: 94px;
+          }
+
+          .round1CelebrationLead {
+            font-size: 15px;
+          }
+        }
       `}</style>
 
         {bonusFlow !== 'active' && (
           <div className="finishBanner" data-open={finished}>
-            {finished
-              ? '🌻 SUNFLOWER BLOOMED · MISSION COMPLETE'
-              : 'HOÀN THÀNH 5 NHIỆM VỤ ĐỂ NHẬN QUÀ 🌻'}
-          </div>
+  <img
+    src="/assets/icon_huongduong.png"
+    alt=""
+    aria-hidden="true"
+    draggable="false"
+    style={{
+      width: 20,
+      height: 20,
+      objectFit: 'contain',
+      verticalAlign: 'middle',
+      marginRight: 6
+    }}
+  />
+
+  {finished
+    ? 'ROUND 2 · BONUS'
+    : 'ROUND 1 · HOÀN THÀNH 5 NHIỆM VỤ ĐỂ NHẬN 1 BÔNG HOA VÀ MỞ KHÓA NHIỆM VỤ BONUS'}
+</div>
         )}
       </main>
-
-      {finished && bonusFlow === 'congrats' && (
-        <div
-          className="bonusFlowOverlay"
-          onClick={e => e.target === e.currentTarget && setBonusFlow(null)}
-        >
-          <div className="bonusFlowModal compact">
-            <div className="bonusFlowEyebrow">SUNFLOWER HARVEST 🌻</div>
-            <h2>Chúc mừng bạn! 🌻</h2>
-            <img
-              className="bonusFlowTinie small"
-              src="/assets/tinie.png"
-              alt="Tinie ôm giỏ hoa hướng dương"
-            />
-            <p className="bonusFlowLead">
-              Bạn đã hoàn thành đủ <b>5 nhiệm vụ hôm nay</b> và
-              <br />
-              <b>thu hoạch được 1 bông hướng dương!</b> 🌻
-            </p>
-            <div
-              style={{
-                margin: '12px 0',
-                padding: '10px 14px',
-                borderRadius: 12,
-                background: '#fff7cf',
-                border: '1px solid #e5bd41',
-                fontWeight: 900
-              }}
-            >
-              🌻 TỔNG HOA ĐÃ THU HOẠCH: {sunflowerCount + 1}
-            </div>
-            <p className="bonusFlowText">
-              Điểm của bạn vẫn được giữ nguyên. Sẵn sàng chăm 5 nhiệm vụ mới
-              cho ngày tiếp theo nhé! 💛
-            </p>
-            <button
-              className="bonusFlowPrimary"
-              onClick={advanceToNextDay}
-              disabled={advancingDay}
-            >
-              {advancingDay
-                ? 'ĐANG MỞ NGÀY MỚI...'
-                : `🌱 CHUYỂN SANG NGÀY ${dayNumber + 1}`}
-            </button>
-          </div>
-        </div>
-      )}
-      {false && finished && bonusFlow === 'invite' && (
-        <div
-          className="bonusFlowOverlay"
-          onClick={e => e.target === e.currentTarget && setBonusFlow(null)}
-        >
-          <div className="bonusFlowModal compact">
-            <button className="bonusFlowClose" onClick={() => setBonusFlow(null)}>×</button>
-            <div className="bonusFlowEyebrow">EXTRA CHALLENGE</div>
-            <h2>THỬ THÁCH NHỎ — NHẬN THÊM ĐIỂM! 🌻</h2>
-            <p className="bonusFlowText">
-              Nếu muốn đạt thêm điểm, hãy tham gia 4 thử thách nhỏ của chúng mình nhé!
-            </p>
-            <div className="bonusFlowRules">
-              <span>🌱 Bạn có thể chọn bất kỳ thử thách nào.</span>
-              <span>💚 Mỗi thử thách có điều kiện và số điểm riêng.</span>
-              <span>⏸ Bạn có thể dừng lại bất cứ lúc nào.</span>
-              <span>🎁 Điểm chỉ được cộng sau khi admin duyệt thành công.</span>
-            </div>
-            <div className="bonusFlowActions">
-              <button className="bonusFlowPrimary" onClick={startBonusChallenge} disabled={bonusStarting}>
-                {bonusStarting ? 'ĐANG MỞ...' : 'THAM GIA THỬ THÁCH NHỎ'}
-              </button>
-              <button className="bonusFlowSecondary" onClick={declineBonusChallenge} disabled={bonusStarting}>
-                ĐỂ NGÀY SAU NHÉ
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {false && finished && bonusFlow === 'declined' && (
-        <div className="bonusFlowOverlay">
-          <div className="bonusFlowModal compact">
-            <button className="bonusFlowClose" onClick={returnToMainMission}>×</button>
-            <div className="bonusFlowEyebrow">HẸN LẠI NHA 🌻</div>
-            <h2>Hẹn tinie vào ngày tiếp theo nhé!</h2>
-            <img
-              className="bonusFlowTinie small"
-              src="/assets/tinie.png"
-              alt="Tinie ôm hoa"
-            />
-            <p className="bonusFlowText">
-              Hãy giữ chuỗi và thu hoạch được nhiều hướng dương tặng lighT nha! 💛
-            </p>
-            <button className="bonusFlowPrimary" onClick={returnToMainMission}>
-              VỀ 5 CHẶNG CHÍNH
-            </button>
-          </div>
-        </div>
-      )}
-
-      {false && finished && bonusFlow === 'finish-confirm' && (
-        <div
-          className="bonusFlowOverlay"
-          onClick={e => e.target === e.currentTarget && setBonusFlow('active')}
-        >
-          <div className="bonusFlowModal compact">
-            <button className="bonusFlowClose" onClick={() => setBonusFlow('active')}>×</button>
-            <div className="bonusFlowEyebrow">BONUS CHALLENGE</div>
-            <h2>KẾT THÚC THỬ THÁCH NHỎ?</h2>
-            <img
-              className="bonusFlowTinie tiny"
-              src="/assets/tinie.png"
-              alt="Tinie"
-            />
-            <p className="bonusFlowText">
-              Bạn có chắc muốn dừng các thử thách nhỏ? Bạn vẫn có thể tham gia lại vào ngày mai.
-            </p>
-            <div className="bonusFlowActions">
-              <button className="bonusFlowPrimary" onClick={finishBonusChallenge}>
-                ĐỒNG Ý, KẾT THÚC
-              </button>
-              <button className="bonusFlowSecondary" onClick={() => setBonusFlow('active')}>
-                TIẾP TỤC LÀM THÊM
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {selected && (
         <MissionModal
@@ -3039,7 +3815,7 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
           }
           status={
             selected.mission_type === 'bonus'
-              ? bonusStates[selected.id]?.status ?? 'locked'
+              ? (round2Ready ? (bonusStates[selected.id]?.status ?? 'in_progress') : (bonusStates[selected.id]?.status ?? 'locked'))
               : statuses[selected.id]
           }
           latestSubmission={submissions[selected.id] || null}
@@ -3050,6 +3826,114 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
           }}
           notify={notify}
         />
+      )}
+
+      {round1CelebrationStep > 0 && (
+        <div
+          className="round1CelebrationOverlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Chúc mừng hoàn thành Round 1"
+        >
+          <div className="round1CelebrationModal">
+            <button
+              type="button"
+              className="round1CelebrationClose"
+              onClick={() => setRound1CelebrationStep(0)}
+              aria-label="Đóng"
+            >
+              ×
+            </button>
+
+            {round1CelebrationStep === 1 ? (
+              <>
+                <div className="round1CelebrationEyebrow">🌻 CHÚC MỪNG!</div>
+                <h2>Bạn đã hoàn thành Round 1!</h2>
+
+                <img
+                  src="/assets/tinie_sunflower.png"
+                  alt="Hoa hướng dương"
+                  className="round1CelebrationFlower"
+                  draggable="false"
+                />
+
+                <p className="round1CelebrationLead">
+                  Bạn nhận được <b>+1 bông hoa hướng dương</b> cho ngày hôm nay.
+                </p>
+
+                <p className="round1CelebrationText">
+                  Năm nhiệm vụ chính đã hoàn thành. Một bông hoa mới đã được gieo vào khu vườn của bạn!
+                </p>
+
+                <button
+                  type="button"
+                  className="round1CelebrationPrimary"
+                  onClick={() => setRound1CelebrationStep(2)}
+                >
+                  TIẾP TỤC →
+                </button>
+              </>
+            ) : (
+              <>
+                <div className="round1CelebrationEyebrow">
+                  <img
+                    src="/assets/icon_huongduong.png"
+                    alt=""
+                    aria-hidden="true"
+                    draggable="false"
+                    style={{ width: 20, height: 20, objectFit: 'contain', verticalAlign: 'middle', marginRight: 5 }}
+                  />
+                  ROUND 2
+                </div>
+                <h2>Bonus đã được mở!</h2>
+
+                <img
+                  src="/assets/icon_huongduong.png"
+                  alt="Hoa hướng dương"
+                  className="round1CelebrationFlower small"
+                  draggable="false"
+                />
+
+                <p className="round1CelebrationLead">
+                  <b>Round 2 · BONUS TỰ CHỌN</b>
+                </p>
+
+                <p className="round1CelebrationText">
+                  Bạn có thể chọn những nhiệm vụ Bonus để tiếp tục nhận thêm điểm.
+                  Bonus là một chặng riêng và không cộng dồn tiến độ với Round 1.
+                </p>
+
+                <div className="round1CelebrationActions">
+                  <button
+                    type="button"
+                    className="round1CelebrationPrimary"
+                    onClick={() => {
+                      setRound1CelebrationStep(0);
+                      setActiveRound('round2');
+                      setBonusFlow(null);
+                      requestAnimationFrame(() => {
+                        document.querySelector('.bonusArea')?.scrollIntoView({
+                          behavior: 'smooth',
+                          block: 'start'
+                        });
+                      });
+                    }}
+                  >
+                    XEM ROUND 2 BONUS
+                  </button>
+
+                  <button
+                    type="button"
+                    className="round1CelebrationSecondary"
+                    onClick={() => setRound1CelebrationStep(0)}
+                  >
+                    ĐỂ SAU
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
       )}
 
       {adminOpen && profile?.role === 'admin' && (
@@ -3227,6 +4111,9 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
   const [rejectReason, setRejectReason] = useState('');
   const [reviewError, setReviewError] = useState('');
   const [bonusAwardPoints, setBonusAwardPoints] = useState('');
+  // Rejected submissions are loaded separately so retry/50% is determined
+  // by the CURRENT game day/round, never by the lifetime attempt_no.
+  const [rejectedSubmissions, setRejectedSubmissions] = useState([]);
   const [adminNotifications, setAdminNotifications] = useState([]);
   const [unreadAdminCount, setUnreadAdminCount] = useState(0);
 
@@ -3239,6 +4126,7 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
 
       const [
         submissionsRes,
+        rejectedRes,
         profilesRes,
         ledgerRes,
         leaderboardRes,
@@ -3261,6 +4149,8 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
             external_action_id,
             quantity,
             activity_date,
+            game_day,
+            round2_harvest_id,
             points_awarded,
             note,
             status,
@@ -3270,6 +4160,28 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
             missions(slug, name, action, mission_type, target, points, unit_quantity, points_per_unit, max_points)
           `)
           .eq('status', 'pending')
+          .order('submitted_at', { ascending: false }),
+
+        // Used ONLY to determine whether a pending submission is a retry.
+        // A rejection from a previous game day/round must never consume
+        // today's first-submit (100%) allowance.
+        supabase
+          .from('mission_submissions')
+          .select(`
+            id,
+            user_id,
+            mission_id,
+            parent_submission_id,
+            attempt_no,
+            activity_date,
+            game_day,
+            round2_harvest_id,
+            submitted_at,
+            reviewed_at,
+            status,
+            missions(slug, mission_type)
+          `)
+          .eq('status', 'rejected')
           .order('submitted_at', { ascending: false }),
 
         supabase
@@ -3308,6 +4220,7 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
         throw submissionsRes.error;
       }
 
+      if (rejectedRes.error) console.error('admin rejected submissions:', rejectedRes.error);
       if (profilesRes.error) console.error('admin profiles:', profilesRes.error);
       if (ledgerRes.error) console.error('admin ledger:', ledgerRes.error);
       if (leaderboardRes.error) console.error('admin leaderboard:', leaderboardRes.error);
@@ -3316,6 +4229,7 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
 
       // Always update the pending queue when its own query succeeded.
       setPending(submissionsRes.data || []);
+      setRejectedSubmissions(rejectedRes.data || []);
       setUsers(profilesRes.data || []);
       setUserEmails(
         Object.fromEntries(
@@ -3337,11 +4251,64 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
   };
 
   useEffect(() => {
+    // Load once when Admin opens.
+    // Do NOT poll automatically: automatic reloads make the dashboard
+    // jump/scroll unexpectedly while the admin is reviewing submissions.
     loadAdmin();
-
-    const timer = window.setInterval(loadAdmin, 12000);
-    return () => window.clearInterval(timer);
   }, []);
+
+  /*
+   * Retry is DAY/ROUND scoped.
+   *
+   * IMPORTANT:
+   * `attempt_no` is a database history counter and may continue across days
+   * on older deployments. It must NOT decide whether today's submission gets
+   * the 50% retry cap.
+   *
+   * A submission is a retry only when there is an earlier REJECTED submission
+   * for the same user + mission + current game_day. For Round 2, the rejected
+   * row must also belong to the same round2_harvest_id.
+   */
+  const isSubmissionRetry = submission => {
+    if (!submission) return false;
+
+    const missionType = submission.missions?.mission_type;
+    const isBonus = missionType === 'bonus';
+
+    const currentGameDay =
+      submission.game_day != null ? Number(submission.game_day) : null;
+
+    return rejectedSubmissions.some(rejected => {
+      if (rejected.id === submission.id) return false;
+      if (rejected.user_id !== submission.user_id) return false;
+      if (rejected.mission_id !== submission.mission_id) return false;
+
+      const rejectedGameDay =
+        rejected.game_day != null ? Number(rejected.game_day) : null;
+
+      // New submissions should carry game_day. Keep a date fallback only for
+      // legacy rejected rows that predate the game_day column.
+      const sameDay =
+        currentGameDay != null && rejectedGameDay != null
+          ? rejectedGameDay === currentGameDay
+          : rejected.activity_date &&
+            submission.activity_date &&
+            rejected.activity_date === submission.activity_date;
+
+      if (!sameDay) return false;
+
+      // Bonus retries belong to the exact Round-2 harvest/instance.
+      if (isBonus) {
+        return (
+          rejected.round2_harvest_id != null &&
+          submission.round2_harvest_id != null &&
+          rejected.round2_harvest_id === submission.round2_harvest_id
+        );
+      }
+
+      return true;
+    });
+  };
 
   const openSubmission = async submission => {
     setSelectedSubmission(submission);
@@ -3352,41 +4319,61 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
     setSelectedEvidence(null);
 
     const [evidenceRpc, itemsRpc] = await Promise.all([
-      supabase.rpc('get_admin_submission_evidence', {
+      supabase.rpc('get_admin_submission_evidence_v3', {
         p_submission_id: submission.id
       }),
-      supabase.rpc('get_admin_submission_items', {
+      supabase.rpc('get_admin_submission_items_v3', {
         p_submission_id: submission.id
       })
     ]);
 
-    let evidenceRows = evidenceRpc.data || [];
-    let evidenceError = evidenceRpc.error || null;
+    // IMPORTANT: do not trust an empty RPC result. Older deployments can
+    // have a stale/incorrect admin RPC while the evidence rows themselves
+    // are already present. Fetch the base tables too and merge by id.
+    const directEvidence = await supabase
+      .from('submission_evidence')
+      .select('*')
+      .eq('submission_id', submission.id)
+      .order('item_no', { ascending: true, nullsFirst: true })
+      .order('created_at', { ascending: true });
 
-    if (evidenceError) {
-      const direct = await supabase
-        .from('submission_evidence')
-        .select('*')
-        .eq('submission_id', submission.id)
-        .order('created_at', { ascending: true });
+    const rpcEvidenceRows = evidenceRpc.data || [];
+    const directEvidenceRows = directEvidence.data || [];
+    const evidenceMap = new Map();
 
-      evidenceRows = direct.data || [];
-      evidenceError = direct.error || null;
+    for (const row of [...rpcEvidenceRows, ...directEvidenceRows]) {
+      const key = row?.id || `${row?.storage_path || row?.path || ''}|${row?.item_no ?? ''}|${row?.evidence_type || ''}`;
+      if (!evidenceMap.has(key)) evidenceMap.set(key, row);
     }
 
-    let itemRows = itemsRpc.data || [];
-    let itemError = itemsRpc.error || null;
+    let evidenceRows = Array.from(evidenceMap.values()).sort((a, b) => {
+      const ai = a?.item_no == null ? Number.MAX_SAFE_INTEGER : Number(a.item_no);
+      const bi = b?.item_no == null ? Number.MAX_SAFE_INTEGER : Number(b.item_no);
+      if (ai !== bi) return ai - bi;
+      return String(a?.created_at || '').localeCompare(String(b?.created_at || ''));
+    });
+    let evidenceError = evidenceRpc.error || directEvidence.error || null;
 
-    if (itemError) {
-      const direct = await supabase
-        .from('mission_submission_items')
-        .select('*')
-        .eq('submission_id', submission.id)
-        .order('item_no', { ascending: true });
+    // Same approach for structured items.
+    const directItems = await supabase
+      .from('mission_submission_items')
+      .select('*')
+      .eq('submission_id', submission.id)
+      .order('item_no', { ascending: true })
+      .order('created_at', { ascending: true });
 
-      itemRows = direct.data || [];
-      itemError = direct.error || null;
+    const rpcItemRows = itemsRpc.data || [];
+    const directItemRows = directItems.data || [];
+    const itemMap = new Map();
+    for (const row of [...rpcItemRows, ...directItemRows]) {
+      const key = row?.id || `${row?.item_no ?? ''}|${row?.account_id || ''}|${row?.redeem_code || ''}`;
+      if (!itemMap.has(key)) itemMap.set(key, row);
     }
+
+    let itemRows = Array.from(itemMap.values()).sort((a, b) =>
+      Number(a?.item_no || 0) - Number(b?.item_no || 0)
+    );
+    let itemError = itemsRpc.error || directItems.error || null;
 
     if (evidenceError) {
       console.error('admin evidence:', evidenceError);
@@ -3459,8 +4446,8 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
       decision === 'approved'
     ) {
       const pts = Number(bonusAwardPoints);
-      if (!Number.isInteger(pts) || pts < 0) {
-        setReviewError('Hãy nhập số điểm bonus hợp lệ.');
+      if (!Number.isFinite(pts) || pts < 0 || Math.round(pts * 2) !== pts * 2) {
+        setReviewError('Hãy nhập số điểm bonus hợp lệ (có thể dùng .5).');
         return;
       }
     }
@@ -3475,6 +4462,8 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
 
     try {
       const isBonusSubmission = selectedSubmission?.missions?.mission_type === 'bonus';
+      const isRetrySubmission = isSubmissionRetry(selectedSubmission);
+      const retryHalfMax = Number(selectedSubmission?.missions?.max_points || 0) / 2;
       const { data, error } = isBonusSubmission
         ? await supabase.rpc('review_bonus_mission_submission', {
             p_submission_id: selectedSubmission.id,
@@ -3484,7 +4473,10 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
               selectedSubmission?.missions?.slug === 'spotify_extra'
                 ? 0
                 : decision === 'approved'
-                  ? Number(bonusAwardPoints || 0)
+                  ? Math.min(
+                      Number(bonusAwardPoints || 0),
+                      isRetrySubmission ? retryHalfMax : Number(selectedSubmission?.missions?.max_points ?? Infinity)
+                    )
                   : 0,
             p_comment: decision === 'rejected' ? rejectReason.trim() : null
           })
@@ -4071,19 +5063,23 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
     background: 'rgba(20, 31, 26, .58)',
     display: 'grid',
     placeItems: 'center',
-    padding: 14
+    padding: 8,
+    boxSizing: 'border-box',
+    overflow: 'hidden'
   };
 
   const panelStyle = {
     width: 'min(1220px, 100%)',
-    height: 'min(92vh, 920px)',
+    height: 'min(calc(100dvh - 16px), 920px)',
+    maxHeight: 'calc(100dvh - 16px)',
     background: '#f7f2df',
     border: '3px solid #20352b',
     borderRadius: 22,
     overflow: 'hidden',
     boxShadow: '0 25px 90px rgba(0,0,0,.32)',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    boxSizing: 'border-box'
   };
 
   const tabButton = active => ({
@@ -4095,8 +5091,58 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
     cursor: 'pointer'
   });
 
+  const adminHeaderButtonCss = `
+    .adminLogoutButton {
+      min-height: 44px !important;
+      padding: 0 20px !important;
+      border: 2px solid #7b4037 !important;
+      border-radius: 12px !important;
+      background: #f4d8d1 !important;
+      color: #7b4037 !important;
+      font-size: 14px !important;
+      font-weight: 900 !important;
+      letter-spacing: .02em !important;
+      cursor: pointer !important;
+      box-shadow: 0 3px 0 #c79b92 !important;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease !important;
+    }
+    .adminLogoutButton:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 0 #c79b92 !important;
+      background: #f8e2dc !important;
+    }
+    .adminLogoutButton:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #c79b92 !important;
+    }
+    @media (max-width: 640px) {
+      .adminHeaderActions {
+        width: 100%;
+        justify-content: stretch !important;
+      }
+      .adminHeaderActions > button {
+        flex: 1 1 auto;
+      }
+      .adminHeaderActions > button:last-child {
+        flex: 0 0 44px;
+      }
+      .adminLogoutButton {
+        width: 100% !important;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .adminLogoutFooter {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+      }
+    }
+  `;
+
   return (
-    <div
+    <>
+      <style>{adminHeaderButtonCss}</style>
+      <div
       style={shellStyle}
       onClick={e => {
         // In full-screen Admin mode, the surrounding overlay must not log out.
@@ -4125,25 +5171,153 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
             <h2 style={{ margin: 0 }}>
               🔔 ADMIN DASHBOARD
             </h2>
-            {fullScreen && (
+           {/*{fullScreen && (
               <small style={{ display: 'block', marginTop: 4, opacity: .65 }}>
                 Quyền quản trị · khu vực riêng
               </small>
-            )}
+            )}*/}
           </div>
 
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <button type="button" onClick={loadAdmin}>
-              ↻ REFRESH
+          <div
+            className="adminHeaderActions"
+            style={{
+              display: 'flex',
+              gap: 10,
+              flexWrap: 'wrap',
+              alignItems: 'center',
+              justifyContent: 'flex-end'
+            }}
+          >
+            <button
+              type="button"
+              onClick={loadAdmin}
+              style={{
+                height: 44,
+                padding: '0 17px',
+                border: '2px solid #20352b',
+                borderRadius: 12,
+                background: '#eef6e8',
+                color: '#20352b',
+                fontSize: 14,
+                fontWeight: 900,
+                letterSpacing: '.02em',
+                cursor: 'pointer',
+                boxShadow: '0 3px 0 #b8c9b0',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 7,
+                transition: 'transform .15s ease, box-shadow .15s ease, background .15s ease'
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 5px 0 #b8c9b0';
+                e.currentTarget.style.background = '#f5faef';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 3px 0 #b8c9b0';
+                e.currentTarget.style.background = '#eef6e8';
+              }}
+              onMouseDown={e => {
+                e.currentTarget.style.transform = 'translateY(2px)';
+                e.currentTarget.style.boxShadow = '0 1px 0 #b8c9b0';
+              }}
+              onMouseUp={e => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 5px 0 #b8c9b0';
+              }}
+            >
+              <span style={{ fontSize: 20, lineHeight: 1 }}>↻</span>
+              <span>REFRESH</span>
             </button>
-            <button type="button" onClick={exportExcel}>
-              📊 EXPORT EXCEL
+
+            <button
+              type="button"
+              onClick={exportExcel}
+              style={{
+                height: 44,
+                padding: '0 17px',
+                border: '2px solid #20352b',
+                borderRadius: 12,
+                background: '#f7cf55',
+                color: '#20352b',
+                fontSize: 14,
+                fontWeight: 900,
+                letterSpacing: '.02em',
+                cursor: 'pointer',
+                boxShadow: '0 3px 0 #c39f32',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 7,
+                transition: 'transform .15s ease, box-shadow .15s ease, background .15s ease'
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 5px 0 #c39f32';
+                e.currentTarget.style.background = '#ffda6d';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 3px 0 #c39f32';
+                e.currentTarget.style.background = '#f7cf55';
+              }}
+              onMouseDown={e => {
+                e.currentTarget.style.transform = 'translateY(2px)';
+                e.currentTarget.style.boxShadow = '0 1px 0 #c39f32';
+              }}
+              onMouseUp={e => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 5px 0 #c39f32';
+              }}
+            >
+              <span style={{ fontSize: 17, lineHeight: 1 }}>▣</span>
+              <span>EXPORT EXCEL</span>
             </button>
+
             {!fullScreen && (
               <button
                 type="button"
                 onClick={onClose}
                 title="Đóng"
+                aria-label="Đóng"
+                style={{
+                  width: 44,
+                  height: 44,
+                  padding: 0,
+                  border: '2px solid #7b4037',
+                  borderRadius: 12,
+                  background: '#f4d8d1',
+                  color: '#7b4037',
+                  fontSize: 25,
+                  fontWeight: 900,
+                  lineHeight: 1,
+                  cursor: 'pointer',
+                  boxShadow: '0 3px 0 #c79b92',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'transform .15s ease, box-shadow .15s ease, background .15s ease'
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 5px 0 #c79b92';
+                  e.currentTarget.style.background = '#f8e2dc';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 3px 0 #c79b92';
+                  e.currentTarget.style.background = '#f4d8d1';
+                }}
+                onMouseDown={e => {
+                  e.currentTarget.style.transform = 'translateY(2px)';
+                  e.currentTarget.style.boxShadow = '0 1px 0 #c79b92';
+                }}
+                onMouseUp={e => {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 5px 0 #c79b92';
+                }}
               >
                 ×
               </button>
@@ -4173,7 +5347,10 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
             style={tabButton(tab === 'pending-bonus')}
             onClick={() => setTab('pending-bonus')}
           >
-            🌻 BONUS ({pending.filter(s => s.missions?.mission_type === 'bonus').length})
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                <img src="/assets/icon_huongduong.png" alt="" aria-hidden="true" draggable="false" style={{ width: 16, height: 16, objectFit: 'contain' }} />
+                BONUS ({pending.filter(s => s.missions?.mission_type === 'bonus').length})
+              </span>
           </button>
 
           <button
@@ -4211,9 +5388,11 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
 
         <div
           style={{
-            flex: 1,
+            flex: '1 1 auto',
             minHeight: 0,
             overflow: 'auto',
+            overscrollBehavior: 'contain',
+            WebkitOverflowScrolling: 'touch',
             padding: 16
           }}
         >
@@ -4258,6 +5437,20 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
                       <b>
 
                         {s.missions?.name || 'MISSION'} · #{s.attempt_no}
+                        {isSubmissionRetry(s) && (
+                          <span style={{
+                            marginLeft: 8,
+                            padding: '3px 7px',
+                            borderRadius: 999,
+                            background: '#fff0b8',
+                            border: '1px solid #d9ad35',
+                            color: '#765400',
+                            fontSize: 11,
+                            fontWeight: 900
+                          }}>
+                            ↻ SUBMIT LẠI · 50% ĐIỂM
+                          </span>
+                        )}
 
                       </b>
 
@@ -4450,7 +5643,12 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              padding: '14px 16px'
+              flex: '0 0 auto',
+              padding: '12px 16px calc(12px + env(safe-area-inset-bottom, 0px))',
+              background: '#f7f2df',
+              borderTop: '1px solid #d9ddcf',
+              position: 'relative',
+              zIndex: 2
             }}
           >
             <button
@@ -4501,6 +5699,22 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
                     {selectedSubmission.missions?.action} ·{' '}
                     {selectedSubmission.missions?.name}
                   </h2>
+                  {isSubmissionRetry(selectedSubmission) && (
+                    <div style={{
+                      marginTop: 7,
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      padding: '5px 9px',
+                      borderRadius: 999,
+                      background: '#fff0b8',
+                      border: '1px solid #d9ad35',
+                      color: '#765400',
+                      fontSize: 11,
+                      fontWeight: 900
+                    }}>
+                      ↻ ĐÂY LÀ SUBMIT LẠI LẦN DUY NHẤT · CHỈ DUYỆT 50% ĐIỂM
+                    </div>
+                  )}
                 </div>
                 <button
                   type="button"
@@ -4614,14 +5828,54 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
                     >
                       REVIEW DETAILS
                     </small>
-                    <b style={{ fontSize: 14 }}>
-                      {selectedSubmission?.missions?.mission_type === 'bonus'
-                        ? '🌻 BONUS SUBMISSION'
-                        : '📋 NỘI DUNG SUBMISSION'}
+                    <b style={{ fontSize: 14, display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                      {selectedSubmission?.missions?.mission_type === 'bonus' ? (
+                        <>
+                          <img
+                            src="/assets/icon_huongduong.png"
+                            alt=""
+                            aria-hidden="true"
+                            draggable="false"
+                            style={{ width: 18, height: 18, objectFit: 'contain' }}
+                          />
+                          BONUS SUBMISSION
+                        </>
+                      ) : '📋 NỘI DUNG SUBMISSION'}
                     </b>
                   </div>
 
-                  {details?.items?.length ? (
+                  {(() => {
+                  const slug = selectedSubmission?.missions?.slug;
+                  const needsEvidence =
+                    slug === 'spotify_extra' ||
+                    slug === 'itunes_extra' ||
+                    slug === 'youtube_extra';
+                  const evidenceCount = details?.evidence?.length || 0;
+                  if (!needsEvidence || evidenceCount > 0 || !details) return null;
+                  return (
+                    <div
+                      style={{
+                        padding: 12,
+                        marginBottom: 10,
+                        borderRadius: 10,
+                        background: '#fff3f0',
+                        border: '1px solid #e7b0a7',
+                        color: '#8b3f35',
+                        fontSize: 12,
+                        lineHeight: 1.5
+                      }}
+                    >
+                      <b>⚠️ Submission này chưa có bản ghi minh chứng trong database.</b>
+                      <div>
+                        Account/Redeem vẫn được lưu từ <code>mission_submission_items</code>,
+                        nhưng ảnh chưa nằm trong <code>submission_evidence</code>.
+                        Hãy chạy SQL <code>ROUND2_EVIDENCE_FINAL_FIX_v4.sql</code> rồi submit lại Bonus.
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {details?.items?.length ? (
                     <small style={{ opacity: .55 }}>
                       {details.items.length} mục
                     </small>
@@ -4639,7 +5893,10 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
                         border: '1px solid #b8d68d'
                       }}
                     >
-                      <b style={{ display: 'block' }}>🌻 SPOTIFY EXTRA — ĐIỂM TỰ ĐỘNG</b>
+                      <b style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                        <img src="/assets/icon_huongduong.png" alt="" aria-hidden="true" draggable="false" style={{ width: 18, height: 18, objectFit: 'contain' }} />
+                        SPOTIFY EXTRA — ĐIỂM TỰ ĐỘNG
+                      </b>
                       <small
                         style={{
                           display: 'block',
@@ -4652,12 +5909,15 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
                         tối đa +15 điểm. Admin chỉ cần kiểm tra minh chứng rồi APPROVE hoặc REJECT.
                       </small>
                       <b style={{ display: 'block', marginTop: 7 }}>
-                        Dự kiến: +{Math.min(
-                          15,
-                          Math.floor(
-                            Number(selectedSubmission?.quantity || 0) / 15
-                          ) * 5
-                        )} điểm
+                        {(() => {
+                          const basePoints = Math.min(
+                            15,
+                            Math.floor(Number(selectedSubmission?.quantity || 0) / 15) * 5
+                          );
+                          const isRetry = isSubmissionRetry(selectedSubmission);
+                          const expected = isRetry ? basePoints * 0.5 : basePoints;
+                          return <>Dự kiến: +{Number(expected).toFixed(1).replace(/\.0$/, '')} điểm{isRetry ? ' · 50%' : ''}</>;
+                        })()}
                       </b>
                     </div>
                   )}
@@ -4673,17 +5933,26 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
                         border: '1px solid #e6c65a'
                       }}
                     >
-                      <b style={{ display: 'block' }}>🌻 ĐIỂM BONUS ADMIN DUYỆT</b>
+                      <b style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                        <img src="/assets/icon_huongduong.png" alt="" aria-hidden="true" draggable="false" style={{ width: 18, height: 18, objectFit: 'contain' }} />
+                        ĐIỂM BONUS DO ADMIN DUYỆT
+                        {isSubmissionRetry(selectedSubmission) && ' · SUBMIT LẠI → TỐI ĐA 50%'}
+                      </b>
                       <input
                         type="number"
                         min={0}
-                        max={selectedSubmission?.missions?.max_points ?? undefined}
-                        step={1}
+                        max={
+                          isSubmissionRetry(selectedSubmission)
+                            ? Number(selectedSubmission?.missions?.max_points || 0) / 2
+                            : (selectedSubmission?.missions?.max_points ?? undefined)
+                        }
+                        step={0.5}
                         value={bonusAwardPoints}
                         onChange={e => {
-                          const max = Number(
-                            selectedSubmission?.missions?.max_points ?? Infinity
-                          );
+                          const max = Number(selectedSubmission?.missions?.max_points ?? Infinity);
+                          const effectiveMax = isSubmissionRetry(selectedSubmission)
+                            ? max / 2
+                            : max;
                           const value = e.target.value;
                           if (value === '') {
                             setBonusAwardPoints('');
@@ -4692,11 +5961,15 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
                           const number = Number(value);
                           setBonusAwardPoints(
                             Number.isFinite(number)
-                              ? String(Math.min(Math.max(0, number), max))
+                              ? String(Math.min(Math.max(0, number), effectiveMax))
                               : ''
                           );
                         }}
-                        placeholder="Nhập số điểm"
+                        placeholder={
+                          isSubmissionRetry(selectedSubmission)
+                            ? `Tối đa ${Number(selectedSubmission?.missions?.max_points || 0) / 2} điểm (retry)`
+                            : 'Nhập số điểm'
+                        }
                         style={{
                           width: '100%',
                           marginTop: 7,
@@ -4758,12 +6031,31 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
 
                 {details?.items?.length ? (
                   <div style={{ display: 'grid', gap: 10 }}>
-                    {details.items.map(item => {
+                    {details.items.map((item, itemIndex) => {
                       const slug = selectedSubmission?.missions?.slug;
-                      const itemEvidence = (details.evidence || []).filter(
+                      let itemEvidence = (details.evidence || []).filter(
                         evidence =>
                           Number(evidence.item_no) === Number(item.item_no)
                       );
+
+                      // Spotify Extra stores one stats.fm image per account.
+                      // If an older evidence RPC/row has no item_no, fall back
+                      // to the evidence order so the image is still shown.
+                      if (
+                        itemEvidence.length === 0 &&
+                        (slug === 'spotify' || slug === 'spotify_extra' || slug === 'itunes_extra')
+                      ) {
+                        const fallbackEvidenceTypes =
+                          slug === 'itunes_extra'
+                            ? ['itunes_web_code_screenshot', 'redeem_screenshot']
+                            : ['stream_screenshot'];
+                        const orderedEvidence = (details.evidence || []).filter(
+                          evidence => fallbackEvidenceTypes.includes(evidence.evidence_type)
+                        );
+                        if (orderedEvidence[itemIndex]) {
+                          itemEvidence = [orderedEvidence[itemIndex]];
+                        }
+                      }
 
                       const title =
                         slug === 'facebook'
@@ -5013,6 +6305,144 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
                   </div>
                 ) : null}
 
+                {/*
+                 * Spotify Extra / iTunes Extra fallback:
+                 * Some legacy item RPC rows may be missing or may not carry item_no.
+                 * In that case, still render every uploaded proof in the Admin panel.
+                 */}
+                {(() => {
+                  const slug = selectedSubmission?.missions?.slug;
+                  const isExtraEvidenceMission =
+                    slug === 'spotify_extra' || slug === 'itunes_extra';
+                  const hasItems = Boolean(details?.items?.length);
+                  const evidenceTypes =
+                    slug === 'itunes_extra'
+                      ? ['itunes_web_code_screenshot', 'redeem_screenshot']
+                      : ['stream_screenshot'];
+                  const fallbackEvidence = (details?.evidence || []).filter(
+                    evidence => evidenceTypes.includes(evidence.evidence_type)
+                  );
+
+                  if (!isExtraEvidenceMission || hasItems || !fallbackEvidence.length) {
+                    return null;
+                  }
+
+                  const label = index =>
+                    slug === 'itunes_extra'
+                      ? `REDEEM ${index + 1}`
+                      : `ACCOUNT SPOTIFY ${index + 1}`;
+
+                  return (
+                    <div style={{ display: 'grid', gap: 10 }}>
+                      {fallbackEvidence.map((evidence, index) => (
+                        <article
+                          key={evidence.id}
+                          style={{
+                            padding: 10,
+                            borderRadius: 12,
+                            background: '#fff',
+                            border: '1px solid #dfe3d9',
+                            overflow: 'hidden'
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              gap: 8,
+                              marginBottom: 8
+                            }}
+                          >
+                            <b>{label(index)}</b>
+                            <small
+                              style={{
+                                padding: '3px 6px',
+                                borderRadius: 99,
+                                background: '#eef6ed',
+                                color: '#356640',
+                                fontWeight: 800
+                              }}
+                            >
+                              MINH CHỨNG
+                            </small>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() =>
+                              evidence.signedUrl && setSelectedEvidence(evidence)
+                            }
+                            disabled={!evidence.signedUrl}
+                            style={{
+                              width: '100%',
+                              padding: 0,
+                              border: '1px solid #d5d9cf',
+                              borderRadius: 10,
+                              overflow: 'hidden',
+                              background: '#fff',
+                              textAlign: 'left',
+                              cursor: evidence.signedUrl ? 'zoom-in' : 'default'
+                            }}
+                          >
+                            {evidence.signedUrl ? (
+                              <img
+                                src={evidence.signedUrl}
+                                alt={evidence.original_filename || 'proof'}
+                                style={{
+                                  display: 'block',
+                                  width: '100%',
+                                  maxHeight: 420,
+                                  objectFit: 'contain',
+                                  background: '#f7f8f5'
+                                }}
+                              />
+                            ) : (
+                              <div
+                                style={{
+                                  minHeight: 160,
+                                  display: 'grid',
+                                  placeItems: 'center',
+                                  padding: 12,
+                                  fontSize: 11,
+                                  textAlign: 'center'
+                                }}
+                              >
+                                {evidence.signedUrlError ||
+                                  'Không mở được ảnh minh chứng'}
+                              </div>
+                            )}
+                            <div style={{ padding: 7, minWidth: 0 }}>
+                              <b
+                                style={{
+                                  display: 'block',
+                                  fontSize: 11,
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                  whiteSpace: 'nowrap'
+                                }}
+                                title={evidence.original_filename || 'Minh chứng'}
+                              >
+                                {evidence.original_filename || 'Minh chứng'}
+                              </b>
+                              <small
+                                style={{
+                                  display: 'block',
+                                  marginTop: 3,
+                                  opacity: .55,
+                                  fontSize: 9
+                                }}
+                              >
+                                {evidence.evidence_type || 'MINH CHỨNG'}
+                              </small>
+                            </div>
+                          </button>
+                        </article>
+                      ))}
+                    </div>
+                  );
+                })()}
+
                 {/* Evidence without item_no: keep it visible, but clearly separate
                     instead of making it look like it belongs to a random account. */}
                 {(() => {
@@ -5026,6 +6456,8 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
                       )
                   );
 
+                  const slug = selectedSubmission?.missions?.slug;
+                  if (slug === 'spotify_extra' || slug === 'itunes_extra') return null;
                   if (!unassignedEvidence.length) return null;
 
                   return (
@@ -5263,7 +6695,8 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
           </div>
         )}
       </section>
-    </div>
+      </div>
+    </>
   );
 }
 
@@ -5291,112 +6724,81 @@ function Info({ label, value }) {
 }
 
 /* =========================================================
-   LOGO
-   ========================================================= */
-
-function Logo({ mission }) {
-  const [failed, setFailed] =
-    useState(false);
-
-  if (failed) {
-    return (
-      <div
-        className="logoFallback"
-        style={{
-          '--missionColor':
-            mission.color
-        }}
-      >
-        {logoFallback(
-          mission.name
-        )}
-      </div>
-    );
-  }
-
-  return (
-    <img
-      className="missionLogo"
-      src={mission.logo}
-      alt={mission.name}
-      onError={() =>
-        setFailed(true)
-      }
-    />
-  );
-}
-
-/* =========================================================
    SUNFLOWER GROWTH
    ========================================================= */
 
-function Plant({
-  growthStage,
-  done,
-  active
-}) {
-  const stageNames = {
-    1: 'seed',
-    2: 'sprout',
-    3: 'leaves',
-    4: 'bud',
-    5: 'bloom'
-  };
-
-  // Current mission: show Tinie doing that mission.
-  // Completed mission: show the normal sunflower stage.
-  // Locked/unopened mission: show the neutral Tinie_1 image.
-  const tinieActionImages = {
-    1: '/assets/tinie-seed.png',
-    2: '/assets/tinie-water.png',
-    3: '/assets/tinie-sun.png',
-    4: '/assets/tinie-bud.png',
-    5: '/assets/tinie-spotify.png'
-  };
-
-  const stageName = stageNames[growthStage] || 'seed';
-
-  if (done) {
-    return (
-      <div className="plantAssetWrapper is-done">
-        <img
-          className={`plantAsset plantAsset-${growthStage}`}
-          src={`/assets/sunflower-stage-${growthStage}-${stageName}.png`}
-          alt={`Giai đoạn ${growthStage}`}
-          onError={e => {
-            e.currentTarget.style.opacity = '0';
-          }}
-        />
-        <div className="growthSparkles" aria-hidden="true">
-          ✦　✧　✦
-        </div>
-      </div>
-    );
-  }
-
-  const imageSrc = active
-    ? tinieActionImages[growthStage]
-    : '/assets/tinie_1.png';
+function Plant({ growthStage, done, active }) {
+  const growthImage = GROWTH_IMAGE_ASSETS[growthStage];
 
   return (
     <div
-      className={[
-        'plantAssetWrapper',
-        active ? 'is-active' : '',
-        'tinieMissionWrapper'
-      ].join(' ')}
+      className={`growthPlant growth-${growthStage} ${
+        done ? 'plantDone' : ''
+      } ${active ? 'plantActive' : ''}`}
+      aria-label={`Giai đoạn ${growthStage} của cây hướng dương`}
+      style={{
+        position: 'relative',
+        overflow: 'visible'
+      }}
     >
-      <img
-        className={active ? 'tinieActionAsset' : 'tinieLockedAsset'}
-        src={imageSrc}
-        alt={active ? `tinie đang thực hiện nhiệm vụ ${growthStage}` : 'tinie'}
-        onError={e => {
-          e.currentTarget.style.opacity = '0';
-        }}
-      />
+{growthImage && (
+        <img
+          className={`growthPlantImage growthPlantImage-${growthStage}`}
+          src={growthImage}
+          alt={`Cây hướng dương giai đoạn ${growthStage}`}
+          draggable="false"
+          onError={e => {
+            e.currentTarget.style.display = 'none';
+          }}
+          style={{
+            position: 'absolute',
+            left: '50%',
+            bottom: '8px',
+            transform: 'translateX(-50%)',
+            width: growthStage === 1 ? '56px'
+              : growthStage === 2 ? '82px'
+              : growthStage === 3 ? '100px'
+              : growthStage === 4 ? '114px'
+              : '124px',
+            height: 'auto',
+            maxWidth: 'none',
+            display: 'block',
+            objectFit: 'contain',
+            objectPosition: 'center bottom',
+            zIndex: 2,
+            pointerEvents: 'none'
+          }}
+        />
+      )}
+
+      
     </div>
   );
 }
+
+
+/* =========================================================
+   HOA HƯỚNG DƯƠNG — CSS-IN-JS
+   ========================================================= */
+
+function SunflowerFlower() {
+  return (
+    <div className="sunflowerFlower" aria-hidden="true">
+      <span className="petal p1" />
+      <span className="petal p2" />
+      <span className="petal p3" />
+      <span className="petal p4" />
+      <span className="petal p5" />
+      <span className="petal p6" />
+      <span className="petal p7" />
+      <span className="petal p8" />
+      <span className="flowerCenter">
+        <i />
+      </span>
+    </div>
+  );
+}
+
 
 /* =========================================================
    MISSION MODAL / SUBMISSION
@@ -5426,42 +6828,17 @@ function MissionModal({
     spotify: 'spotify_extra',
   };
 
-  const bonusMission = bonusMissionMap[mission.id]
-    ? BONUS_MISSIONS.find(m => m.id === bonusMissionMap[mission.id])
-    : null;
+  const bonusMission = isBonus
+    ? localMission
+    : bonusMissionMap[mission.id]
+      ? BONUS_MISSIONS.find(m => m.id === bonusMissionMap[mission.id])
+      : null;
 
   const [submissionStep, setSubmissionStep] = useState(
     isBonus ? 'main-submit' : 'main'
   );
-  const [includeBonus, setIncludeBonus] = useState(false);
-  const [bonusItems, setBonusItems] = useState(() => {
-    if (!bonusMission) return [];
-    if (bonusMission.id === 'itunes_extra') {
-      return [{
-        contentUrl: '', platform: 'itunes', metadata: {}
-      }];
-    }
-    if (bonusMission.id === 'youtube_extra') {
-      return [{ accountId: '', contentUrl: '', platform: 'youtube', metadata: { liked: false, commented: false } }];
-    }
-    if (bonusMission.id === 'social_extra') {
-      return [{ accountId: '', redeemCode: '', contentUrl: '', platform: 'facebook', metadata: {} }];
-    }
-    if (bonusMission.id === 'tiktok_extra') {
-      return [{ accountId: '', redeemCode: '', contentUrl: '', platform: 'tiktok', metadata: {} }];
-    }
-    if (bonusMission.id === 'spotify_extra') {
-      return [{
-        accountId: '',
-        activityDate: new Date().toISOString().slice(0, 10),
-        quantity: 15,
-        contentUrl: '',
-        platform: 'spotify',
-        metadata: { activity_date: new Date().toISOString().slice(0, 10), quantity: 15 }
-      }];
-    }
-    return [];
-  });
+  // Round 2 Bonus starts with ZERO items. It must never inherit Round 1 items/progress.
+  const [bonusItems, setBonusItems] = useState([]);
   const [bonusFiles, setBonusFiles] = useState([]);
   const [bonusSpotifyProofFiles, setBonusSpotifyProofFiles] = useState({});
   const [bonusItunesProofFiles, setBonusItunesProofFiles] = useState({});
@@ -5575,12 +6952,18 @@ function MissionModal({
     };
   }, []);
 
-  const isLocked = status === 'locked';
+  // Mandatory missions are never locked by sequence.
+  const isLocked = false;
   const isPending = status === 'pending_review';
   const isCompleted = status === 'completed' && !isBonus;
+  const isBonusApprovedToday =
+    isBonus && (
+      status === 'approved_locked' ||
+      latestSubmission?.status === 'approved'
+    );
   const isBonusMaxed =
     isBonus && Number(count || 0) >= Number(localMission.target || 0);
-  const isRejected = latestSubmission?.status === 'rejected';
+  const isRejected = !isBonusApprovedToday && latestSubmission?.status === 'rejected';
 
   useEffect(() => {
     if (mission.id === 'spotify' || mission.id === 'spotify_extra') {
@@ -5814,7 +7197,7 @@ function MissionModal({
     }
     if (mission.id === 'spotify') {
       if (!accountId.trim()) { notify('Hãy nhập account Spotify.'); return false; }
-      if (Number(quantity) !== 15) { notify('Spotify nhiệm vụ chính cần đúng 15 streams.'); return false; }
+      if (Number(quantity) < 1) { notify('Hãy nhập số stream lớn hơn 0.'); return false; }
       if (!activityDate) { notify('Hãy chọn ngày stream.'); return false; }
     }
     return true;
@@ -5870,18 +7253,15 @@ function MissionModal({
     setBonusItems(prev => [
       ...prev,
       {
+        accountId: '',
         contentUrl: '',
         platform,
-        metadata:
-          platform === 'youtube'
-            ? { liked: false, commented: false }
-            : {}
+        metadata: {}
       }
     ]);
   };
 
   const removeBonusItem = index => {
-    if (bonusItems.length <= 1) return;
     setBonusItems(prev => prev.filter((_, i) => i !== index));
   };
 
@@ -5942,7 +7322,7 @@ function MissionModal({
   };
 
   const validateBonus = () => {
-    if (!includeBonus || !bonusMission) return true;
+    if (!bonusMission) return false;
 
     if (bonusMission.id === 'itunes_extra') {
       if (bonusItems.length < 1 || bonusItems.length > 10) { notify('iTunes Extra: bạn có thể gửi từ 1 đến 10 CODE.'); return false; }
@@ -5954,7 +7334,9 @@ function MissionModal({
     if (bonusMission.id === 'youtube_extra') {
       if (!bonusItems.length || bonusItems.length > 5) { notify('YouTube Extra: mỗi gói Like + Comment = +2 điểm, tối đa 10 điểm.'); return false; }
       for (let i = 0; i < bonusItems.length; i++) {
+        const item = bonusItems[i];
         const proofs = bonusYoutubeProofFiles[i] || {};
+        if (!item?.accountId?.trim()) { notify(`YouTube Extra tài khoản #${i + 1}: cần account / username.`); return false; }
         if (!proofs.subscribe || !proofs.like || !proofs.comment) { notify(`YouTube Extra tài khoản #${i + 1}: cần đủ 3 ảnh Subscribe, Like và Comment.`); return false; }
       }
     }
@@ -5974,9 +7356,6 @@ function MissionModal({
         return false;
       }
 
-      const mainAccount = accountId.trim().toLowerCase();
-      const seen = new Set();
-
       for (let i = 0; i < bonusItems.length; i++) {
         const item = bonusItems[i];
         const acc = (item.accountId || '').trim();
@@ -5986,19 +7365,8 @@ function MissionModal({
           return false;
         }
 
-        const key = acc.toLowerCase();
-        if (key === mainAccount) {
-          notify(`Spotify Extra tài khoản #${i + 1}: phải dùng account khác tài khoản Spotify ở nhiệm vụ chính.`);
-          return false;
-        }
-        if (seen.has(key)) {
-          notify(`Spotify Extra tài khoản #${i + 1}: account bị trùng.`);
-          return false;
-        }
-        seen.add(key);
-
-        if (Number(item.quantity || 15) !== 15) {
-          notify(`Spotify Extra tài khoản #${i + 1}: số stream phải đúng 15.`);
+        if (Number(item.quantity || 0) < 15) {
+          notify(`Spotify Extra tài khoản #${i + 1}: cần ít nhất 15 streams.`);
           return false;
         }
         if (!item.activityDate) {
@@ -6020,15 +7388,24 @@ function MissionModal({
   };
 
   const submit = async () => {
-    if (!mainMissionValidation()) return;
-    if (!validateBonus()) return;
+    // Round 2 is a completely separate form.
+    // Never validate a Round 2 submission with Round 1 rules.
+    if (isBonus) {
+      if (!validateBonus()) return;
+    } else {
+      if (!mainMissionValidation()) return;
+    }
+    if (isBonus && isBonusApprovedToday) {
+      notify('Bonus này đã được Admin duyệt hôm nay và đã khóa. Ngày mai bạn có thể submit lại.');
+      return;
+    }
+
     if (submitting) return;
 
     setSubmitting(true);
     const uploaded = [];
     const bonusUploaded = [];
     let createdSubmissionId = null;
-    let createdBonusSubmissionId = null;
     let submissionCommitted = false;
 
     const cleanupStorage = async () => {
@@ -6044,13 +7421,12 @@ function MissionModal({
     };
 
     const rollbackSubmission = async () => {
-      for (const id of [createdBonusSubmissionId, createdSubmissionId]) {
+      for (const id of [createdSubmissionId]) {
         if (!id) continue;
         const { error } = await supabase.rpc('rollback_pending_submission', { p_submission_id: id });
         if (error) console.error('rollback pending submission:', error);
       }
       createdSubmissionId = null;
-      createdBonusSubmissionId = null;
     };
 
     try {
@@ -6188,76 +7564,56 @@ function MissionModal({
         }
       }
 
-      if (includeBonus && bonusMission) {
-        const bonusDraftId = makeDraftId();
-
-        if (bonusMission.id === 'itunes_extra') {
-          for (let i = 0; i < bonusItems.length; i++) {
-            const file = bonusItunesProofFiles[i];
-            const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-            const path = `${user.id}/${bonusMission.id}/${bonusDraftId}/item-${i + 1}-${Date.now()}-${safeName}`;
-            const { error: uploadError } = await supabase.storage.from('mission-evidence').upload(path, file, { contentType: file.type, upsert: false });
-            if (uploadError) throw uploadError;
-            bonusUploaded.push({ path, type: 'itunes_web_code_screenshot', file, itemNo: i + 1 });
-          }
-        }
-
-        if (bonusMission.id === 'youtube_extra') {
-          const proofTypes = [['subscribe','youtube_subscribe_screenshot'],['like','youtube_like_screenshot'],['comment','youtube_comment_screenshot']];
+      // Round 2 Bonus proofs must be uploaded and linked to the submission later.
+      // TikTok/Social use links as their evidence; iTunes, Spotify and YouTube
+      // use per-item image evidence.
+      if (isBonus) {
+        if (mission.id === 'youtube_extra') {
+          const proofTypes = [
+            ['subscribe', 'youtube_subscribe_screenshot'],
+            ['like', 'youtube_like_screenshot'],
+            ['comment', 'youtube_comment_screenshot']
+          ];
           for (let i = 0; i < bonusItems.length; i++) {
             const proofs = bonusYoutubeProofFiles[i] || {};
             for (const [proofType, evidenceType] of proofTypes) {
               const file = proofs[proofType];
+              if (!file) throw new Error(`YouTube Extra tài khoản ${i + 1}: thiếu ảnh ${proofType}.`);
               const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-              const path = `${user.id}/${bonusMission.id}/${bonusDraftId}/account-${i + 1}-${proofType}-${Date.now()}-${safeName}`;
-              const { error: uploadError } = await supabase.storage.from('mission-evidence').upload(path, file, { contentType: file.type, upsert: false });
+              const storagePath = `${user.id}/${mission.id}/${draftId}/account-${i + 1}-${proofType}-${Date.now()}-${safeName}`;
+              const { error: uploadError } = await supabase.storage.from('mission-evidence').upload(storagePath, file, { contentType: file.type, upsert: false });
               if (uploadError) throw uploadError;
-              bonusUploaded.push({ path, type: evidenceType, file, itemNo: i + 1 });
+              bonusUploaded.push({ path: storagePath, type: evidenceType, file, itemNo: i + 1 });
             }
           }
-        }
-
-        if (bonusMission.id === 'spotify_extra') {
+        } else if (mission.id === 'spotify_extra') {
           for (let i = 0; i < bonusItems.length; i++) {
             const file = bonusSpotifyProofFiles[i];
             if (!file) throw new Error(`Spotify Extra tài khoản ${i + 1}: thiếu ảnh minh chứng stats.fm.`);
-
             const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-            const path = `${user.id}/${bonusMission.id}/${bonusDraftId}/account-${i + 1}-${Date.now()}-${safeName}`;
-            const { error: uploadError } = await supabase.storage
-              .from('mission-evidence')
-              .upload(path, file, { contentType: file.type, upsert: false });
+            const storagePath = `${user.id}/${mission.id}/${draftId}/account-${i + 1}-stats-${Date.now()}-${safeName}`;
+            const { error: uploadError } = await supabase.storage.from('mission-evidence').upload(storagePath, file, { contentType: file.type, upsert: false });
             if (uploadError) throw uploadError;
-
-            bonusUploaded.push({
-              path,
-              type: 'stream_screenshot',
-              file,
-              itemNo: i + 1
-            });
+            bonusUploaded.push({ path: storagePath, type: 'stream_screenshot', file, itemNo: i + 1 });
           }
-        } else {
-          for (const file of bonusFiles) {
+        } else if (mission.id === 'itunes_extra') {
+          for (let i = 0; i < bonusItems.length; i++) {
+            const file = bonusItunesProofFiles[i];
+            if (!file) throw new Error(`iTunes Extra CODE ${i + 1}: thiếu ảnh minh chứng.`);
             const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-            const path = `${user.id}/${bonusMission.id}/${bonusDraftId}/${Date.now()}-${safeName}`;
-            const { error: uploadError } = await supabase.storage.from('mission-evidence').upload(path, file, { contentType: file.type, upsert: false });
+            const storagePath = `${user.id}/${mission.id}/${draftId}/item-${i + 1}-code-${Date.now()}-${safeName}`;
+            const { error: uploadError } = await supabase.storage.from('mission-evidence').upload(storagePath, file, { contentType: file.type, upsert: false });
             if (uploadError) throw uploadError;
-            bonusUploaded.push({ path, type: 'stream_screenshot', file });
+            bonusUploaded.push({ path: storagePath, type: 'itunes_web_code_screenshot', file, itemNo: i + 1 });
           }
         }
       }
 
       const topQuantity = isBonus
         ? Number(
-            mission.id === 'social_extra'
-              ? items.length
-              : mission.id === 'tiktok_extra'
-                ? items.length
-                : mission.id === 'youtube_extra'
-                  ? items.length
-                  : mission.id === 'itunes_extra'
-                    ? 3
-                    : quantity
+            mission.id === 'spotify_extra'
+              ? bonusItems.reduce((sum, item) => sum + Number(item.quantity || 0), 0)
+              : bonusItems.length
           )
         : mission.id === 'spotify'
           ? Number(quantity)
@@ -6268,21 +7624,24 @@ function MissionModal({
        * For YouTube, if anything below fails, rollback_pending_submission()
        * removes the just-created pending submission before we clean Storage.
        */
-      const { data: submission, error: submitError } =
-        await supabase.rpc('submit_mission_v4', {
-          p_mission_slug: mission.id,
-          p_content_url: postUrl.trim() || null,
-          p_note: note.trim() || null,
-          p_platform:
-            mission.id === 'social_extra'
-              ? 'social'
-              : mission.id,
-          p_account_id: accountId.trim() || null,
-          p_redeem_code: redeemCode.trim() || null,
-          p_external_action_id:
-            externalActionId.trim() || null,
-          p_quantity: topQuantity
-        });
+      const { data: submission, error: submitError } = isBonus
+        ? await supabase.rpc('submit_round2_bonus_submission', {
+            p_mission_slug: mission.id,
+            p_quantity: topQuantity,
+            p_content_url: null,
+            p_note: note.trim() || null,
+            p_platform: mission.id.replace('_extra', '')
+          })
+        : await supabase.rpc('submit_mission_v4', {
+            p_mission_slug: mission.id,
+            p_content_url: postUrl.trim() || null,
+            p_note: note.trim() || null,
+            p_platform: mission.id,
+            p_account_id: accountId.trim() || null,
+            p_redeem_code: redeemCode.trim() || null,
+            p_external_action_id: externalActionId.trim() || null,
+            p_quantity: topQuantity
+          });
 
       if (submitError) throw submitError;
 
@@ -6318,20 +7677,25 @@ function MissionModal({
        * For YouTube the user no longer enters username/link, so these
        * items intentionally remain minimal and carry the proof metadata.
        */
-      for (let i = 0; i < items.length; i++) {
-        const item = items[i];
+      const submissionItems = isBonus ? bonusItems : items;
+      for (let i = 0; i < submissionItems.length; i++) {
+        const item = submissionItems[i];
 
         const itemQuantity =
-          mission.id === 'spotify' || mission.id === 'spotify_extra'
-            ? Number(quantity)
-            : item.quantity || 1;
+          mission.id === 'spotify_extra'
+            ? Number(item.quantity || 0)
+            : mission.id === 'spotify'
+              ? Number(quantity)
+              : item.quantity || 1;
 
         const metadata = {
           ...(item.metadata || {}),
           activity_date:
-            mission.id === 'spotify' || mission.id === 'spotify_extra'
+            mission.id === 'spotify'
               ? activityDate
-              : item.metadata?.activity_date
+              : mission.id === 'spotify_extra'
+                ? item.activityDate
+                : item.metadata?.activity_date
         };
 
         const { error: itemError } = await supabase.rpc(
@@ -6342,9 +7706,11 @@ function MissionModal({
             p_platform: item.platform || mission.id,
             p_content_url: item.contentUrl?.trim() || null,
             p_account_id:
-              mission.id === 'spotify' || mission.id === 'spotify_extra'
+              mission.id === 'spotify'
                 ? accountId.trim() || null
-                : item.accountId?.trim() || null,
+                : mission.id === 'spotify_extra'
+                  ? item.accountId?.trim() || null
+                  : item.accountId?.trim() || null,
             p_redeem_code: item.redeemCode?.trim() || null,
             p_external_action_id:
               item.externalActionId?.trim() || null,
@@ -6361,34 +7727,45 @@ function MissionModal({
       }
 
       /*
-       * Write every uploaded file into submission_evidence.
-       * For YouTube, use the dedicated RPC so the 3 proof types are accepted.
+       * Write every uploaded file into submission_evidence directly.
+       * The SQL fix creates a narrowly-scoped INSERT policy: a player may
+       * insert evidence only for their own pending submission. This avoids
+       * PostgREST RPC/schema-cache issues and keeps evidence + item_no exact.
        */
-      for (const item of uploaded) {
-        const evidenceArgs = {
-          p_submission_id: createdSubmissionId,
-          p_evidence_type: item.type,
-          p_storage_path: item.path,
-          p_original_filename: item.file.name,
-          p_mime_type: item.file.type,
-          p_file_size: item.file.size
-        };
+      const evidenceRowsToInsert = [...uploaded, ...bonusUploaded].map(item => ({
+        submission_id: createdSubmissionId,
+        evidence_type: item.type,
+        storage_bucket: 'mission-evidence',
+        storage_path: item.path,
+        original_filename: item.file.name,
+        mime_type: item.file.type || null,
+        file_size: item.file.size ?? null,
+        item_no: item.itemNo ?? null
+      }));
 
-        const { error: evidenceError } =
-          item.itemNo
-            ? await supabase.rpc(
-                'add_submission_evidence',
-                {
-                  ...evidenceArgs,
-                  p_item_no: item.itemNo
-                }
-              )
-            : await supabase.rpc(
-                'add_submission_evidence',
-                evidenceArgs
-              );
+      if (evidenceRowsToInsert.length > 0) {
+        const { error: evidenceInsertError } = await supabase
+          .from('submission_evidence')
+          .insert(evidenceRowsToInsert);
 
-        if (evidenceError) throw evidenceError;
+        if (evidenceInsertError) {
+          throw new Error(
+            `Không lưu được minh chứng vào database: ${evidenceInsertError.message}`
+          );
+        }
+      }
+
+      // Verify that the rows really exist before marking the submit committed.
+      const { count: evidenceRowCount, error: evidenceVerifyError } = await supabase
+        .from('submission_evidence')
+        .select('id', { count: 'exact', head: true })
+        .eq('submission_id', createdSubmissionId);
+
+      if (evidenceVerifyError) throw evidenceVerifyError;
+      if (Number(evidenceRowCount || 0) < evidenceRowsToInsert.length) {
+        throw new Error(
+          `Database chưa lưu đủ minh chứng (${evidenceRowCount || 0}/${evidenceRowsToInsert.length}).`
+        );
       }
 
       /*
@@ -6416,83 +7793,6 @@ function MissionModal({
         }
       }
 
-      if (includeBonus && bonusMission) {
-        const bonusTopQuantity =
-          bonusMission.id === 'spotify_extra'
-            ? bonusItems.length * 15
-            : bonusMission.id === 'social_extra' || bonusMission.id === 'tiktok_extra' || bonusMission.id === 'youtube_extra'
-              ? bonusItems.length
-              : bonusMission.id === 'itunes_extra'
-                ? bonusItems.length
-                : 1;
-
-        const { data: bonusSubmission, error: bonusSubmitError } = await supabase.rpc('submit_bonus_mission_submission', {
-          p_mission_slug: bonusMission.id,
-          p_parent_submission_id: createdSubmissionId,
-          p_content_url: null,
-          p_note: 'Bonus được chọn cùng lúc với mission chính.',
-          p_platform: bonusMission.id === 'social_extra' ? 'social' : bonusMission.id.replace('_extra',''),
-          p_account_id:
-            bonusMission.id === 'spotify_extra'
-              ? bonusItems[0]?.accountId?.trim() || null
-              : null,
-          p_redeem_code: null,
-          p_external_action_id: null,
-          p_quantity: bonusTopQuantity
-        });
-        if (bonusSubmitError) throw bonusSubmitError;
-        const bonusRow = Array.isArray(bonusSubmission) ? bonusSubmission[0] : bonusSubmission;
-        createdBonusSubmissionId = bonusRow?.submission_id || bonusRow?.id || (typeof bonusRow === 'string' ? bonusRow : null);
-        if (!createdBonusSubmissionId) throw new Error('Không tạo được bonus submission.');
-
-        for (let i = 0; i < bonusItems.length; i++) {
-          const item = bonusItems[i];
-          const { error: itemError } = await supabase.rpc('add_submission_item', {
-            p_submission_id: createdBonusSubmissionId,
-            p_item_no: i + 1,
-            p_platform: item.platform || bonusMission.id.replace('_extra',''),
-            p_content_url: item.contentUrl?.trim() || null,
-            p_account_id:
-              bonusMission.id === 'spotify_extra'
-                ? item.accountId?.trim() || null
-                : null,
-            p_redeem_code: null,
-            p_external_action_id: null,
-            p_quantity:
-              bonusMission.id === 'spotify_extra'
-                ? 15
-                : 1,
-            p_metadata: {
-              ...(item.metadata || {}),
-              activity_date:
-                bonusMission.id === 'spotify_extra'
-                  ? item.activityDate
-                  : null,
-              quantity:
-                bonusMission.id === 'spotify_extra'
-                  ? 15
-                  : item.metadata?.quantity
-            },
-            p_proof_source: bonusMission.id === 'itunes_extra' ? 'web_code' : null
-          });
-          if (itemError) throw itemError;
-        }
-
-        for (const item of bonusUploaded) {
-          const args = {
-            p_submission_id: createdBonusSubmissionId,
-            p_evidence_type: item.type,
-            p_storage_path: item.path,
-            p_original_filename: item.file.name,
-            p_mime_type: item.file.type,
-            p_file_size: item.file.size
-          };
-          const { error: evError } = item.itemNo
-            ? await supabase.rpc('add_submission_evidence', { ...args, p_item_no: item.itemNo })
-            : await supabase.rpc('add_submission_evidence', args);
-          if (evError) throw evError;
-        }
-      }
 
       /*
        * IMPORTANT: verify the row before telling the player that the submit
@@ -6520,7 +7820,6 @@ function MissionModal({
       // From this point on the database submission is committed. Never roll
       // it back because a UI refresh/modal callback fails afterwards.
       submissionCommitted = true;
-      createdBonusSubmissionId = null;
       createdSubmissionId = null;
 
       notify(
@@ -6570,6 +7869,7 @@ function MissionModal({
     !isPending &&
     !isCompleted &&
     !isBonusMaxed &&
+    !isBonusApprovedToday &&
     latestSubmission?.status !== 'pending';
 
   return (
@@ -6583,15 +7883,15 @@ function MissionModal({
           ×
         </button>
 
-        <Logo mission={localMission} />
-
-        <h2>{localMission.action}</h2>
+        {!isBonus && <h2>{localMission.action}</h2>}
         <h3>{localMission.name}</h3>
-        {mission.id !== 'youtube' && <p>{localMission.hint}</p>}
+        {!isBonus && mission.id !== 'youtube' && <p>{localMission.hint}</p>}
 
-        <div className="modalRule">
-          {localMission.rule || localMission.description}
-        </div>
+        {!isBonus && (
+          <div className="modalRule">
+            {localMission.rule || localMission.description}
+          </div>
+        )}
 
         {isCompleted && (
           <div className="submissionState success">
@@ -6599,45 +7899,35 @@ function MissionModal({
           </div>
         )}
 
-        {isPending && (
+        {isBonusApprovedToday && (
+          <div className="submissionState success">
+            ✓ BONUS ĐÃ ĐƯỢC ADMIN DUYỆT HÔM NAY
+            <p style={{ margin: '6px 0 0', opacity: .82 }}>
+              Bonus này đã khóa cho hôm nay. Ngày tiếp theo sẽ mở lại.
+            </p>
+          </div>
+        )}
+
+        {isPending && (!isBonusApprovedToday) && (
           <div className="submissionState pending">
             ⏳ ĐÃ SUBMIT — ĐANG CHỜ ADMIN DUYỆT
           </div>
         )}
 
         {isRejected && (
-          <div className="submissionState rejected">
-            <b>✕ ADMIN TỪ CHỐI</b>
+          <div className="submissionState rejected bonusRejectedNotice">
+            <b>✕ {localMission.name} · ĐÃ BỊ TỪ CHỐI</b>
             <p>
               {latestSubmission.admin_comment ||
                 'Admin chưa để lại nhận xét.'}
             </p>
             <small>
-              Bạn có thể sửa minh chứng và submit lại.
+              Hãy kiểm tra lại minh chứng và submit lại <strong>1 lần duy nhất</strong>.
+              Nếu được duyệt, bạn sẽ nhận <strong>50% số điểm</strong>.
             </small>
           </div>
         )}
 
-        {isBonus && finished && (
-          <div
-            style={{
-              padding: 10,
-              marginBottom: 12,
-              borderRadius: 12,
-              background: '#fff7cf',
-              border: '1px solid #e5bd41'
-            }}
-          >
-            <b>
-              +{localMission.points_per_unit || localMission.points}{' '}
-              PTS / {localMission.unit_quantity || 1} đơn vị
-            </b>
-            <div style={{ opacity: .7 }}>
-              Đã đạt {count}/{localMission.target}. Tối đa{' '}
-              {localMission.max_points || 0} điểm.
-            </div>
-          </div>
-        )}
 
         {mission.id === 'spotify' && (
           <div
@@ -6717,6 +8007,8 @@ function MissionModal({
 
         {canEdit && (
           <div className="submissionForm">
+            {!isBonus && (
+              <>
             {(mission.id === 'spotify' ||
               mission.id === 'spotify_extra') && (
               <>
@@ -6746,8 +8038,8 @@ function MissionModal({
                   </span>
                   <input
                     type="number"
-                    min={15}
-                    max={15}
+                    min={1}
+                    max={9999}
                     value={quantity}
                     onChange={e => setQuantity(e.target.value)}
                     disabled={submitting}
@@ -6780,7 +8072,7 @@ function MissionModal({
                 <input
                   value={accountId}
                   onChange={e => setAccountId(e.target.value)}
-                  placeholder="Account khác tài khoản mandatory"
+                  placeholder="Account / username"
                   disabled={submitting}
                 />
               </label>
@@ -7354,21 +8646,30 @@ function MissionModal({
             {!isBonus && submissionStep === 'main' && (
               <button
                 className="playButton submitButton"
+                type="button"
                 disabled={submitting}
-                onClick={() => {
+                onClick={async () => {
                   if (!mainMissionValidation()) return;
-                  setSubmissionStep('bonus-choice');
+                  // ROUND 1: bấm nút này là SUBMIT luôn.
+                  // Không có bước "TIẾP THEO" và không hỏi Bonus trong modal.
+                  await submit();
                 }}
               >
-                TIẾP THEO →
+                {submitting ? 'ĐANG SUBMIT...' : (isRejected ? '↻ SUBMIT LẠI' : '↑ SUBMIT')}
               </button>
             )}
 
-            {!isBonus && submissionStep === 'bonus-choice' && (
+            </>
+            )}
+
+            {false && !isBonus && submissionStep === 'bonus-choice' && (
               <div className="bonusChoicePanel">
                 <div className="bonusChoiceMessage">
-                  <b>🌻 Bạn có muốn tham gia thêm {bonusMission?.name} không?</b>
-                  <small style={{ display: 'block', marginTop: 5, opacity: .7 }}>{bonusMission?.id === 'spotify_extra' ? 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo. Spotify Extra cho phép thêm các account khác, mỗi account stream 15 lần.' : bonusMission?.id === 'youtube_extra' ? 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo. YouTube Extra cho phép thêm các account khác, mỗi account cần đủ Subscribe + Like + Comment.' : bonusMission?.id === 'tiktok_extra' ? 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo. TikTok Extra cho phép gửi thêm các video hợp lệ.' : bonusMission?.id === 'social_extra' ? 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo. Social Extra cho phép gửi thêm các bài đăng hợp lệ.' : bonusMission?.id === 'itunes_extra' ? 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo. iTunes Extra cho phép gửi thêm các CODE hợp lệ.' : 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo.'}</small>
+                  <b style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                      <img src="/assets/icon_huongduong.png" alt="" aria-hidden="true" draggable="false" style={{ width: 18, height: 18, objectFit: 'contain' }} />
+                      Bạn có muốn tham gia thêm {bonusMission?.name} không?
+                    </b>
+                  <small style={{ display: 'block', marginTop: 5, opacity: .7 }}>{bonusMission?.id === 'spotify_extra' ? 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo. Spotify Extra cho phép thêm các account khác, mỗi account stream ít nhất 15 lần.' : bonusMission?.id === 'youtube_extra' ? 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo. YouTube Extra cho phép thêm các account khác, mỗi account cần đủ Subscribe + Like + Comment.' : bonusMission?.id === 'tiktok_extra' ? 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo. TikTok Extra cho phép gửi thêm các video hợp lệ.' : bonusMission?.id === 'social_extra' ? 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo. Social Extra cho phép gửi thêm các bài đăng hợp lệ.' : bonusMission?.id === 'itunes_extra' ? 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo. iTunes Extra cho phép gửi thêm các CODE hợp lệ.' : 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo.'}</small>
                 </div>
                 <div className="bonusChoiceActions">
                   <button className="bonusChoiceYes" type="button" onClick={() => { setIncludeBonus(true); setSubmissionStep('bonus-form'); }}>
@@ -7381,15 +8682,27 @@ function MissionModal({
               </div>
             )}
 
-            {!isBonus && submissionStep === 'bonus-form' && bonusMission && (
+            {isBonus && submissionStep === 'main-submit' && bonusMission && (
               <div className="bonusFormPanel">
                 <div className="bonusFormHeader">
-                  <div className="bonusFormIcon">🌻</div>
+                  <div className="bonusFormIcon">
+                    <img
+                      src={bonusMission.logo || '/assets/icon_huongduong.png'}
+                      alt={bonusMission.name || ''}
+                      aria-hidden="true"
+                      draggable="false"
+                      className="bonusFormIconImage"
+                      onError={e => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = '/assets/icon_huongduong.png';
+                      }}
+                    />
+                  </div>
                   <div>
-                    <span className="bonusFormKicker">PHẦN THAM GIA THÊM</span>
-                    <h3>{bonusMission.name}</h3>
+                    <span className="bonusFormKicker">ROUND 2 · BONUS TỰ CHỌN</span>
                     <p>{bonusMission.rule}</p>
-                    <span className="bonusRuleHint">Điểm được Admin duyệt theo đúng quy luật Extra.</span>
+                    <span className="bonusRuleHint">Mỗi lượt stream, bài đăng social là một tia nắng nhỏ.
+Cùng gom góp thật nhiều ánh sáng, để “bông hoa ấy” từng chút một nở rộ và tỏa sáng thật đẹp nhé.</span>
                   </div>
                 </div>
 
@@ -7398,7 +8711,7 @@ function MissionModal({
                     <div className="bonusItemsHeader">
                       <div>
                         <b>MINH CHỨNG SPOTIFY EXTRA</b>
-                        <small>Mỗi account khác account ở nhiệm vụ chính · mỗi account stream đúng 15 lần.</small>
+                        <small> Admin sẽ tự kiểm tra account, ngày stream và ảnh stats.fm · mỗi account cần ít nhất 15 streams.</small>
                       </div>
                       {bonusItems.length < 3 && (
                         <button
@@ -7422,7 +8735,16 @@ function MissionModal({
                         lineHeight: 1.45
                       }}
                     >
-                      <b>🌻 15 streams / account = +5 PTS</b>
+                      <b style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                        <img
+                          src="/assets/icon_huongduong.png"
+                          alt=""
+                          aria-hidden="true"
+                          draggable="false"
+                          style={{ width: 18, height: 18, objectFit: 'contain' }}
+                        />
+                        15 streams / account = +5 PTS
+                      </b>
                       <small style={{ display: 'block', marginTop: 3, opacity: .72 }}>
                         Có thể thêm tối đa 3 account → tối đa 45 streams / +15 PTS. Admin sẽ duyệt theo từng submission.
                       </small>
@@ -7450,7 +8772,7 @@ function MissionModal({
                             <input
                               value={item.accountId || ''}
                               onChange={e => updateBonusItem(index, 'accountId', e.target.value)}
-                              placeholder="Account / username khác tài khoản chính"
+                              placeholder="Account / username"
                               disabled={submitting}
                             />
                           </label>
@@ -7480,8 +8802,13 @@ function MissionModal({
                             <span>SỐ STREAM</span>
                             <input
                               type="number"
-                              value={15}
-                              readOnly
+                              min={15}
+                              value={item.quantity || ''}
+                              onChange={e => {
+                                const value = Math.max(0, Number(e.target.value || 0));
+                                updateBonusItem(index, 'quantity', value);
+                                updateBonusMetadata(index, 'quantity', value);
+                              }}
                               disabled={submitting}
                             />
                           </label>
@@ -7519,7 +8846,10 @@ function MissionModal({
                   <div className="bonusSection bonusQuestSection bonusItunesSection">
                     <div className="bonusSectionTop bonusQuestTop">
                       <div className="bonusQuestLead">
-                        <span className="bonusQuestBadge">🌱 BONUS QUEST</span>
+                        <span className="bonusQuestBadge">
+                          <img src="/assets/icon_huongduong.png" alt="" aria-hidden="true" draggable="false" style={{ width: 16, height: 16, objectFit: 'contain', verticalAlign: 'middle', marginRight: 4 }} />
+                          BONUS QUEST
+                        </span>
                         <b>MINH CHỨNG iTUNES</b>
                         <small>2 redeem = +1 điểm · tối đa 5 điểm · mỗi CODE tương ứng 1 ảnh minh chứng.</small>
                       </div>
@@ -7632,7 +8962,7 @@ function MissionModal({
                       <div>
                         <b>MINH CHỨNG YOUTUBE</b>
                       </div>
-                      <div>                         <small>Mỗi tài khoản phải khác ở nhiệm vụ chính.</small>
+                      <div>                         <small>Admin sẽ tự kiểm tra account và minh chứng.</small>
 </div>
                       {bonusItems.length < 5 && (
                         <button type="button" className="addEvidenceButton" onClick={addBonusItem} disabled={submitting}>
@@ -7650,6 +8980,25 @@ function MissionModal({
                               <button type="button" className="removeEvidenceButton" onClick={() => removeBonusItem(index)} disabled={submitting}>XÓA</button>
                             )}
                           </div>
+                          <label style={{ display: 'grid', gap: 5, marginBottom: 8 }}>
+                            <span>TÀI KHOẢN / USERNAME</span>
+                            <input
+                              value={item.accountId || ''}
+                              onChange={e => updateBonusItem(index, 'accountId', e.target.value)}
+                              placeholder="Account / username"
+                              disabled={submitting}
+                            />
+                          </label>
+                          {/*<label style={{ display: 'grid', gap: 5, marginBottom: 8 }}>
+                            <span>LINK VIDEO / BÀI ĐĂNG KIỂM CHỨNG</span>
+                            <input
+                              type="url"
+                              value={item.contentUrl || ''}
+                              onChange={e => updateBonusItem(index, 'contentUrl', e.target.value)}
+                              placeholder="Link video YouTube"
+                              disabled={submitting}
+                            />
+                          </label>*/}
                           {[
                             ['subscribe', 'ẢNH TÀI KHOẢN ĐÃ SUBSCRIBE KÊNH lighT_'],
                             ['like', 'ẢNH ĐÃ LIKE VIDEO'],
@@ -7686,7 +9035,7 @@ function MissionModal({
                     <div className="bonusItemsHeader">
                       <div>
                         <b>LINK BÀI ĐĂNG</b>
-                        <small>Giống phần chính: mỗi bài chỉ cần link bài đăng.</small>
+                       {/* <small> Giống phần chính: mỗi bài chỉ cần link bài đăng.</small>*/}
                       </div>
                       {bonusItems.length < 15 && (
                         <button type="button" className="addEvidenceButton" onClick={addBonusItem} disabled={submitting}>
@@ -7754,9 +9103,9 @@ function MissionModal({
 
 
                 <div className="bonusFormActions">
-                  <button type="button" className="softBackButton" onClick={() => setSubmissionStep('bonus-choice')} disabled={submitting}>← QUAY LẠI</button>
+                  <button type="button" className="softBackButton" onClick={close} disabled={submitting}>← ĐÓNG</button>
                   <button className="playButton submitButton" type="button" disabled={submitting} onClick={submit}>
-                    {submitting ? 'ĐANG SUBMIT...' : '↑ SUBMIT'}
+                    {submitting ? 'ĐANG SUBMIT...' : (isRejected ? '↻ SUBMIT LẠI · 1 LẦN' : '↑ SUBMIT')}
                   </button>
                 </div>
               </div>
