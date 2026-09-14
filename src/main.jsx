@@ -2743,7 +2743,7 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
 
                   : finished
                     ? 'Round 1 đã hoàn thành · Bạn có thể xem lại Round 1 hoặc bấm ROUND 2 để làm Bonus'
-                    : '5 nhiệm vụ chính · Làm theo thứ tự nào cũng được · Submit là cây lớn'}
+                    : 'Hoàn thành 5 nhiệm vụ chính theo thứ tự bất kỳ để nhận về một bông hoa hướng dương'}
               </small>
             </div>
 
@@ -4533,12 +4533,13 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
     try {
       const XLSX = await import('xlsx');
 
+      // Load normal Admin export data. Evidence is intentionally NOT read
+      // directly here because submission_evidence can be protected by RLS.
       const [
         profilesRes,
         missionsRes,
         submissionsRes,
         itemsRes,
-        evidenceRes,
         ledgerRes
       ] = await Promise.all([
         supabase
@@ -4548,125 +4549,56 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
         supabase
           .from('missions')
           .select(`
-            id,
-            slug,
-            name,
-            action,
-            description,
-            hint,
-            target,
-            points,
-            logo_url,
-            sort_order,
-            is_active,
-            mission_type,
-            unlock_rule,
-            unit_quantity,
-            points_per_unit,
-            max_points,
-            is_repeatable,
-            resource_url,
-            proof_note
+            id, slug, name, action, description, hint, target, points,
+            logo_url, sort_order, is_active, mission_type, unlock_rule,
+            unit_quantity, points_per_unit, max_points, is_repeatable,
+            resource_url, proof_note
           `)
           .order('sort_order', { ascending: true }),
 
         supabase
           .from('mission_submissions')
           .select(`
-            id,
-            user_id,
-            mission_id,
-            attempt_no,
-            post_url,
-            note,
-            status,
-            admin_comment,
-            reviewed_by,
-            submitted_at,
-            reviewed_at,
-            platform,
-            content_url,
-            account_id,
-            redeem_code,
-            external_action_id,
-            quantity,
-            points_awarded,
-            verified_at,
-            activity_date
+            id, user_id, mission_id, parent_submission_id, attempt_no,
+            post_url, note, status, admin_comment, reviewed_by,
+            submitted_at, reviewed_at, platform, content_url, account_id,
+            redeem_code, external_action_id, quantity, points_awarded,
+            verified_at, activity_date, game_day, round2_harvest_id
           `)
-          .eq('status', 'approved')
           .order('submitted_at', { ascending: false }),
 
         supabase
           .from('mission_submission_items')
           .select(`
-            id,
-            submission_id,
-            item_no,
-            platform,
-            content_url,
-            account_id,
-            redeem_code,
-            external_action_id,
-            quantity,
-            metadata,
-            created_at,
-            counted_at,
-            proof_source
+            id, submission_id, item_no, platform, content_url, account_id,
+            redeem_code, external_action_id, quantity, metadata,
+            created_at, counted_at, proof_source
           `)
           .order('item_no', { ascending: true }),
 
         supabase
-          .from('submission_evidence')
-          .select(`
-            id,
-            submission_id,
-            evidence_type,
-            storage_bucket,
-            storage_path,
-            original_filename,
-            mime_type,
-            file_size,
-            created_at,
-            item_no
-          `)
-          .order('item_no', { ascending: true })
-          .order('created_at', { ascending: true }),
-
-        supabase
           .from('point_ledger')
           .select(`
-            id,
-            user_id,
-            points,
-            source_type,
-            source_id,
-            mission_id,
-            submission_id,
-            reason,
-            admin_id,
-            created_at
+            id, user_id, points, source_type, source_id, mission_id,
+            submission_id, reason, admin_id, created_at
           `)
           .order('created_at', { ascending: false })
       ]);
 
-      const results = [
+      const failed = [
         profilesRes,
         missionsRes,
         submissionsRes,
         itemsRes,
-        evidenceRes,
         ledgerRes
-      ];
+      ].find(r => r.error);
 
-      const failed = results.find(r => r.error);
       if (failed?.error) throw failed.error;
 
       const profiles = profilesRes.data || [];
       const missions = missionsRes.data || [];
-      const approvedSubmissions = submissionsRes.data || [];
+      const submissions = submissionsRes.data || [];
       const allItems = itemsRes.data || [];
-      const allEvidence = evidenceRes.data || [];
       const ledger = ledgerRes.data || [];
 
       const profileMap = Object.fromEntries(
@@ -4683,117 +4615,174 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
         missions.map(m => [m.id, m])
       );
 
-      const approvedIds = new Set(
-        approvedSubmissions.map(s => s.id)
-      );
-
-      const approvedItems = allItems.filter(item =>
-        approvedIds.has(item.submission_id)
-      );
-
-      const approvedEvidence = allEvidence.filter(e =>
-        approvedIds.has(e.submission_id)
-      );
-
       /*
-       * Create signed URLs for every approved proof image/file.
-       * Excel contains the direct clickable URL where possible.
+       * ============================================================
+       * EVIDENCE: use the EXACT same Admin RPC + fallback logic
+       * as openSubmission().
+       *
+       * DB:
+       * mission_submissions.id
+       *        ↓
+       * submission_evidence.submission_id
+       *        ↓
+       * storage_bucket + storage_path
+       * ============================================================
        */
       const evidenceWithUrls = [];
 
-      for (const evidence of approvedEvidence) {
-        const bucket =
-          evidence.storage_bucket || 'mission-evidence';
+      for (const submission of submissions) {
+        let rpcRows = [];
+        let directRows = [];
 
-        let signedUrl = '';
+        const evidenceRpc = await supabase.rpc(
+          'get_admin_submission_evidence_v3',
+          {
+            p_submission_id: submission.id
+          }
+        );
 
-        if (evidence.storage_path) {
-          const { data, error } = await supabase.storage
-            .from(bucket)
-            .createSignedUrl(
-              evidence.storage_path,
-              60 * 60 * 24 * 7
-            );
+        if (!evidenceRpc.error && Array.isArray(evidenceRpc.data)) {
+          rpcRows = evidenceRpc.data;
+        }
 
-          if (!error) {
-            signedUrl = data?.signedUrl || '';
+        /*
+         * Always try the direct table as a second source too, exactly like
+         * the Admin viewer. Merge by id/path so duplicate rows are removed.
+         */
+        const directEvidence = await supabase
+          .from('submission_evidence')
+          .select('*')
+          .eq('submission_id', submission.id)
+          .order('item_no', { ascending: true, nullsFirst: true })
+          .order('created_at', { ascending: true });
+
+        if (!directEvidence.error) {
+          directRows = directEvidence.data || [];
+        }
+
+        const evidenceMap = new Map();
+
+        for (const row of [...rpcRows, ...directRows]) {
+          const key =
+            row?.id ||
+            `${row?.storage_path || row?.path || ''}|${row?.item_no ?? ''}|${row?.evidence_type || row?.type || ''}`;
+
+          if (!evidenceMap.has(key)) {
+            evidenceMap.set(key, row);
           }
         }
 
-        evidenceWithUrls.push({
-          ...evidence,
-          signed_url: signedUrl
-        });
+        const evidenceRows = Array.from(evidenceMap.values());
+
+        for (const raw of evidenceRows) {
+          const evidence = {
+            ...raw,
+            id: raw.id || raw.evidence_id,
+            submission_id:
+              raw.submission_id || submission.id,
+            evidence_type:
+              raw.evidence_type || raw.type || '',
+            storage_bucket:
+              raw.storage_bucket ||
+              raw.bucket ||
+              'mission-evidence',
+            storage_path:
+              raw.storage_path ||
+              raw.path ||
+              '',
+            original_filename:
+              raw.original_filename ||
+              raw.filename ||
+              '',
+            mime_type:
+              raw.mime_type ||
+              raw.content_type ||
+              '',
+            file_size:
+              raw.file_size ??
+              raw.size ??
+              null,
+            created_at:
+              raw.created_at ||
+              raw.evidence_created_at ||
+              null,
+            item_no:
+              raw.item_no ??
+              raw.item_number ??
+              null
+          };
+
+          let signedUrl = '';
+
+          if (evidence.storage_path) {
+            const signed = await supabase.storage
+              .from(evidence.storage_bucket)
+              .createSignedUrl(
+                evidence.storage_path,
+                60 * 60 * 24 * 30
+              );
+
+            if (!signed.error) {
+              signedUrl = signed.data?.signedUrl || '';
+            } else {
+              console.warn(
+                'Export evidence signed URL failed:',
+                evidence.storage_bucket,
+                evidence.storage_path,
+                signed.error
+              );
+            }
+          }
+
+          evidenceWithUrls.push({
+            ...evidence,
+            signed_url: signedUrl
+          });
+        }
       }
 
-      const evidenceBySubmission = {};
-      for (const e of evidenceWithUrls) {
-        if (!evidenceBySubmission[e.submission_id]) {
-          evidenceBySubmission[e.submission_id] = [];
-        }
-        evidenceBySubmission[e.submission_id].push(e);
-      }
+      const submissionIds = new Set(
+        submissions.map(s => s.id)
+      );
+
+      const items = allItems.filter(item =>
+        submissionIds.has(item.submission_id)
+      );
 
       const itemsBySubmission = {};
-      for (const item of approvedItems) {
+      for (const item of items) {
         if (!itemsBySubmission[item.submission_id]) {
           itemsBySubmission[item.submission_id] = [];
         }
         itemsBySubmission[item.submission_id].push(item);
       }
 
-      /*
-       * MAIN CHECKING SHEET:
-       * exactly one row per APPROVED submission, containing everything
-       * needed to audit what the user submitted and what Admin approved.
-       */
-      const approvedRows = approvedSubmissions.map(s => {
-        const profile = profileMap[s.user_id] || {};
-        const mission = missionMap[s.mission_id] || {};
-        const items = itemsBySubmission[s.id] || [];
-        const evidence = evidenceBySubmission[s.id] || [];
+      const evidenceBySubmission = {};
+      for (const evidence of evidenceWithUrls) {
+        if (!evidenceBySubmission[evidence.submission_id]) {
+          evidenceBySubmission[evidence.submission_id] = [];
+        }
+        evidenceBySubmission[evidence.submission_id].push(evidence);
+      }
 
-        const itemText = items
-          .map(item => {
-            const parts = [
-              `#${item.item_no}`,
-              item.platform || '',
-              item.account_id
-                ? `Account: ${item.account_id}`
-                : '',
-              item.content_url
-                ? `Link: ${item.content_url}`
-                : '',
-              item.redeem_code
-                ? `Redeem: ${item.redeem_code}`
-                : '',
-              item.quantity != null
-                ? `Qty: ${item.quantity}`
-                : '',
-              item.proof_source
-                ? `Proof source: ${item.proof_source}`
-                : '',
-              item.metadata &&
-              Object.keys(item.metadata || {}).length
-                ? `Metadata: ${JSON.stringify(item.metadata)}`
-                : ''
-            ].filter(Boolean);
-
-            return parts.join(' | ');
-          })
-          .join('\n');
-
-        const evidenceText = evidence
-          .map(e => {
+      const formatEvidence = evidence =>
+        evidence
+          .map((e, index) => {
             const label =
               e.original_filename ||
-              `${e.evidence_type || 'proof'}${e.item_no ? ` · item ${e.item_no}` : ''}`;
+              `${e.evidence_type || 'proof'}${e.item_no != null ? ` · item ${e.item_no}` : ''}`;
 
             return e.signed_url
-              ? `${label} — ${e.signed_url}`
-              : `${label} — ${e.storage_path || ''}`;
+              ? `#${index + 1} ${label} — ${e.signed_url}`
+              : `#${index + 1} ${label} — ${e.storage_path || 'Không lấy được URL'}`;
           })
           .join('\n');
+
+      const submissionRows = submissions.map(s => {
+        const profile = profileMap[s.user_id] || {};
+        const mission = missionMap[s.mission_id] || {};
+        const submissionItems = itemsBySubmission[s.id] || [];
+        const evidence = evidenceBySubmission[s.id] || [];
 
         return {
           'Submission ID': s.id,
@@ -4803,8 +4792,10 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
           'Mission Slug': mission.slug || '',
           'Mission Type': mission.mission_type || '',
           'Action': mission.action || '',
+          'Game Day': s.game_day ?? '',
+          'Round 2 Harvest ID': s.round2_harvest_id || '',
           'Attempt': s.attempt_no,
-          'Status': s.status,
+          'Status': s.status || '',
           'Platform': s.platform || '',
           'Post URL': s.post_url || '',
           'Content URL': s.content_url || '',
@@ -4817,7 +4808,7 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
           'Submitted At': s.submitted_at
             ? new Date(s.submitted_at).toLocaleString('vi-VN')
             : '',
-          'Approved At': s.reviewed_at
+          'Reviewed At': s.reviewed_at
             ? new Date(s.reviewed_at).toLocaleString('vi-VN')
             : '',
           'Verified At': s.verified_at
@@ -4825,20 +4816,34 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
             : '',
           'Points Awarded': s.points_awarded || 0,
           'Admin Comment': s.admin_comment || '',
-          'Submitted Items': itemText,
-          'Proof / Evidence': evidenceText
+          'Submitted Items': submissionItems
+            .map(item =>
+              [
+                `#${item.item_no}`,
+                item.platform || '',
+                item.account_id ? `Account: ${item.account_id}` : '',
+                item.content_url ? `Link: ${item.content_url}` : '',
+                item.redeem_code ? `Redeem: ${item.redeem_code}` : '',
+                item.quantity != null ? `Qty: ${item.quantity}` : '',
+                item.proof_source
+                  ? `Proof source: ${item.proof_source}`
+                  : ''
+              ]
+                .filter(Boolean)
+                .join(' | ')
+            )
+            .join('\n'),
+          'Proof / Evidence': formatEvidence(evidence)
         };
       });
 
-      const approvedItemRows = approvedItems.map(item => {
+      const itemRows = items.map(item => {
         const submission =
-          approvedSubmissions.find(
+          submissions.find(
             s => s.id === item.submission_id
           ) || {};
-
         const profile = profileMap[submission.user_id] || {};
-        const mission =
-          missionMap[submission.mission_id] || {};
+        const mission = missionMap[submission.mission_id] || {};
 
         return {
           'Submission ID': item.submission_id,
@@ -4862,15 +4867,13 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
         };
       });
 
-      const approvedEvidenceRows = evidenceWithUrls.map(e => {
+      const evidenceRows = evidenceWithUrls.map(e => {
         const submission =
-          approvedSubmissions.find(
+          submissions.find(
             s => s.id === e.submission_id
           ) || {};
-
         const profile = profileMap[submission.user_id] || {};
-        const mission =
-          missionMap[submission.mission_id] || {};
+        const mission = missionMap[submission.mission_id] || {};
 
         return {
           'Submission ID': e.submission_id,
@@ -4879,22 +4882,46 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
           'Mission': mission.name || '',
           'Mission Slug': mission.slug || '',
           'Submission Status': submission.status || '',
-          'Item No': e.item_no || '',
+          'Item No': e.item_no ?? '',
           'Evidence Type': e.evidence_type || '',
           'Original Filename': e.original_filename || '',
+          'Proof URL': e.signed_url || '',
           'Storage Bucket': e.storage_bucket || '',
           'Storage Path': e.storage_path || '',
-          'Proof URL': e.signed_url || '',
           'Mime Type': e.mime_type || '',
-          'File Size (bytes)': e.file_size || '',
+          'File Size (bytes)': e.file_size ?? '',
           'Created At': e.created_at || ''
         };
       });
 
-      const approvedLedgerRows = ledger
+      const proofLinkRows = evidenceWithUrls.map((e, index) => {
+        const submission =
+          submissions.find(
+            s => s.id === e.submission_id
+          ) || {};
+        const profile = profileMap[submission.user_id] || {};
+        const mission = missionMap[submission.mission_id] || {};
+
+        return {
+          'No.': index + 1,
+          'Submission ID': e.submission_id,
+          'Username': profile.username || 'PLAYER',
+          'Mission': mission.name || '',
+          'Status': submission.status || '',
+          'Game Day': submission.game_day ?? '',
+          'Attempt': submission.attempt_no ?? '',
+          'Item No': e.item_no ?? '',
+          'Evidence Type': e.evidence_type || '',
+          'Filename': e.original_filename || '',
+          'OPEN PROOF': e.signed_url || '',
+          'Storage Path': e.storage_path || ''
+        };
+      });
+
+      const ledgerRows = ledger
         .filter(row =>
           row.submission_id &&
-          approvedIds.has(row.submission_id)
+          submissionIds.has(row.submission_id)
         )
         .map(row => {
           const profile = profileMap[row.user_id] || {};
@@ -4916,9 +4943,6 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
           };
         });
 
-      /*
-       * Keep general reference sheets too.
-       */
       const userRows = profiles.map(p => ({
         'User ID': p.id,
         Username: p.username || 'PLAYER',
@@ -4946,38 +4970,43 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
 
       const wb = XLSX.utils.book_new();
 
-      const append = (name, rows, hyperlinkColumns = []) => {
+      const append = (
+        name,
+        rows,
+        hyperlinkColumns = []
+      ) => {
         const ws = XLSX.utils.json_to_sheet(rows || []);
-
-        /*
-         * Make columns readable in Excel.
-         */
         const keys = rows?.length
           ? Object.keys(rows[0])
           : [];
 
         ws['!cols'] = keys.map(key => ({
-          wch: Math.min(
-            55,
-            Math.max(
-              12,
-              key.length + 2
-            )
-          )
+          wch:
+            key === 'Proof URL' ||
+            key === 'OPEN PROOF' ||
+            key === 'Proof / Evidence'
+              ? 65
+              : Math.min(
+                  55,
+                  Math.max(12, key.length + 2)
+                )
         }));
 
-        /*
-         * Turn URL cells into real Excel hyperlinks.
-         * Clicking the cell opens the submitted post/evidence directly.
-         */
-        const range = XLSX.utils.decode_range(ws['!ref'] || 'A1:A1');
+        ws['!freeze'] = {
+          xSplit: 0,
+          ySplit: 1
+        };
+
+        const range = XLSX.utils.decode_range(
+          ws['!ref'] || 'A1:A1'
+        );
+
         const keyToColumn = Object.fromEntries(
           keys.map((key, index) => [key, index])
         );
 
         for (const columnName of hyperlinkColumns) {
           const columnIndex = keyToColumn[columnName];
-
           if (columnIndex == null) continue;
 
           for (
@@ -4993,39 +5022,58 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
             const cell = ws[address];
             const value = String(cell?.v || '').trim();
 
-            if (!cell || !/^https?:\/\//i.test(value)) continue;
+            if (
+              !cell ||
+              !/^https?:\/\//i.test(value)
+            ) {
+              continue;
+            }
 
             cell.l = {
               Target: value,
-              Tooltip: 'Nhấn để mở'
+              Tooltip: 'Nhấn để mở minh chứng'
             };
+
+            if (columnName === 'OPEN PROOF') {
+              cell.v = 'MỞ MINH CHỨNG';
+            }
           }
         }
 
-        XLSX.utils.book_append_sheet(wb, ws, name);
+        XLSX.utils.book_append_sheet(
+          wb,
+          ws,
+          name
+        );
       };
 
       append(
-        'Approved Submissions',
-        approvedRows,
+        'Submissions',
+        submissionRows,
         ['Post URL', 'Content URL']
       );
 
       append(
-        'Approved Items',
-        approvedItemRows,
+        'Submission Items',
+        itemRows,
         ['Content URL']
       );
 
       append(
-        'Approved Evidence',
-        approvedEvidenceRows,
+        'Evidence',
+        evidenceRows,
         ['Proof URL']
       );
 
       append(
-        'Approved Points',
-        approvedLedgerRows
+        'Proof Links',
+        proofLinkRows,
+        ['OPEN PROOF']
+      );
+
+      append(
+        'Points',
+        ledgerRows
       );
 
       append(
@@ -5040,13 +5088,13 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
 
       XLSX.writeFile(
         wb,
-        `grow-with-the-light-approved-${new Date()
+        `grow-with-the-light-submissions-${new Date()
           .toISOString()
           .slice(0, 10)}.xlsx`
       );
 
       notify(
-        `Đã xuất ${approvedRows.length} submission APPROVE · link bài đăng và proof có thể bấm mở trong Excel.`
+        `Đã xuất ${submissions.length} submission · ${evidenceWithUrls.length} minh chứng.`
       );
     } catch (error) {
       console.error('export excel:', error);
