@@ -5442,13 +5442,6 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
             🏆 LEADERBOARD
           </button>
 
-          <button
-            type="button"
-            style={tabButton(tab === 'notifications')}
-            onClick={() => setTab('notifications')}
-          >
-            🔔 NOTIFICATIONS
-          </button>
         </div>
 
         <div
