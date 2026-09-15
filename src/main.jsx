@@ -607,7 +607,7 @@ function AuthScreen() {
 
   const subtitle =
     mode === 'signup'
-      ? 'Tạo tài khoản để bắt đầu chăm bông hướng dương.'
+      ? 'Tạo tài khoản để bắt đầu hành trình.'
       : mode === 'forgot'
         ? 'Nhập email để nhận liên kết đặt lại mật khẩu.'
         : mode === 'update-password'
@@ -1366,6 +1366,30 @@ function App() {
     };
   }, []);
 
+  const syncProfileUsername = async user => {
+    if (!user?.id) return;
+
+    // Email/Password signup stores the name entered by the user in
+    // `user_name` + `full_name`. Google OAuth normally provides `full_name`
+    // and/or `name`. Never derive the display name from the email address.
+    const displayName =
+      user.user_metadata?.user_name?.trim() ||
+      user.user_metadata?.full_name?.trim() ||
+      user.user_metadata?.name?.trim() ||
+      '';
+
+    if (!displayName) return;
+
+    const { error } = await supabase
+      .from('profiles')
+      .update({ username: displayName })
+      .eq('id', user.id);
+
+    if (error) {
+      console.error('sync profile username:', error);
+    }
+  };
+
   const loadGame = async (showLoading = false) => {
     if (showLoading) setRefreshing(true);
 
@@ -1399,6 +1423,11 @@ function App() {
         setRefreshing(false);
         return;
       }
+
+      // Keep the in-game display name synchronized with Supabase Auth metadata.
+      // Email/Password -> the name entered at signup.
+      // Google -> the Google account name.
+      await syncProfileUsername(user);
 
       const { error: ensureError } =
         await supabase.rpc('ensure_game_state');
@@ -2088,20 +2117,6 @@ function App() {
     } finally {
       setAdvancingDay(false);
     }
-  };
-
-  const reset = async () => {
-    const { error } = await supabase.rpc('reset_my_game');
-
-    if (error) {
-      console.error('reset_my_game:', error);
-      notify('Không thể reset game.');
-      return;
-    }
-
-    setSelected(null);
-    await loadGame(true);
-    notify('Đã bắt đầu lại hành trình 🌱');
   };
 
   const markNotificationRead = async id => {
@@ -2891,14 +2906,16 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
         </div>
 
         <section className="bottomPanel">
-          <button
-            className="backButton"
-            onClick={finished ? advanceToNextDay : reset}
-            disabled={finished && advancingDay}
-          >
-            {finished ? '→' : '↶'}
-            <span>{finished ? 'NGÀY TIẾP THEO' : 'CHƠI LẠI'}</span>
-          </button>
+          {finished && (
+            <button
+              className="backButton"
+              onClick={advanceToNextDay}
+              disabled={advancingDay}
+            >
+              →
+              <span>NGÀY TIẾP THEO</span>
+            </button>
+          )}
 
           <div className="currentBox">
             <small>
@@ -3984,7 +4001,6 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
             )}
 
             <button onClick={exportMyExcel}>📊 XUẤT EXCEL</button>
-            <button onClick={reset}>↻ RESET JOURNEY</button>
             <button onClick={signOut}>🚪 ĐĂNG XUẤT</button>
 
             <div>
