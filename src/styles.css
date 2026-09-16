@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Nunito:wght@400;500;600;700;800;900&family=Patrick+Hand&family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Nunito:wght@400;500;600;700;800;900&family=Patrick+Hand&family=Pixelify+Sans:wght@400;500;600;700&family=Press+Start+2P&display=swap');
 
 /* Vietnamese-safe body font. Keep Press Start 2P only for decorative/game titles. */
 :root {
@@ -152,15 +152,15 @@ button { font: inherit; cursor: pointer; }
 }
 .eyebrow {
   color: #347441;
-  font: 8px 'Press Start 2P';
-  letter-spacing: 1px;
+  font: 600 12px 'Pixelify Sans', monospace;
+  letter-spacing: .5px;
   margin-bottom: 10px;
 }
 .hero h1 {
   margin: 0;
   color: #fffce5;
-  font: 900 clamp(34px, 5.3vw, 72px)/1.02 'Press Start 2P';
-  letter-spacing: -3px;
+  font: 700 clamp(34px, 5.3vw, 72px)/1.02 'Pixelify Sans', monospace;
+  letter-spacing: -2px;
   text-shadow: 5px 6px 0 #39733d, 9px 10px 0 #183b22;
 }
 .hero h1 em { display: block; color: var(--lime); font-style: normal; }
@@ -168,8 +168,9 @@ button { font: inherit; cursor: pointer; }
   margin: 16px auto 0;
   max-width: 700px;
   color: #24532f;
-  font-size: clamp(12px, 1.15vw, 18px);
-  font-weight: 900;
+  font-family: 'Pixelify Sans', monospace;
+  font-size: clamp(14px, 1.25vw, 19px);
+  font-weight: 600;
 }
 
 /* ================= MISSION ROAD - DESKTOP ================= */
@@ -390,7 +391,6 @@ button { font: inherit; cursor: pointer; }
   opacity: .78;
 }
 .grassBits { position: absolute; left: 9%; top: 6px; z-index: 3; color: #efff9c; font-size: 17px; }
-.tools { position: absolute; right: 10%; top: 22px; z-index: 4; display: flex; gap: 12px; color: #315f35; font-size: 35px; transform: rotate(-8deg); }
 
 /* ================= BOTTOM HUD ================= */
 .bottomPanel {
@@ -547,8 +547,10 @@ button { font: inherit; cursor: pointer; }
   }
   .eyebrow { font-size: 6px; margin-bottom: 9px; }
   .hero h1 {
+    font-family: 'Pixelify Sans', monospace !important;
+    font-weight: 700;
     font-size: clamp(25px, 8.8vw, 38px);
-    letter-spacing: -2px;
+    letter-spacing: -1.5px;
     text-shadow: 3px 4px 0 #39733d, 5px 6px 0 #183b22;
   }
   .hero p {
@@ -667,7 +669,6 @@ button { font: inherit; cursor: pointer; }
   }
   .fence { top: 24px; height: 54px; }
   .grassBits { top: 5px; font-size: 13px; }
-  .tools { display: none; }
 
   /* Mobile HUD is compact and does not cover mission cards. */
   .bottomPanel {
@@ -752,7 +753,10 @@ button { font: inherit; cursor: pointer; }
 
 /* Very narrow phones: prioritize cards over decorative plants. */
 @media (max-width: 360px) {
-  .hero h1 { font-size: 23px; }
+  .hero h1 {
+    font-family: 'Pixelify Sans', monospace !important;
+    font-size: 23px;
+  }
   .hero p { font-size: 10px; }
   .mission { grid-template-columns: minmax(0, 1fr) 54px minmax(0, 1fr); min-height: 180px; }
   .plant { transform: scale(.5); }
@@ -771,12 +775,15 @@ button { font: inherit; cursor: pointer; }
 .brand,
 .topTitle small,
 .topTitle b,
-.eyebrow,
-.hero h1,
 .missionNo,
 .mission h2,
 .menuPanel h2 {
   font-family: 'Press Start 2P', monospace !important;
+}
+
+.eyebrow,
+.hero h1 {
+  font-family: 'Pixelify Sans', monospace !important;
 }
 
 /* Vietnamese UI text stays readable and supports all diacritics. */
@@ -5488,7 +5495,7 @@ button, input, textarea, select {
 @media (max-width: 760px) {
   .bonusRejectedNotice { padding: 10px; }
 }
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Nunito:wght@400;500;600;700;800;900&family=Patrick+Hand&family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Nunito:wght@400;500;600;700;800;900&family=Patrick+Hand&family=Pixelify+Sans:wght@400;500;600;700&family=Press+Start+2P&display=swap');
 
 /* Vietnamese-safe body font. Keep Press Start 2P only for decorative/game titles. */
 :root {
@@ -5880,7 +5887,6 @@ button { font: inherit; cursor: pointer; }
   opacity: .78;
 }
 .grassBits { position: absolute; left: 9%; top: 6px; z-index: 3; color: #efff9c; font-size: 17px; }
-.tools { position: absolute; right: 10%; top: 22px; z-index: 4; display: flex; gap: 12px; color: #315f35; font-size: 35px; transform: rotate(-8deg); }
 
 /* ================= BOTTOM HUD ================= */
 .bottomPanel {
@@ -6157,7 +6163,6 @@ button { font: inherit; cursor: pointer; }
   }
   .fence { top: 24px; height: 54px; }
   .grassBits { top: 5px; font-size: 13px; }
-  .tools { display: none; }
 
   /* Mobile HUD is compact and does not cover mission cards. */
   .bottomPanel {
@@ -11110,5 +11115,514 @@ button, input, textarea, select {
     height: 26px !important;
     max-width: 26px !important;
     max-height: 26px !important;
+  }
+}
+
+/* ============================================================
+   FINAL HERO FONT
+   Clean rounded font for Vietnamese text — no pixel font.
+   ============================================================ */
+.hero h1,
+.hero h1 em,
+.hero .eyebrow,
+.hero p {
+  font-family: 'Nunito', 'Be Vietnam Pro', Arial, sans-serif !important;
+  font-synthesis: none;
+}
+
+.hero h1 {
+  font-size: clamp(34px, 5.3vw, 72px) !important;
+  font-weight: 900 !important;
+  line-height: 1.02 !important;
+  letter-spacing: -1.5px !important;
+}
+
+@media (max-width: 760px) {
+  .hero h1 {
+    font-family: 'Nunito', 'Be Vietnam Pro', Arial, sans-serif !important;
+    font-size: clamp(25px, 8.8vw, 38px) !important;
+    font-weight: 900 !important;
+    letter-spacing: -1px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero h1 {
+    font-family: 'Nunito', 'Be Vietnam Pro', Arial, sans-serif !important;
+    font-size: 23px !important;
+  }
+}
+
+/* ============================================================
+   TOP HEADER VIETNAMESE TITLE — MATCH HERO FONT
+   ============================================================ */
+.topTitle,
+.topTitle small,
+.topTitle b {
+  font-family: 'Nunito', 'Be Vietnam Pro', Arial, sans-serif !important;
+}
+
+.topTitle small {
+  font-size: 8px !important;
+  font-weight: 700 !important;
+  letter-spacing: .2px !important;
+}
+
+.topTitle b {
+  font-size: 13px !important;
+  font-weight: 900 !important;
+  letter-spacing: .2px !important;
+}
+
+/* ============================================================
+   FINAL MOBILE HUD + TITLE FONT FIX
+   - Keep the current-mission box
+   - Restore the total-score box on phones
+   - Keep mascot centered between the two boxes
+   - Loading title uses the same Pixelify Sans title font as the
+     main GOM NẮNG / GIEO HẠT CÙNG lighT hero title.
+   ============================================================ */
+
+/* Loading screen title: same title font as .hero h1 */
+.pixelLoadingTitle,
+.pixelLoadingTitle span,
+.pixelLoadingTitle strong {
+  font-family: 'Pixelify Sans', monospace !important;
+}
+
+/* Phone HUD: show all three visual blocks */
+@media (max-width: 760px) {
+  .bottomPanel {
+    grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1fr) !important;
+    gap: 8px !important;
+    align-items: center !important;
+  }
+
+  .bottomPanel .currentBox,
+  .bottomPanel .totalBox {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+    min-height: 70px;
+    padding: 8px 7px;
+  }
+
+  .bottomPanel .currentBox {
+    text-align: center;
+  }
+
+  .bottomPanel .totalBox {
+    text-align: center;
+  }
+
+  .bottomPanel .mascotBox {
+    width: 72px !important;
+    height: 88px !important;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .bottomPanel .mascotBox img {
+    width: 72px !important;
+    max-width: 72px !important;
+    max-height: 88px !important;
+    object-fit: contain;
+    object-position: center bottom;
+  }
+
+  .bottomPanel .totalBox small {
+    font-size: 7px;
+  }
+
+  .bottomPanel .totalBox b {
+    margin-top: 4px;
+    font-size: 12px;
+  }
+
+  .bottomPanel .totalBox i {
+    font-size: 7px;
+  }
+}
+
+@media (max-width: 430px) {
+  .bottomPanel {
+    grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1fr) !important;
+    gap: 6px !important;
+    padding-inline: 7px !important;
+  }
+
+  .bottomPanel .mascotBox,
+  .bottomPanel .mascotBox img {
+    width: 64px !important;
+    max-width: 64px !important;
+    max-height: 78px !important;
+  }
+
+  .bottomPanel .currentBox,
+  .bottomPanel .totalBox {
+    min-height: 68px;
+    padding: 7px 5px;
+  }
+
+  .bottomPanel .currentBox small,
+  .bottomPanel .totalBox small {
+    font-size: 6.5px;
+    line-height: 1.25;
+  }
+
+  .bottomPanel .currentBox strong {
+    font-size: 9px;
+  }
+
+  .bottomPanel .currentBox span {
+    font-size: 8px;
+  }
+
+  .bottomPanel .totalBox b {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 360px) {
+  .bottomPanel {
+    grid-template-columns: minmax(0, 1fr) 54px minmax(0, 1fr) !important;
+    gap: 5px !important;
+  }
+
+  .bottomPanel .mascotBox,
+  .bottomPanel .mascotBox img {
+    width: 54px !important;
+    max-width: 54px !important;
+    max-height: 68px !important;
+  }
+
+  .bottomPanel .currentBox,
+  .bottomPanel .totalBox {
+    min-height: 64px;
+    padding: 6px 4px;
+  }
+
+  .bottomPanel .currentBox strong {
+    font-size: 8px;
+  }
+
+  .bottomPanel .currentBox span,
+  .bottomPanel .totalBox i {
+    font-size: 7px;
+  }
+
+  .bottomPanel .totalBox b {
+    font-size: 10px;
+  }
+}
+
+/* ============================================================
+   FINAL BOTTOM HUD — 3 BLOCKS
+   Desktop: CHẶNG | TINIE | TỔNG ĐIỂM
+   Mobile keeps the same three-part structure.
+   ============================================================ */
+
+/* ============================================================
+   FINAL BOTTOM HUD
+   - Normal state: CHẶNG | TINIE | TỔNG ĐIỂM
+   - When NGÀY TIẾP THEO is available:
+     NGÀY TIẾP THEO | CHẶNG | TINIE | TỔNG ĐIỂM
+   ============================================================ */
+
+/* Keep the button available. It is rendered only when `finished` is true. */
+.bottomPanel .backButton {
+  display: block;
+}
+
+/* Desktop / large screens */
+@media (min-width: 1181px) {
+  .bottomPanel {
+    left: 4% !important;
+    right: 4% !important;
+    bottom: 18px !important;
+    width: auto !important;
+
+    display: grid !important;
+    grid-template-columns: minmax(260px, 1fr) 150px minmax(260px, 1fr) !important;
+    gap: 24px !important;
+    align-items: center !important;
+  }
+
+  /* If NGÀY TIẾP THEO exists, make room for it without
+     shifting the mascot/score into the wrong columns. */
+  .bottomPanel:has(.backButton) {
+    grid-template-columns:
+      minmax(150px, 180px)
+      minmax(260px, 1fr)
+      150px
+      minmax(260px, 1fr) !important;
+  }
+
+  .bottomPanel .currentBox,
+  .bottomPanel .totalBox {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 92px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .bottomPanel .mascotBox {
+    width: 150px !important;
+    height: 118px !important;
+    min-width: 0 !important;
+    margin: 0 auto !important;
+
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+  }
+
+  .bottomPanel .mascotBox img {
+    width: 118px !important;
+    max-width: 118px !important;
+    max-height: 118px !important;
+    margin: 0 auto !important;
+    object-fit: contain !important;
+    object-position: center bottom !important;
+  }
+}
+
+/* Tablet landscape */
+@media (max-width: 1180px) and (min-width: 761px) {
+  .bottomPanel {
+    left: 3% !important;
+    right: 3% !important;
+    bottom: 16px !important;
+
+    display: grid !important;
+    grid-template-columns: minmax(190px, 1fr) 110px minmax(190px, 1fr) !important;
+    gap: 14px !important;
+    align-items: center !important;
+  }
+
+  .bottomPanel:has(.backButton) {
+    grid-template-columns: 130px minmax(190px, 1fr) 110px minmax(190px, 1fr) !important;
+  }
+
+  .bottomPanel .currentBox,
+  .bottomPanel .totalBox {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 82px !important;
+    margin: 0 !important;
+  }
+
+  .bottomPanel .mascotBox {
+    width: 110px !important;
+    height: 100px !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+  }
+
+  .bottomPanel .mascotBox img {
+    width: 96px !important;
+    max-width: 96px !important;
+    max-height: 100px !important;
+    margin: 0 auto !important;
+    object-fit: contain !important;
+  }
+}
+
+/* Mobile: keep the already-good 3-part layout and make both boxes equal. */
+@media (max-width: 760px) {
+  .bottomPanel {
+    width: 100% !important;
+    padding: 10px 10px 18px !important;
+
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1fr) !important;
+    gap: 8px !important;
+    align-items: center !important;
+  }
+
+  .bottomPanel .currentBox,
+  .bottomPanel .totalBox {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 70px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .bottomPanel .mascotBox {
+    width: 72px !important;
+    height: 88px !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+  }
+
+  .bottomPanel .mascotBox img {
+    width: 72px !important;
+    max-width: 72px !important;
+    max-height: 88px !important;
+    margin: 0 auto !important;
+    object-fit: contain !important;
+    object-position: center bottom !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .bottomPanel {
+    grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1fr) !important;
+    gap: 6px !important;
+    padding-inline: 7px !important;
+  }
+
+  .bottomPanel .mascotBox {
+    width: 64px !important;
+  }
+
+  .bottomPanel .mascotBox img {
+    width: 64px !important;
+    max-width: 64px !important;
+    max-height: 78px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .bottomPanel {
+    grid-template-columns: minmax(0, 1fr) 54px minmax(0, 1fr) !important;
+    gap: 5px !important;
+  }
+
+  .bottomPanel .mascotBox {
+    width: 54px !important;
+  }
+
+  .bottomPanel .mascotBox img {
+    width: 54px !important;
+    max-width: 54px !important;
+    max-height: 68px !important;
+  }
+}
+
+/* ============================================================
+   FINAL AUTH TYPOGRAPHY
+   Use the same rounded font as the main Vietnamese UI.
+   Keep MINI GAME as the decorative pixel logo.
+   ============================================================ */
+
+.authBrandBlock,
+.authBrandBlock h1,
+.authBrandBlock h1 em,
+.authBrandBlock p,
+.authWorld,
+.authCard,
+.authCard h2,
+.authCardHeader p,
+.authForm,
+.authForm label > span,
+.authForm input,
+.googleButton,
+.authDivider,
+.authSubmit,
+.authLinks,
+.authLinks button,
+.authFooter,
+.authMessage {
+  font-family: 'Nunito', 'Be Vietnam Pro', Arial, sans-serif !important;
+  font-synthesis: none;
+}
+
+/* Main welcome title on the login page */
+.authBrandBlock h1 {
+  font-family: 'Nunito', 'Be Vietnam Pro', Arial, sans-serif !important;
+  font-size: clamp(34px, 5.3vw, 72px) !important;
+  font-weight: 900 !important;
+  line-height: 1.02 !important;
+  letter-spacing: -1.5px !important;
+}
+
+.authBrandBlock h1 em {
+  font-family: 'Nunito', 'Be Vietnam Pro', Arial, sans-serif !important;
+  font-weight: 900 !important;
+  letter-spacing: -1.5px !important;
+}
+
+/* Welcome sentence above the title */
+.authWorld {
+  font-family: 'Nunito', 'Be Vietnam Pro', Arial, sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  letter-spacing: .3px !important;
+}
+
+/* Small subtitle below the title */
+.authBrandBlock p {
+  font-family: 'Nunito', 'Be Vietnam Pro', Arial, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0 !important;
+}
+
+/* Login card typography */
+.authCard h2 {
+  font-family: 'Nunito', 'Be Vietnam Pro', Arial, sans-serif !important;
+  font-size: 22px !important;
+  font-weight: 900 !important;
+  letter-spacing: 0 !important;
+}
+
+.authCardHeader p {
+  font-family: 'Nunito', 'Be Vietnam Pro', Arial, sans-serif !important;
+  font-weight: 700 !important;
+}
+
+.authForm label > span {
+  font-family: 'Nunito', 'Be Vietnam Pro', Arial, sans-serif !important;
+  font-weight: 900 !important;
+}
+
+.authForm input {
+  font-family: 'Nunito', 'Be Vietnam Pro', Arial, sans-serif !important;
+  font-weight: 700 !important;
+}
+
+.googleButton,
+.authSubmit,
+.authLinks button,
+.authFooter {
+  font-family: 'Nunito', 'Be Vietnam Pro', Arial, sans-serif !important;
+}
+
+/* Mobile */
+@media (max-width: 760px) {
+  .authBrandBlock h1 {
+    font-family: 'Nunito', 'Be Vietnam Pro', Arial, sans-serif !important;
+    font-size: clamp(28px, 9vw, 42px) !important;
+    letter-spacing: -1px !important;
+  }
+
+  .authBrandBlock h1 em {
+    letter-spacing: -1px !important;
+  }
+
+  .authWorld {
+    font-size: 12px !important;
+  }
+
+  .authBrandBlock p {
+    font-size: 11px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .authBrandBlock h1 {
+    font-size: 25px !important;
   }
 }

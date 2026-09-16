@@ -16,8 +16,8 @@ const MISSIONS = [
     points: 10,
     logo: '/assets/youtube.png',
     color: '#ff5757',
-    rule: 'Mỗi tài khoản cần: 1 ảnh đã subscribe kênh lighT_, 1 ảnh Like và 1 ảnh Comment.',
-    hint: 'Mỗi tài khoản cần 3 ảnh: đã subscribe kênh lighT_, Like và Comment.'
+    rule: '3 Like + 3 Comment dưới MV từ 3 account đã subscribe kênh chính thức của lighT',
+    hint: 'Gieo hạt mầm hướng dương mỗi ngày'
   },
   {
     id: 'itunes',
@@ -27,10 +27,10 @@ const MISSIONS = [
     points: 10,
     logo: '/assets/itunes.png',
     color: '#b98cfc',
-    rule: '3 lượt redeem · lấy code từ web hoặc tự mua',
-    hint: 'Mỗi lượt cần ảnh minh chứng rõ ràng. Lấy code từ web hoặc chụp màn hình giao dịch mua có Account ID.',
+    rule: '3 lượt redeem · Nhận code free từ website hoặc tự mua',
     resourceUrl: 'https://light-itunes-code.vercel.app/',
-    proofNote: 'Không cần nhập email. Nếu tự mua, chỉ cần Account ID hiển thị trên ảnh.'
+    proofNote: 'Không cần nhập email. Nếu tự mua, chỉ cần Account ID hiển thị trên ảnh.',
+    hint: 'Tưới nước để cây mau lớn'
   },
   {
     id: 'facebook',
@@ -40,7 +40,7 @@ const MISSIONS = [
     points: 10,
     logo: '/assets/facebook.png',
     color: '#4f8df7',
-    rule: '3 post · đủ Hashtag',
+    rule: '3 post · đủ Hashtag: lighT, DoMinhTan, Tenbaihat, SYE',
     hint: 'Dọn sạch những chú sâu để cây khỏe mạnh.'
   },
   {
@@ -51,7 +51,7 @@ const MISSIONS = [
     points: 10,
     logo: '/assets/tiktok.png',
     color: '#141414',
-    rule: '3 video · Sound Official + Hashtag',
+    rule: '3 video · Sound Official + Hashtag . Link thể hiện rõ người chia sẻ và người đăng bài là cùng một người',
     hint: 'Thêm dinh dưỡng để cây vươn cao và nhiều lá hơn.'
   },
   {
@@ -101,7 +101,7 @@ const BONUS_MISSIONS = [
   {
     id: 'spotify_extra',
     name: 'SPOTIFY EXTRA',
-    action: 'STREAM THÊM',
+    action: 'THÊM STREAM',
     target: 45,
     points: 5,
     points_per_unit: 5,
@@ -116,7 +116,7 @@ const BONUS_MISSIONS = [
   {
     id: 'itunes_extra',
     name: 'iTUNES EXTRA',
-    action: 'REDEEM THÊM',
+    action: 'THÊM REDEEM',
     target: 10,
     points: 1,
     points_per_unit: 1,
@@ -124,14 +124,14 @@ const BONUS_MISSIONS = [
     max_points: 5,
     logo: '/assets/itunes.png',
     color: '#b98cfc',
-    rule: '2 redeem = +1 điểm · tối đa 5 điểm',
+    rule: '2 redeem = +1 điểm · tối đa 5 điểm · mỗi CODE tương ứng 1 ảnh minh chứng.',
     hint: '2 / 4 / 6 / 8 / 10 redeem tương ứng +1 / +2 / +3 / +4 / +5 điểm.',
     mission_type: 'bonus'
   },
   {
     id: 'youtube_extra',
     name: 'YOUTUBE EXTRA',
-    action: 'TƯƠNG TÁC THÊM',
+    action: 'THÊM TƯƠNG TÁC',
     target: 5,
     points: 2,
     points_per_unit: 2,
@@ -140,7 +140,7 @@ const BONUS_MISSIONS = [
     logo: '/assets/youtube.png',
     color: '#ff5757',
     rule: '1 Subscribe + 1 Like + 1 Comment = +2 điểm · tối đa 10 điểm',
-    hint: 'Mỗi gói Like + Comment hợp lệ = +2 điểm.',
+    hint: 'YouTube Bonus phải dùng account YouTube khác account đã dùng ở Mission YouTube bắt buộc.',
     mission_type: 'bonus'
   }
 ];
@@ -167,7 +167,7 @@ const SKY_IMAGE_ASSETS = {
 const TINIE_IMAGE_ASSET = '/assets/tinie.png';
 
 
-// Round 2 là round BONUS riêng. Progress/target của bonus KHÔNG cộng với Round 1.
+// Chặng 02 là round BONUS riêng. Progress/target của bonus KHÔNG cộng với Chặng 01.
 
 const initialCounts = Object.fromEntries(
   MISSIONS.map(m => [m.id, 0])
@@ -614,7 +614,7 @@ function AuthScreen() {
           ? 'Đặt mật khẩu mới cho tài khoản của bạn.'
           : mode === 'admin-login'
             ? 'Khu vực chỉ dành cho admin.'
-            : 'Đăng nhập để tiếp tục hành trình nhé.';
+            : 'Đăng nhập để bắt đầu hành trình nhé.';
 
   return (
     <div className="authPage">
@@ -647,16 +647,16 @@ function AuthScreen() {
           </div>
 
           <div className="authWorld">
-            OUR WORLD
+            Chào mừng đến với khu vườn nhỏ của lighT
           </div>
 
           <h1>
-            GROW
-            <em>WITH THE lighT</em>
+            GOM NẮNG
+            <em>GIEO HẠT CÙNG lighT</em>
           </h1>
 
           <p>
-            Grow a little · Shine a little · Grow with the lighT
+            Tưới một chút · Chăm một chút · Nở rộ rộn ràng
           </p>
 
         </section>
@@ -670,9 +670,7 @@ function AuthScreen() {
             </div>
 
             <div>
-              <span className="authEyebrow">
-                YOUR JOURNEY
-              </span>
+             
 
               <div className="authTitleRow">
                 <h2>{title}</h2>
@@ -683,7 +681,7 @@ function AuthScreen() {
                     onClick={() => switchMode('admin-login')}
                     disabled={submitting}
                   >
-                    ADMIN
+                    ADMIN ONLY
                   </button>
                 )}
                 {mode === 'admin-login' && (
@@ -862,7 +860,7 @@ function AuthScreen() {
                     ? '📨 GỬI EMAIL ĐẶT LẠI'
                     : mode === 'update-password'
                       ? '🔐 LƯU MẬT KHẨU MỚI'
-                      : '🌻 ĐĂNG NHẬP'}
+                      : '🌻 ĐĂNG NHẬP ĐỂ BẮT ĐẦU HÀNH TRÌNH'}
             </button>
 
               </form>
@@ -907,7 +905,7 @@ function AuthScreen() {
                     switchMode('login')
                   }
                 >
-                  Đăng nhập
+                  Đăng nhập để bắt đầu hành trình
                 </button>
               </>
             )}
@@ -937,8 +935,7 @@ function AuthScreen() {
           </div>
 
           <div className="authFooter">
-            BẰNG VIỆC ĐĂNG NHẬP, BẠN ĐỒNG Ý THAM GIA
-            GROW WITH THE lighT
+BẰNG VIỆC ĐĂNG NHẬP, BẠN ĐỒNG Ý THAM GIA GOM NẮNG, GIEO HẠT CÙNG lighT       
           </div>
 
         </section>
@@ -995,8 +992,8 @@ function PixelLoadingScreen({ message = 'Đang mở khu vườn...' }) {
             WebkitFilter: 'none'
           }}
         >
-          <span style={{ textShadow: 'none', filter: 'none' }}>GROW</span>
-          <strong style={{ textShadow: 'none', filter: 'none' }}>WITH THE lighT</strong>
+          <span style={{ textShadow: 'none', filter: 'none' }}>GOM NẮNG</span>
+          <strong style={{ textShadow: 'none', filter: 'none' }}>GIEO HẠT CÙNG lighT</strong>
         </div>
 
         <img
@@ -1027,7 +1024,7 @@ function PixelLoadingScreen({ message = 'Đang mở khu vườn...' }) {
 
         <div className="pixelProgressText">{progress}%</div>
         <div className="pixelLoadingHint">
-          “Cùng nhau gieo những điều tốt đẹp”
+          Cùng nhau gieo những niềm vui rực rỡ
         </div>
 
         <div
@@ -1081,10 +1078,10 @@ function App() {
   const [bonusStarting, setBonusStarting] = useState(false);
   const [round2Ready, setRound2Ready] = useState(false);
   const [mandatorySubmittedToday, setMandatorySubmittedToday] = useState({});
-  // Round 1 first-completion celebration:
-  // 1 = congratulate +1 sunflower, 2 = explain/open Round 2.
+  // Chặng 01 first-completion celebration:
+  // 1 = congratulate +1 sunflower, 2 = explain/open Chặng 02.
   const [round1CelebrationStep, setRound1CelebrationStep] = useState(0);
-  // Chuyển qua lại giữa 2 round bằng nút; hoàn thành Round 1 KHÔNG tự nhảy sang Round 2.
+  // Chuyển qua lại giữa 2 round bằng nút; hoàn thành Chặng 01 KHÔNG tự nhảy sang Chặng 02.
   const [activeRound, setActiveRound] = useState('round1');
   const harvestedDayRef = useRef(null);
   const [notifications, setNotifications] = useState([]);
@@ -1138,21 +1135,21 @@ function App() {
     return sameGameDay || sameActivityDate || sameSubmittedDate;
   };
 
-  // Round 1 is finished as soon as EACH mandatory mission has been
+  // Chặng 01 is finished as soon as EACH mandatory mission has been
   // submitted at least once. Approval/rejection does not matter.
   // Use BOTH sources because old/current DB rows can be represented in
   // user_missions before mission_submissions is refreshed (and vice versa).
-  // ROUND 1 unlock source of truth:
+  // CHẶNG 01 unlock source of truth:
   // ONLY submissions belonging to the CURRENT game day count.
   // Do not use user_missions/status here because that table can retain
-  // yesterday's state and would incorrectly unlock Round 2.
+  // yesterday's state and would incorrectly unlock Chặng 02.
   const isMandatorySubmitted = missionId =>
     Boolean(mandatorySubmittedToday[missionId]);
 
   const cleared = MISSIONS.filter(m => isMandatorySubmitted(m.id)).length;
   const finished = cleared === MISSIONS.length;
 
-  // Round 2 must never be visible/active before all 5 Round-1 missions
+  // Chặng 02 must never be visible/active before all 5 Round-1 missions
   // are submitted for the current game day.
   useEffect(() => {
     if (!finished || !round2Ready) {
@@ -1160,10 +1157,10 @@ function App() {
     }
   }, [finished, round2Ready]);
 
-  // Round 2 is never a valid visible state unless Round 1 is complete.
+  // Chặng 02 is never a valid visible state unless Chặng 01 is complete.
   const canShowRound2 = finished && activeRound === 'round2';
 
-  // ROUND 1 -> ROUND 2:
+  // CHẶNG 01 -> CHẶNG 02:
   // Khi đủ 5 nhiệm vụ đã submit, server tự cộng đúng 1 bông cho ngày đó
   // và mở toàn bộ nhiệm vụ bonus. Không cần Admin duyệt trước.
   useEffect(() => {
@@ -1172,9 +1169,9 @@ function App() {
       return;
     }
 
-    // IMPORTANT: Round 2 must unlock in the UI immediately after the 5th
+    // IMPORTANT: Chặng 02 must unlock in the UI immediately after the 5th
     // mandatory submission. The +1 flower RPC is separate and must NEVER
-    // be able to keep the Round 2 tab disabled when the RPC has an error.
+    // be able to keep the Chặng 02 tab disabled when the RPC has an error.
     setRound2Ready(true);
 
     if (harvestedDayRef.current === dayNumber) {
@@ -1189,11 +1186,11 @@ function App() {
       if (cancelled) return;
 
       if (error) {
-        // Round 2 is already unlocked locally from `finished`.
+        // Chặng 02 is already unlocked locally from `finished`.
         // This error only means the server-side +1 flower could not be
         // recorded yet; do not lock the Bonus tab because of it.
         console.error('harvest_round1_if_ready:', error);
-        notify(`Round 2 đã mở. Chưa ghi được +1 🌻: ${error.message || 'lỗi server'}`);
+        notify(`Chặng 02 đã mở. Chưa ghi được +1 🌻: ${error.message || 'lỗi server'}`);
         return;
       }
 
@@ -1204,7 +1201,7 @@ function App() {
       harvestedDayRef.current = returnedDay;
       setSunflowerCount(returnedFlowers);
       setRound2Ready(true);
-      // Giữ người chơi ở round hiện tại; chỉ mở khóa nút Round 2.
+      // Giữ người chơi ở round hiện tại; chỉ mở khóa nút Chặng 02.
       setActiveRound(prev => prev === 'round2' ? 'round2' : 'round1');
       setBonusFlow(null);
 
@@ -1529,11 +1526,11 @@ function App() {
       const nextStatuses = { ...initialStatuses };
       const nextBonuses = {};
 
-      // Round 2 is COMPLETELY independent from Round 1.
+      // Chặng 02 is COMPLETELY independent from Chặng 01.
       // Never read a bonus card's progress from the mandatory mission progress.
       // Bonus progress is reconstructed only from submissions whose mission itself
       // is a bonus mission, for the current game day. This also repairs old rows
-      // where bonus user_missions accidentally inherited Round 1 progress.
+      // where bonus user_missions accidentally inherited Chặng 01 progress.
       const todayKst = new Intl.DateTimeFormat('en-CA', {
         timeZone: 'Asia/Seoul',
         year: 'numeric',
@@ -1547,12 +1544,12 @@ function App() {
       const round1HarvestId = harvestRes.data?.[0]?.id || null;
       const round1HarvestAt = harvestRes.data?.[0]?.harvested_at || null;
 
-      // ROUND 1 unlock condition — STRICT:
+      // CHẶNG 01 unlock condition — STRICT:
       // Only a mission_submission whose game_day exactly equals the user's
       // CURRENT profile day can count. Do NOT use user_missions, activity_date,
       // submitted_at date, or any legacy fallback here. user_missions has no
       // game_day column in the current schema, so using it can carry yesterday's
-      // completed state into a new day and incorrectly unlock Round 2.
+      // completed state into a new day and incorrectly unlock Chặng 02.
       const submittedMandatoryToday = {};
       for (const mission of MISSIONS) submittedMandatoryToday[mission.id] = false;
 
@@ -1572,7 +1569,7 @@ function App() {
       setMandatorySubmittedToday(submittedMandatoryToday);
 
       /*
-       * IMPORTANT — PER-DAY ROUND 1 STATE
+       * IMPORTANT — PER-DAY CHẶNG 01 STATE
        * Do NOT use user_missions.progress/status for mandatory cards here.
        * That table is persistent per user/mission in the current schema and
        * can contain the previous day's completed state. The source of truth
@@ -1637,7 +1634,7 @@ function App() {
       for (const sub of submissionsRes.data || []) {
         const slug = sub.mission?.slug;
 
-        // ONLY an exact BONUS mission slug can contribute to Round 2.
+        // ONLY an exact BONUS mission slug can contribute to Chặng 02.
         // Mandatory mission progress can never leak into Bonus progress.
         const isBonusSubmission = BONUS_MISSIONS.some(m => m.id === slug);
         if (!isBonusSubmission || !slug) continue;
@@ -1662,10 +1659,10 @@ function App() {
           if (submissionDay !== todayKst) continue;
         }
 
-        // game_day alone cannot separate Round 1 and Round 2 because both
+        // game_day alone cannot separate Chặng 01 and Chặng 02 because both
         // happen on the same game day. A Bonus submission is valid for this
-        // Round 2 only if it was submitted AFTER Round 1 was harvested.
-        // This prevents old/corrupted Bonus rows from inheriting Round 1 data.
+        // Chặng 02 only if it was submitted AFTER Chặng 01 was harvested.
+        // This prevents old/corrupted Bonus rows from inheriting Chặng 01 data.
         if (round1HarvestAt && new Date(sub.submitted_at).getTime() < new Date(round1HarvestAt).getTime()) {
           continue;
         }
@@ -1914,161 +1911,6 @@ function App() {
     return () => window.clearInterval(interval);
   }, [authUser?.id, profile?.role]);
 
-  const exportMyExcel = async () => {
-    try {
-      const XLSX = await import('xlsx');
-
-      const { data: mySubmissionIds, error: submissionIdsError } =
-        await supabase
-          .from('mission_submissions')
-          .select('id')
-          .eq('user_id', authUser.id);
-
-      if (submissionIdsError) throw submissionIdsError;
-
-      const submissionIds = (mySubmissionIds || []).map(row => row.id);
-      const safeSubmissionIds = submissionIds.length
-        ? submissionIds
-        : ['00000000-0000-0000-0000-000000000000'];
-
-      const [
-        profileRes,
-        missionsRes,
-        submissionsRes,
-        itemsRes,
-        evidenceRes,
-        ledgerRes
-      ] = await Promise.all([
-        supabase
-          .from('profiles')
-          .select('id, username, avatar_url, total_points, role, created_at')
-          .eq('id', authUser.id)
-          .single(),
-
-        supabase
-          .from('user_missions')
-          .select(`
-            mission_id,
-            progress,
-            status,
-            completed_at,
-            missions(
-              slug,
-              name,
-              action,
-              mission_type,
-              target,
-              points,
-              unit_quantity,
-              points_per_unit,
-              max_points
-            )
-          `)
-          .eq('user_id', authUser.id),
-
-        supabase
-          .from('mission_submissions')
-          .select(`
-            id,
-            mission_id,
-            attempt_no,
-            platform,
-            content_url,
-            post_url,
-            account_id,
-            redeem_code,
-            external_action_id,
-            quantity,
-            activity_date,
-            points_awarded,
-            note,
-            status,
-            admin_comment,
-            submitted_at,
-            reviewed_at,
-            verified_at,
-            missions(slug, name, action, mission_type)
-          `)
-          .eq('user_id', authUser.id)
-          .order('submitted_at', { ascending: false }),
-
-        supabase
-          .from('mission_submission_items')
-          .select('*')
-          .in('submission_id', safeSubmissionIds),
-
-        supabase
-          .from('submission_evidence')
-          .select(
-            'id, submission_id, item_no, evidence_type, original_filename, storage_bucket, storage_path, mime_type, file_size, created_at'
-          )
-          .in('submission_id', safeSubmissionIds),
-
-        supabase
-          .from('point_ledger')
-          .select(
-            'id, user_id, points, source_type, source_id, mission_id, submission_id, reason, created_at'
-          )
-          .eq('user_id', authUser.id)
-          .order('created_at', { ascending: false })
-      ]);
-
-      const results = [
-        profileRes,
-        missionsRes,
-        submissionsRes,
-        itemsRes,
-        evidenceRes,
-        ledgerRes
-      ];
-
-      const failed = results.find(r => r.error);
-      if (failed?.error) throw failed.error;
-
-      const wb = XLSX.utils.book_new();
-
-      const append = (name, rows) => {
-        const ws = XLSX.utils.json_to_sheet(rows || []);
-        XLSX.utils.book_append_sheet(wb, ws, name);
-      };
-
-      append('My Profile', [profileRes.data]);
-      append(
-        'My Missions',
-        (missionsRes.data || []).map(row => ({
-          mission: row.missions?.name || row.mission_id,
-          action: row.missions?.action || '',
-          type: row.missions?.mission_type || '',
-          progress: row.progress ?? 0,
-          target: row.missions?.target ?? '',
-          status: row.status || '',
-          completed_at: row.completed_at || ''
-        }))
-      );
-      append('My Submissions', submissionsRes.data || []);
-      append('Submission Items', itemsRes.data || []);
-      append('Evidence', evidenceRes.data || []);
-      append('Point History', ledgerRes.data || []);
-
-      XLSX.writeFile(
-        wb,
-        `grow-with-the-light-${(
-          profileRes.data?.username || 'player'
-        ).replace(/[^a-zA-Z0-9_-]/g, '_')}-${new Date()
-          .toISOString()
-          .slice(0, 10)}.xlsx`
-      );
-
-      notify('Đã xuất Excel dữ liệu của bạn.');
-    } catch (error) {
-      console.error('export my excel:', error);
-      notify(
-        error?.message ||
-          'Không thể xuất Excel. Hãy thử lại hoặc kiểm tra package xlsx.'
-      );
-    }
-  };
-
   const signOut = async () => {
     audio.pause();
     audio.currentTime = 0;
@@ -2171,6 +2013,10 @@ function App() {
   const unreadNotifications = notifications.filter(n => !n.read_at);
   const unreadCount = unreadNotifications.length;
 
+  const hasStartedAnyMission = MISSIONS.some(
+    m => hasWorkedMission(m.id)
+  );
+
   const firstIncompleteIndex = MISSIONS.findIndex(
     m => !hasWorkedMission(m.id)
   );
@@ -2228,8 +2074,8 @@ function App() {
         </button>
 
         <div className="topTitle">
-          <small>OUR WORLD</small>
-          <b>🌻 GROW WITH THE lighT</b>
+          <small>Chào mừng đến với khu vườn nhỏ của lighT</small>
+          <b>🌻 GOM NẮNG, GIEO HẠT CÙNG lighT</b>
         </div>
 
         <div className="topActions">
@@ -2713,27 +2559,25 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
 
         <>
             <section className="hero">
-              <div className="eyebrow">
-                OUR WORLD · GROW WITH EVERY ACTION
-              </div>
+              
 
               <h1>
-                GROW
-                <em>WITH THE lighT</em>
+                GOM NẮNG
+                <em>GIEO HẠT CÙNG lighT</em>
               </h1>
 
               <p>
-                Grow a little · Shine a little · Grow with the lighT
+                Tưới một chút · Chăm một chút · Nở rộ rộn ràng
               </p>
             </section>
 
-            <div className="roundTabs" role="tablist" aria-label="Chuyển round">
+            <div className="roundTabs" role="tablist" aria-label="Chuyển chặng">
               <button
                 type="button"
                 className={`roundTab ${activeRound === 'round1' ? 'active' : ''}`}
                 onClick={() => setActiveRound('round1')}
               >
-                <span>ROUND 1</span>
+                <span>CHẶNG 01</span>
                 <b>NHIỆM VỤ CHÍNH</b>
               </button>
               <span className="roundTabArrow" aria-hidden="true">→</span>
@@ -2742,29 +2586,29 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
                 className={`roundTab ${activeRound === 'round2' ? 'active' : ''} ${!finished ? 'disabled' : ''}`}
                 onClick={() => finished && setActiveRound('round2')}
                 disabled={!finished}
-                title={finished ? 'Mở Round 2' : 'Hoàn thành đủ 5 nhiệm vụ Round 1 để mở'}
+                title={finished ? 'Mở Chặng 02' : 'Hoàn thành đủ 5 nhiệm vụ Chặng 01 để mở'}
               >
-                <span>ROUND 2</span>
+                <span>CHẶNG 02</span>
                 <b>BONUS</b>
               </button>
             </div>
 
             <div className={`currentRoundLabel ${activeRound === 'round2' ? 'is-round2' : 'is-round1'}`}>
-              <span>{activeRound === 'round2' ? 'ROUND 2' : 'ROUND 1'}</span>
+              <span>{activeRound === 'round2' ? 'CHẶNG 02' : 'CHẶNG 01'}</span>
               <b>{activeRound === 'round2' ? 'BONUS' : 'NHIỆM VỤ CHÍNH'}</b>
               <small>
                 {activeRound === 'round2'
                   ? '🌻tinie ơiii, góp thêm thật nhiều tia nắng và kiếm thêm điểm nhé!'
 
                   : finished
-                    ? 'Round 1 đã hoàn thành · Bạn có thể xem lại Round 1 hoặc bấm ROUND 2 để làm Bonus'
+                    ? 'Chặng 01 đã hoàn thành · Bấm Chặng 02 để làm Bonus (không xem lại điều kiện Chặng 01)'
                     : 'Hoàn thành 5 nhiệm vụ chính theo thứ tự bất kỳ để nhận về một bông hoa hướng dương'}
               </small>
             </div>
 
             <section
               className={`missionRoad ${activeRound === 'round2' ? 'is-round2' : 'is-round1'}`}
-              aria-label={activeRound === 'round2' ? 'Round 2 - nhiệm vụ bonus' : 'Round 1 - nhiệm vụ chính'}
+              aria-label={activeRound === 'round2' ? 'Chặng 02 - nhiệm vụ bonus' : 'Chặng 01 - nhiệm vụ chính'}
             >
               <div className="roadLine" />
 
@@ -2837,7 +2681,7 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
                       }}
                     />
                    {/* <div>
-                      <strong>ROUND 2 · BONUS TỰ 🌻</strong>
+                      <strong>CHẶNG 02 · BONUS TỰ 🌻</strong>
                       <span>🌻tinie ơiii, góp thêm thật nhiều tia nắng và kiếm thêm điểm nhé!</span>
                     </div>
                     */}
@@ -2847,8 +2691,8 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
                   const state = bonusStates[m.id] || { progress: 0, status: 'in_progress' };
                   const latest = submissions[m.id];
                   const bonusProgress = Number(state.progress || 0);
-                  // Round 2 hiển thị hoàn toàn độc lập với Round 1.
-                  // Round 1 đã hoàn thành chỉ là điều kiện mở khóa Bonus, không cộng progress.
+                  // Chặng 02 hiển thị hoàn toàn độc lập với Chặng 01.
+                  // Chặng 01 đã hoàn thành chỉ là điều kiện mở khóa Bonus, không cộng progress.
                   const progress = bonusProgress;
                   const target = Number(m.target || 1);
                   const maxed = progress >= target;
@@ -2929,21 +2773,31 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
                         draggable="false"
                         style={{ width: 18, height: 18, objectFit: 'contain', verticalAlign: 'middle', marginRight: 5 }}
                       />
-                      ROUND 2 · HOA ĐÃ NỞ!
+                      CHẶNG 02 · HOA ĐÃ NỞ!
                     </>
                   )
-                : '🌱 ROUND 1 · NHIỆM VỤ CHÍNH'}
+                : 'CHẶNG 01 · NHIỆM VỤ CHÍNH'}
             </small>
 
-            <strong>
-              {activeRound === 'round2' ? 'BONUS · TỰ CHỌN' : currentMission.action}
-            </strong>
+            {!hasStartedAnyMission && activeRound !== 'round2' ? (
+              <>
+                <strong className="startMissionMessage">
+                  Hãy bắt đầu với 1 nhiệm vụ bất kì nhé!
+                </strong>
+              </>
+            ) : (
+              <>
+                <strong>
+                  {activeRound === 'round2' ? 'BONUS · TỰ CHỌN' : currentMission.action}
+                </strong>
 
-            <span>
-              {activeRound === 'round2'
-                ? 'Thêm một tia nắng nhỏ, để bông hoa thêm khoe sắc!'
-                : currentMission.name}
-            </span>
+                <span>
+                  {activeRound === 'round2'
+                    ? 'Thêm một tia nắng nhỏ, để bông hoa thêm khoe sắc!'
+                    : currentMission.name}
+                </span>
+              </>
+            )}
           </div>
 
           <div className="mascotBox">
@@ -3817,8 +3671,8 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
   />
 
   {finished
-    ? 'ROUND 2 · BONUS'
-    : 'ROUND 1 · HOÀN THÀNH 5 NHIỆM VỤ ĐỂ NHẬN 1 BÔNG HOA VÀ MỞ KHÓA NHIỆM VỤ BONUS'}
+    ? 'CHẶNG 02 · BONUS'
+    : 'CHẶNG 01 · HOÀN THÀNH 5 NHIỆM VỤ ĐỂ NHẬN 1 BÔNG HOA VÀ MỞ KHÓA NHIỆM VỤ BONUS'}
 </div>
         )}
       </main>
@@ -3851,7 +3705,7 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
           className="round1CelebrationOverlay"
           role="dialog"
           aria-modal="true"
-          aria-label="Chúc mừng hoàn thành Round 1"
+          aria-label="Chúc mừng hoàn thành Chặng 01"
         >
           <div className="round1CelebrationModal">
             <button
@@ -3866,7 +3720,7 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
             {round1CelebrationStep === 1 ? (
               <>
                 <div className="round1CelebrationEyebrow">🌻 CHÚC MỪNG!</div>
-                <h2>Bạn đã hoàn thành Round 1!</h2>
+                <h2>Bạn đã hoàn thành Chặng 01!</h2>
 
                 <img
                   src="/assets/tinie_sunflower.png"
@@ -3888,7 +3742,7 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
                   className="round1CelebrationPrimary"
                   onClick={() => setRound1CelebrationStep(2)}
                 >
-                  TIẾP TỤC →
+                  Tiếp tục Chặng 2 →
                 </button>
               </>
             ) : (
@@ -3901,7 +3755,7 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
                     draggable="false"
                     style={{ width: 20, height: 20, objectFit: 'contain', verticalAlign: 'middle', marginRight: 5 }}
                   />
-                  ROUND 2
+                  CHẶNG 02
                 </div>
                 <h2>Bonus đã được mở!</h2>
 
@@ -3913,12 +3767,12 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
                 />
 
                 <p className="round1CelebrationLead">
-                  <b>Round 2 · BONUS TỰ CHỌN</b>
+                  <b>CHẶNG 02 · BONUS TỰ CHỌN</b>
                 </p>
 
                 <p className="round1CelebrationText">
                   Bạn có thể chọn những nhiệm vụ Bonus để tiếp tục nhận thêm điểm.
-                  Bonus là một chặng riêng và không cộng dồn tiến độ với Round 1.
+                  Bonus là một chặng riêng và không cộng dồn tiến độ với Chặng 01.
                 </p>
 
                 <div className="round1CelebrationActions">
@@ -3937,7 +3791,7 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
                       });
                     }}
                   >
-                    XEM ROUND 2 BONUS
+                    XEM CHẶNG 02 BONUS
                   </button>
 
                   <button
@@ -3977,7 +3831,7 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
             <h2>PAUSE MENU</h2>
 
             <button onClick={() => setMenu(false)}>
-              🌻 GROW WITH THE lighT
+              🌻 Gom nắng, gieo hạt cùng lighT
             </button>
 
             <button
@@ -3999,9 +3853,7 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
                 🔔 ADMIN DASHBOARD
               </button>
             )}
-
-            <button onClick={exportMyExcel}>📊 XUẤT EXCEL</button>
-            <button onClick={signOut}>🚪 ĐĂNG XUẤT</button>
+<button onClick={signOut}>🚪 ĐĂNG XUẤT</button>
 
             <div>
               {profile?.username || 'PLAYER 001'}
@@ -4070,9 +3922,9 @@ function LeaderboardModal({ onClose }) {
           ×
         </button>
 
-        <small>WORLD RANKING</small>
+        <small>RANKING</small>
         <h2>🏆 LEADERBOARD</h2>
-        <p>Xếp hạng theo điểm; cùng điểm thì ai đạt mốc điểm đó sớm hơn sẽ đứng trước.</p>
+        <p>Xếp hạng theo điểm. Nếu cùng điểm thì ai đạt mốc điểm đó sớm hơn sẽ xếp thứ hạng cao hơn.</p>
 
         {loading ? (
           <p>Đang tải...</p>
@@ -4283,7 +4135,7 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
    * the 50% retry cap.
    *
    * A submission is a retry only when there is an earlier REJECTED submission
-   * for the same user + mission + current game_day. For Round 2, the rejected
+   * for the same user + mission + current game_day. For Chặng 02, the rejected
    * row must also belong to the same round2_harvest_id.
    */
   const isSubmissionRetry = submission => {
@@ -4809,7 +4661,7 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
           'Mission Type': mission.mission_type || '',
           'Action': mission.action || '',
           'Game Day': s.game_day ?? '',
-          'Round 2 Harvest ID': s.round2_harvest_id || '',
+          'Chặng 02 Harvest ID': s.round2_harvest_id || '',
           'Attempt': s.attempt_no,
           'Status': s.status || '',
           'Platform': s.platform || '',
@@ -6895,7 +6747,7 @@ function MissionModal({
   const [submissionStep, setSubmissionStep] = useState(
     isBonus ? 'main-submit' : 'main'
   );
-  // Round 2 Bonus starts with ZERO items. It must never inherit Round 1 items/progress.
+  // Chặng 02 Bonus starts with ZERO items. It must never inherit Chặng 01 items/progress.
   const [bonusItems, setBonusItems] = useState([]);
   const [bonusFiles, setBonusFiles] = useState([]);
   const [bonusSpotifyProofFiles, setBonusSpotifyProofFiles] = useState({});
@@ -7446,8 +7298,8 @@ function MissionModal({
   };
 
   const submit = async () => {
-    // Round 2 is a completely separate form.
-    // Never validate a Round 2 submission with Round 1 rules.
+    // Chặng 02 is a completely separate form.
+    // Never validate a Chặng 02 submission with Chặng 01 rules.
     if (isBonus) {
       if (!validateBonus()) return;
     } else {
@@ -7622,7 +7474,7 @@ function MissionModal({
         }
       }
 
-      // Round 2 Bonus proofs must be uploaded and linked to the submission later.
+      // Chặng 02 Bonus proofs must be uploaded and linked to the submission later.
       // TikTok/Social use links as their evidence; iTunes, Spotify and YouTube
       // use per-item image evidence.
       if (isBonus) {
@@ -7943,7 +7795,7 @@ function MissionModal({
 
         {!isBonus && <h2>{localMission.action}</h2>}
         <h3>{localMission.name}</h3>
-        {!isBonus && mission.id !== 'youtube' && <p>{localMission.hint}</p>}
+        {!isBonus && <p>{localMission.hint}</p>}
 
         {!isBonus && (
           <div className="modalRule">
@@ -8212,6 +8064,18 @@ function MissionModal({
                           : 'SUBMISSION ITEMS'}
                   </b>
 
+                  {mission.id === 'facebook' && (
+                    <small style={{ display: 'block', marginTop: 4, opacity: .72 }}>
+                      Link thể hiện rõ người chia sẻ và người đăng bài là cùng một người.
+                    </small>
+                  )}
+
+                  {mission.id === 'tiktok' && (
+                    <small style={{ display: 'block', marginTop: 4, opacity: .72 }}>
+                      3 video · Sound Official + Hashtag . Link thể hiện rõ người chia sẻ và người đăng bài là 01.
+                    </small>
+                  )}
+
                   {mission.id === 'itunes' && (
                     <div
                       style={{
@@ -8239,7 +8103,7 @@ function MissionModal({
                             LẤY CODE REDEEM
                           </b>
                           <small style={{ display: 'block', marginTop: 3, opacity: 0.72 }}>
-                            Nhấn nút để mở website, lấy 3 code rồi chụp ảnh màn hình phần code đã nhận.
+                            Nhấn nút để mở website, nhận 3 code free, chụp ảnh màn hình phần code đã đổi và upload.
                           </small>
                         </div>
 
@@ -8708,7 +8572,7 @@ function MissionModal({
                 disabled={submitting}
                 onClick={async () => {
                   if (!mainMissionValidation()) return;
-                  // ROUND 1: bấm nút này là SUBMIT luôn.
+                  // CHẶNG 01: bấm nút này là SUBMIT luôn.
                   // Không có bước "TIẾP THEO" và không hỏi Bonus trong modal.
                   await submit();
                 }}
@@ -8757,10 +8621,17 @@ function MissionModal({
                     />
                   </div>
                   <div>
-                    <span className="bonusFormKicker">ROUND 2 · BONUS TỰ CHỌN</span>
+                    <span className="bonusFormKicker">CHẶNG 02 · BONUS TỰ CHỌN</span>
                     <p>{bonusMission.rule}</p>
-                    <span className="bonusRuleHint">Mỗi lượt stream, bài đăng social là một tia nắng nhỏ.
-Cùng gom góp thật nhiều ánh sáng, để “bông hoa ấy” từng chút một nở rộ và tỏa sáng thật đẹp nhé.</span>
+                    <small className="bonusRuleHint">
+                      {bonusMission.id === 'tiktok_extra'
+                        ? 'TikTok Bonus phải dùng account TikTok khác account đã dùng ở Mission TikTok bắt buộc.'
+                        : bonusMission.id === 'spotify_extra'
+                          ? 'Spotify Bonus phải dùng account Spotify khác account đã dùng ở Mission Spotify bắt buộc.'
+                          : bonusMission.id === 'youtube_extra'
+                            ? 'YouTube Bonus phải dùng account YouTube khác account đã dùng ở Mission YouTube bắt buộc.'
+                            : ''}
+                    </small>
                   </div>
                 </div>
 
@@ -8769,8 +8640,9 @@ Cùng gom góp thật nhiều ánh sáng, để “bông hoa ấy” từng chú
                     <div className="bonusItemsHeader">
                       <div>
                         <b>MINH CHỨNG SPOTIFY EXTRA</b>
-                        <small> Admin sẽ tự kiểm tra account, ngày stream và ảnh stats.fm · mỗi account cần ít nhất 15 streams.</small>
                       </div>
+                      <div>                        <small> Admin sẽ tự kiểm tra account, ngày stream và ảnh stats.fm · mỗi account cần ít nhất 15 streams.</small>
+</div>
                       {bonusItems.length < 3 && (
                         <button
                           type="button"
@@ -8782,7 +8654,7 @@ Cùng gom góp thật nhiều ánh sáng, để “bông hoa ấy” từng chú
                         </button>
                       )}
                     </div>
-
+{/*
                     <div
                       style={{
                         marginBottom: 10,
@@ -8807,7 +8679,7 @@ Cùng gom góp thật nhiều ánh sáng, để “bông hoa ấy” từng chú
                         Có thể thêm tối đa 3 account → tối đa 45 streams / +15 PTS. Admin sẽ duyệt theo từng submission.
                       </small>
                     </div>
-
+*/}
                     <div className="bonusItemList">
                       {bonusItems.map((item, index) => (
                         <div className="bonusEvidenceCard" key={index}>
@@ -8903,6 +8775,7 @@ Cùng gom góp thật nhiều ánh sáng, để “bông hoa ấy” từng chú
                 {bonusMission.id === 'itunes_extra' && (
                   <div className="bonusSection bonusQuestSection bonusItunesSection">
                     <div className="bonusSectionTop bonusQuestTop">
+                      {/*
                       <div className="bonusQuestLead">
                         <span className="bonusQuestBadge">
                           <img src="/assets/icon_huongduong.png" alt="" aria-hidden="true" draggable="false" style={{ width: 16, height: 16, objectFit: 'contain', verticalAlign: 'middle', marginRight: 4 }} />
@@ -8911,6 +8784,7 @@ Cùng gom góp thật nhiều ánh sáng, để “bông hoa ấy” từng chú
                         <b>MINH CHỨNG iTUNES</b>
                         <small>2 redeem = +1 điểm · tối đa 5 điểm · mỗi CODE tương ứng 1 ảnh minh chứng.</small>
                       </div>
+                      */}
                       <button
                         type="button"
                         className="softActionButton bonusQuestAction"
@@ -9128,8 +9002,10 @@ Cùng gom góp thật nhiều ánh sáng, để “bông hoa ấy” từng chú
                     <div className="bonusItemsHeader">
                       <div>
                         <b>LINK VIDEO TIKTOK</b>
-                        <small>Giống phần chính: mỗi video chỉ cần link video.</small>
                       </div>
+                      <div>
+                                                <small>3 video · Sound Official + Hashtag . Link thể hiện rõ người chia sẻ và người đăng bài là 01</small>
+</div>
                       {bonusItems.length < 5 && (
                         <button type="button" className="addEvidenceButton" onClick={addBonusItem} disabled={submitting}>
                           ＋ THÊM VIDEO
@@ -9331,3 +9207,5 @@ createRoot(
     <App />
   </AppErrorBoundary>
 );
+
+/* MOBILE HUD / LOADING TITLE FONT FIX: handled in styles.css */
