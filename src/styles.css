@@ -11626,3 +11626,71 @@ button, input, textarea, select {
     font-size: 25px !important;
   }
 }
+
+
+/* ============================================================
+   FINAL SKY POSITION FIX
+   - Desktop: move the garden sun below the top notification so
+     it is not hidden behind the banner.
+   - Mobile: keep the sun in the upper-right sky, clear of the
+     hero/logo area.
+   - Login screen: keep the decorative sun visible and separated
+     from the MINI GAME / welcome area.
+   ============================================================ */
+
+.skySunImage {
+  top: 72px !important;
+  right: 2.5% !important;
+  width: 118px !important;
+  z-index: 2 !important;
+}
+
+@media (max-width: 760px) {
+  .skySunImage {
+    top: 58px !important;
+    right: 3% !important;
+    width: 76px !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .skySunImage {
+    top: 54px !important;
+    right: 2.5% !important;
+    width: 64px !important;
+  }
+}
+
+/* LOGIN / AUTH SCREEN */
+.authSunImage {
+  top: 3% !important;
+  right: 2.5% !important;
+  z-index: 1 !important;
+}
+
+@media (max-width: 840px) {
+  .authSunImage {
+    top: 2.5% !important;
+    right: 2.5% !important;
+    width: 76px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .authSunImage {
+    top: 1.5% !important;
+    right: 2% !important;
+    width: 58px !important;
+  }
+}
+
+/* Keep the welcome text from being pushed/covered by decorative images. */
+.authBrandBlock {
+  position: relative;
+  z-index: 3;
+}
+
+.authWorld {
+  position: relative;
+  z-index: 4;
+}

@@ -3,6 +3,123 @@ import { createRoot } from 'react-dom/client';
 import './styles.css';
 import { supabase } from './lib/supabase';
 
+const GOM_NANG_LOGO_STYLES = `
+.authMainLogo {
+  width: min(520px, 90vw);
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.authMainLogo img,
+.heroLogo img,
+.pixelLoadingTitle img,
+.topTitleLogo,
+.authFooterLogo {
+  display: block;
+  height: auto;
+  object-fit: contain;
+  user-select: none;
+}
+.authMainLogo img {
+  width: 100%;
+}
+.pixelLoadingTitle {
+  width: min(420px, 82vw);
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pixelLoadingTitle img {
+  width: 100%;
+}
+.hero {
+  position: relative;
+}
+
+.mainHeroSun {
+  display: block;
+  width: 92px;
+  height: auto;
+  margin: 0 auto -2px;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+  position: relative;
+  z-index: 2;
+}
+
+.heroLogo {
+  width: min(560px, 88vw);
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+.heroLogo img {
+  width: 100%;
+}
+.topTitleLogo {
+  width: min(230px, 30vw);
+}
+.authFooterLogo {
+  width: min(180px, 40vw);
+  margin: 6px auto 0;
+}
+.menuTitleLogo {
+  display: block;
+  width: min(220px, 70vw);
+  height: auto;
+  margin: 0 auto;
+  object-fit: contain;
+  user-select: none;
+}
+@media (max-width: 768px) {
+  .authMainLogo { width: min(400px, 88vw); }
+  .pixelLoadingTitle { width: min(360px, 82vw); }
+  .mainHeroSun {
+    width: 68px;
+    margin-bottom: -2px;
+  }
+
+  .heroLogo { width: min(350px, 76vw); }
+  .topTitleLogo { width: min(180px, 42vw); }
+
+  .authMainLogoUnderMiniGame {
+    width: min(330px, 58vw);
+    margin: 10px auto 2px;
+  }
+
+  .authMainLogoUnderMiniGame img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @media (max-width: 840px) {
+    .authMainLogoUnderMiniGame {
+      width: min(300px, 68vw);
+      margin-top: 8px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .authMainLogoUnderMiniGame {
+      width: min(255px, 72vw);
+      margin-top: 6px;
+    }
+  }
+}
+`;
+
+function GomNangLogoStyles() {
+  return <style>{GOM_NANG_LOGO_STYLES}</style>;
+}
+
+
 /* =========================================================
    MISSIONS
    ========================================================= */
@@ -21,16 +138,15 @@ const MISSIONS = [
   },
   {
     id: 'itunes',
-    name: 'iTUNES',
-    action: 'TƯỚI MÁT',
+    name: 'SOCIAL',
+    action: 'LAN TỎA',
     target: 3,
     points: 10,
-    logo: '/assets/itunes.png',
-    color: '#b98cfc',
-    rule: '3 lượt redeem · Nhận code free từ website hoặc tự mua',
-    resourceUrl: 'https://light-itunes-code.vercel.app/',
-    proofNote: 'Không cần nhập email. Nếu tự mua, chỉ cần Account ID hiển thị trên ảnh.',
-    hint: 'Tưới nước để cây mau lớn'
+    logo: '/assets/facebook.png',
+    color: '#4f8df7',
+    rule: '3 bình luận · cùng 1 account · dưới bài đăng mới nhất của lighT trên Facebook hoặc Instagram',
+    proofNote: 'Dùng 1 account duy nhất để thực hiện đủ 3 bình luận. Mỗi bình luận cần 1 ảnh minh chứng dưới bài đăng mới nhất của lighT trên Facebook hoặc Instagram.',
+    hint: 'Lan tỏa yêu thương để cây mau lớn'
   },
   {
     id: 'facebook',
@@ -40,13 +156,13 @@ const MISSIONS = [
     points: 10,
     logo: '/assets/facebook.png',
     color: '#4f8df7',
-    rule: '3 post · đủ Hashtag: lighT, DoMinhTan, Tenbaihat, SYE',
+    rule: '3 post · đủ Hashtag: lighT, DoMinhTan, VETTHUONG, SYE',
     hint: 'Dọn sạch những chú sâu để cây khỏe mạnh.'
   },
   {
     id: 'tiktok',
     name: 'TIKTOK',
-    action: 'ĐÂM CHỒI',
+    action: 'VƯƠN CHỒI',
     target: 3,
     points: 10,
     logo: '/assets/tiktok.png',
@@ -57,12 +173,12 @@ const MISSIONS = [
   {
     id: 'spotify',
     name: 'SPOTIFY',
-    action: 'KHOE SẮC',
-    target: 15,
+    action: 'NỞ RỘ',
+    target: 10,
     points: 10,
     logo: '/assets/spotify.png',
     color: '#55e36b',
-    rule: '15 streams / ngày / account',
+    rule: '10 streams / ngày / account. ',
     hint: 'Hoàn thành chặng cuối để đánh thức bông hướng dương.'
   }
 ];
@@ -84,8 +200,8 @@ const BONUS_MISSIONS = [
     mission_type: 'bonus'
   },
   {
-    id: 'social_extra',
-    name: 'SOCIAL EXTRA',
+    id: 'facebook_extra',
+    name: 'FACEBOOK EXTRA',
     action: 'THÊM BÀI ĐĂNG',
     target: 15,
     points: 1,
@@ -94,38 +210,38 @@ const BONUS_MISSIONS = [
     max_points: 5,
     logo: '/assets/facebook.png',
     color: '#4f8df7',
-    rule: '3 post = +1 điểm · tối đa 5 điểm',
-    hint: 'Mỗi 3 bài đăng hợp lệ = +1 điểm.',
+    rule: '3 bài đăng = +1 điểm · tối đa 5 điểm',
+    hint: 'Mỗi 3 bài đăng Facebook hợp lệ = +1 điểm.',
+    mission_type: 'bonus'
+  },
+  {
+    id: 'social_extra',
+    name: 'SOCIAL EXTRA',
+    action: 'THÊM TƯƠNG TÁC',
+    target: 15,
+    points: 1,
+    points_per_unit: 1,
+    unit_quantity: 3,
+    max_points: 5,
+    logo: '/assets/social_media.png',
+    color: '#4f8df7',
+    rule: '3 tương tác Like/Comment = +1 điểm · tối đa 5 điểm',
+    hint: 'Mỗi nhóm 3 tương tác Like/Comment hợp lệ = +1 điểm.',
     mission_type: 'bonus'
   },
   {
     id: 'spotify_extra',
     name: 'SPOTIFY EXTRA',
     action: 'THÊM STREAM',
-    target: 45,
+    target: 30,
     points: 5,
     points_per_unit: 5,
-    unit_quantity: 15,
+    unit_quantity: 10,
     max_points: 15,
     logo: '/assets/spotify.png',
     color: '#55e36b',
-    rule: '15 streams = +5 điểm · tối đa 15 điểm',
-    hint: '15 / 30 / 45 streams tương ứng +5 / +10 / +15 điểm.',
-    mission_type: 'bonus'
-  },
-  {
-    id: 'itunes_extra',
-    name: 'iTUNES EXTRA',
-    action: 'THÊM REDEEM',
-    target: 10,
-    points: 1,
-    points_per_unit: 1,
-    unit_quantity: 2,
-    max_points: 5,
-    logo: '/assets/itunes.png',
-    color: '#b98cfc',
-    rule: '2 redeem = +1 điểm · tối đa 5 điểm · mỗi CODE tương ứng 1 ảnh minh chứng.',
-    hint: '2 / 4 / 6 / 8 / 10 redeem tương ứng +1 / +2 / +3 / +4 / +5 điểm.',
+    rule: '10 streams / account +5 điểm (max 15)· gửi link Drive video stats.fm ',
+    hint: 'Mỗi account cần ít nhất 10 streams; quay video stats.fm, upload Google Drive và gửi link để Admin kiểm tra.',
     mission_type: 'bonus'
   },
   {
@@ -161,7 +277,7 @@ const GROWTH_IMAGE_ASSETS = {
 const SKY_IMAGE_ASSETS = {
   sun: '/assets/sun.png',
   cloud1: '/assets/cloud-1.png',
-  cloud2: '/assets/cloud-2.png',
+  cloud2: '/assets/cloud-3.png',
 };
 
 const TINIE_IMAGE_ASSET = '/assets/tinie.png';
@@ -180,7 +296,7 @@ const initialStatuses = Object.fromEntries(
 const EVIDENCE_TYPES = [
   ['post_screenshot', 'Ảnh bài post/video'],
   ['stream_screenshot', 'Ảnh stream'],
-  ['redeem_screenshot', 'Ảnh redeem code'],
+  ['social_comment_screenshot', 'Ảnh 3 bình luận'],
   ['digital_purchase_screenshot', 'Ảnh mua nhạc số'],
   ['other_screenshot', 'Ảnh minh chứng khác']
 ];
@@ -190,8 +306,8 @@ const EVIDENCE_TYPES = [
    ========================================================= */
 
 function logoFallback(name) {
-  return name === 'iTUNES'
-    ? '♪'
+  return name === 'SOCIAL'
+    ? 'S'
     : name.slice(0, 1);
 }
 
@@ -603,7 +719,7 @@ function AuthScreen() {
           ? 'ĐỔI MẬT KHẨU'
           : mode === 'admin-login'
             ? 'ADMIN LOGIN'
-            : 'CHÀO MỪNG tinie iu';
+            : 'Chào mừng tinie';
 
   const subtitle =
     mode === 'signup'
@@ -617,12 +733,14 @@ function AuthScreen() {
             : 'Đăng nhập để bắt đầu hành trình nhé.';
 
   return (
-    <div className="authPage">
+    <>
+      <GomNangLogoStyles />
+      <div className="authPage">
 
       <div className="authSky">
         <img className="authImage authSunImage" src="/assets/sun.png" alt="" aria-hidden="true" draggable="false" />
         <img className="authImage authCloudImage authCloudImage1" src="/assets/cloud-1.png" alt="" aria-hidden="true" draggable="false" />
-        <img className="authImage authCloudImage authCloudImage2" src="/assets/cloud-2.png" alt="" aria-hidden="true" draggable="false" />
+        <img className="authImage authCloudImage authCloudImage2" src="/assets/cloud-3.png" alt="" aria-hidden="true" draggable="false" />
        { /*<img className="authImage authCloudImage authCloudImage3" src="/assets/cloud-3.png" alt="" aria-hidden="true" draggable="false" />*/}
         <span className="authHill authHill1" />
         <span className="authHill authHill2" />
@@ -646,14 +764,17 @@ function AuthScreen() {
             MINI<span>GAME</span>
           </div>
 
+          <div className="authMainLogo authMainLogoUnderMiniGame">
+            <img
+              src="/assets/logo.png"
+              alt="GOM NẮNG - GIEO HẠT CÙNG lighT"
+              draggable="false"
+            />
+          </div>
+
           <div className="authWorld">
             Chào mừng đến với khu vườn nhỏ của lighT
           </div>
-
-          <h1>
-            GOM NẮNG
-            <em>GIEO HẠT CÙNG lighT</em>
-          </h1>
 
           <p>
             Tưới một chút · Chăm một chút · Nở rộ rộn ràng
@@ -935,12 +1056,19 @@ function AuthScreen() {
           </div>
 
           <div className="authFooter">
-BẰNG VIỆC ĐĂNG NHẬP, BẠN ĐỒNG Ý THAM GIA GOM NẮNG, GIEO HẠT CÙNG lighT       
+BẰNG VIỆC ĐĂNG NHẬP, BẠN ĐỒNG Ý THAM GIA
+            <img
+              src="/assets/logo.png"
+              alt="GOM NẮNG - GIEO HẠT CÙNG lighT"
+              className="authFooterLogo"
+              draggable="false"
+            />       
           </div>
 
         </section>
       </main>
     </div>
+    </>
   );
 }
 
@@ -976,7 +1104,9 @@ function PixelLoadingScreen({ message = 'Đang mở khu vườn...' }) {
   }, []);
 
   return (
-    <div className="pixelLoadingScreen">
+    <>
+      <GomNangLogoStyles />
+      <div className="pixelLoadingScreen">
       <div className="pixelLoadingSky">
         <img src="/assets/login-sun.png" alt="" aria-hidden="true" className="pixelLoadingSun" draggable="false" />
         <img src="/assets/login-cloud-1.png" alt="" aria-hidden="true" className="pixelLoadingCloud pixelLoadingCloud1" draggable="false" />
@@ -984,17 +1114,15 @@ function PixelLoadingScreen({ message = 'Đang mở khu vườn...' }) {
       </div>
 
       <div className="pixelLoadingContent">
-        <div
-          className="pixelLoadingTitle"
-          style={{
-            textShadow: 'none',
-            filter: 'none',
-            WebkitFilter: 'none'
-          }}
-        >
-          <span style={{ textShadow: 'none', filter: 'none' }}>GOM NẮNG</span>
-          <strong style={{ textShadow: 'none', filter: 'none' }}>GIEO HẠT CÙNG lighT</strong>
+        
+        <div className="pixelLoadingTitle">
+          <img
+            src="/assets/logo.png"
+            alt="GOM NẮNG - GIEO HẠT CÙNG lighT"
+            draggable="false"
+          />
         </div>
+        
 
         <img
           src="/assets/light-sunflower.png"
@@ -1051,6 +1179,7 @@ function PixelLoadingScreen({ message = 'Đang mở khu vườn...' }) {
         </div>
       </div>
     </div>
+    </>
   );
 }
 
@@ -1092,7 +1221,7 @@ function App() {
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
 
   const [audio] = useState(() => {
-    const a = new Audio('/assets/DLMT.mp3');
+    const a = new Audio('/assets/vetthuong.mp3');
     a.loop = true;
     a.volume = 0.35;
     return a;
@@ -2066,7 +2195,16 @@ function App() {
   }
 
   return (
-    <div className="app">
+    <>
+      <GomNangLogoStyles />
+      <style>{`
+        .topTitle small {
+          font-size: 20px !important;
+          line-height: 1.25;
+          font-weight: 700;
+        }
+      `}</style>
+      <div className="app">
 
       <header className="topbar">
         <button className="brand" onClick={() => setMenu(false)}>
@@ -2075,7 +2213,6 @@ function App() {
 
         <div className="topTitle">
           <small>Chào mừng đến với khu vườn nhỏ của lighT</small>
-          <b>🌻 GOM NẮNG, GIEO HẠT CÙNG lighT</b>
         </div>
 
         <div className="topActions">
@@ -2524,14 +2661,6 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
       <main className="garden"> 
         <div className="sky">
           <img
-            className="skyImage skySunImage"
-            src={SKY_IMAGE_ASSETS.sun}
-            alt=""
-            aria-hidden="true"
-            draggable="false"
-            onError={e => { e.currentTarget.style.display = 'none'; }}
-          />
-          <img
             className="skyImage skyCloudImage skyCloudImage1"
             src={SKY_IMAGE_ASSETS.cloud1}
             alt=""
@@ -2559,12 +2688,21 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
 
         <>
             <section className="hero">
-              
-
-              <h1>
-                GOM NẮNG
-                <em>GIEO HẠT CÙNG lighT</em>
-              </h1>
+              <img
+                className="mainHeroSun"
+                src={SKY_IMAGE_ASSETS.sun}
+                alt=""
+                aria-hidden="true"
+                draggable="false"
+                onError={e => { e.currentTarget.style.display = 'none'; }}
+              />
+              <div className="heroLogo">
+                <img
+                  src="/assets/logo.png"
+                  alt="GOM NẮNG - GIEO HẠT CÙNG lighT"
+                  draggable="false"
+                />
+              </div>
 
               <p>
                 Tưới một chút · Chăm một chút · Nở rộ rộn ràng
@@ -2742,11 +2880,7 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
         <div className="ground">
           <div className="fence" />
           <div className="grassBits">✿　✿　✿　✿　✿</div>
-          <div className="tools">
-            <span>♢</span>
-            <span>♧</span>
-            <span>⌁</span>
-          </div>
+        
         </div>
 
         <section className="bottomPanel">
@@ -3772,7 +3906,6 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
 
                 <p className="round1CelebrationText">
                   Bạn có thể chọn những nhiệm vụ Bonus để tiếp tục nhận thêm điểm.
-                  Bonus là một chặng riêng và không cộng dồn tiến độ với Chặng 01.
                 </p>
 
                 <div className="round1CelebrationActions">
@@ -3831,7 +3964,12 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
             <h2>PAUSE MENU</h2>
 
             <button onClick={() => setMenu(false)}>
-              🌻 Gom nắng, gieo hạt cùng lighT
+              <img
+                src="/assets/logo.png"
+                alt="GOM NẮNG - GIEO HẠT CÙNG lighT"
+                className="menuTitleLogo"
+                draggable="false"
+              />
             </button>
 
             <button
@@ -3875,6 +4013,7 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
         <div className="syncIndicator">Đang đồng bộ...</div>
       )}
     </div>
+    </>
   );
 }
 
@@ -4033,7 +4172,7 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
 
         // Used ONLY to determine whether a pending submission is a retry.
         // A rejection from a previous game day/round must never consume
-        // today's first-submit (100%) allowance.
+        // today's normal scoring allowance.
         supabase
           .from('mission_submissions')
           .select(`
@@ -4132,7 +4271,7 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
    * IMPORTANT:
    * `attempt_no` is a database history counter and may continue across days
    * on older deployments. It must NOT decide whether today's submission gets
-   * the 50% retry cap.
+   * a reduced retry score.
    *
    * A submission is a retry only when there is an earlier REJECTED submission
    * for the same user + mission + current game_day. For Chặng 02, the rejected
@@ -4311,12 +4450,16 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
 
     if (
       selectedSubmission?.missions?.mission_type === 'bonus' &&
-      selectedSubmission?.missions?.slug !== 'spotify_extra' &&
       decision === 'approved'
     ) {
       const pts = Number(bonusAwardPoints);
-      if (!Number.isFinite(pts) || pts < 0 || Math.round(pts * 2) !== pts * 2) {
-        setReviewError('Hãy nhập số điểm bonus hợp lệ (có thể dùng .5).');
+      if (
+        bonusAwardPoints === '' ||
+        !Number.isFinite(pts) ||
+        pts <= 0 ||
+        Math.round(pts * 2) !== pts * 2
+      ) {
+        setReviewError('Hãy nhập số điểm bonus lớn hơn 0 (có thể dùng .5).');
         return;
       }
     }
@@ -4331,22 +4474,17 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
 
     try {
       const isBonusSubmission = selectedSubmission?.missions?.mission_type === 'bonus';
-      const isRetrySubmission = isSubmissionRetry(selectedSubmission);
-      const retryHalfMax = Number(selectedSubmission?.missions?.max_points || 0) / 2;
       const { data, error } = isBonusSubmission
         ? await supabase.rpc('review_bonus_mission_submission', {
             p_submission_id: selectedSubmission.id,
             p_decision: decision,
-            // Spotify Extra points are calculated securely by the database.
             p_points:
-              selectedSubmission?.missions?.slug === 'spotify_extra'
-                ? 0
-                : decision === 'approved'
-                  ? Math.min(
-                      Number(bonusAwardPoints || 0),
-                      isRetrySubmission ? retryHalfMax : Number(selectedSubmission?.missions?.max_points ?? Infinity)
-                    )
-                  : 0,
+              decision === 'approved'
+                ? Math.min(
+                    Number(bonusAwardPoints),
+                    Number(selectedSubmission?.missions?.max_points ?? Infinity)
+                  )
+                : 0,
             p_comment: decision === 'rejected' ? rejectReason.trim() : null
           })
         : await supabase.rpc('review_mission_submission', {
@@ -5757,8 +5895,8 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
                   {(() => {
                   const slug = selectedSubmission?.missions?.slug;
                   const needsEvidence =
-                    slug === 'spotify_extra' ||
-                    slug === 'itunes_extra' ||
+                    /*slug === 'spotify_extra' ||*/
+                    slug === 'social_extra' ||
                     slug === 'youtube_extra';
                   const evidenceCount = details?.evidence?.length || 0;
                   if (!needsEvidence || evidenceCount > 0 || !details) return null;
@@ -5792,48 +5930,7 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
                   ) : null}
                 </div>
 
-                {selectedSubmission?.missions?.mission_type === 'bonus' &&
-                  selectedSubmission?.missions?.slug === 'spotify_extra' && (
-                    <div
-                      style={{
-                        marginBottom: 10,
-                        padding: 10,
-                        borderRadius: 11,
-                        background: '#eef8df',
-                        border: '1px solid #b8d68d'
-                      }}
-                    >
-                      <b style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-                        <img src="/assets/icon_huongduong.png" alt="" aria-hidden="true" draggable="false" style={{ width: 18, height: 18, objectFit: 'contain' }} />
-                        SPOTIFY EXTRA — ĐIỂM TỰ ĐỘNG
-                      </b>
-                      <small
-                        style={{
-                          display: 'block',
-                          marginTop: 5,
-                          lineHeight: 1.4,
-                          opacity: .75
-                        }}
-                      >
-                        Hệ thống tự tính điểm theo số stream: mỗi đủ 15 stream thêm = +5 điểm,
-                        tối đa +15 điểm. Admin chỉ cần kiểm tra minh chứng rồi APPROVE hoặc REJECT.
-                      </small>
-                      <b style={{ display: 'block', marginTop: 7 }}>
-                        {(() => {
-                          const basePoints = Math.min(
-                            15,
-                            Math.floor(Number(selectedSubmission?.quantity || 0) / 15) * 5
-                          );
-                          const isRetry = isSubmissionRetry(selectedSubmission);
-                          const expected = isRetry ? basePoints * 0.5 : basePoints;
-                          return <>Dự kiến: +{Number(expected).toFixed(1).replace(/\.0$/, '')} điểm{isRetry ? ' · 50%' : ''}</>;
-                        })()}
-                      </b>
-                    </div>
-                  )}
-
-                {selectedSubmission?.missions?.mission_type === 'bonus' &&
-                  selectedSubmission?.missions?.slug !== 'spotify_extra' && (
+                {selectedSubmission?.missions?.mission_type === 'bonus' && (
                     <div
                       style={{
                         marginBottom: 10,
@@ -5843,26 +5940,21 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
                         border: '1px solid #e6c65a'
                       }}
                     >
+                      
                       <b style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-                        <img src="/assets/icon_huongduong.png" alt="" aria-hidden="true" draggable="false" style={{ width: 18, height: 18, objectFit: 'contain' }} />
                         ĐIỂM BONUS DO ADMIN DUYỆT
-                        {isSubmissionRetry(selectedSubmission) && ' · SUBMIT LẠI → TỐI ĐA 50%'}
+                        
+                        
                       </b>
                       <input
                         type="number"
                         min={0}
-                        max={
-                          isSubmissionRetry(selectedSubmission)
-                            ? Number(selectedSubmission?.missions?.max_points || 0) / 2
-                            : (selectedSubmission?.missions?.max_points ?? undefined)
-                        }
+                        max={selectedSubmission?.missions?.max_points ?? undefined}
                         step={0.5}
                         value={bonusAwardPoints}
                         onChange={e => {
                           const max = Number(selectedSubmission?.missions?.max_points ?? Infinity);
-                          const effectiveMax = isSubmissionRetry(selectedSubmission)
-                            ? max / 2
-                            : max;
+                          const effectiveMax = max;
                           const value = e.target.value;
                           if (value === '') {
                             setBonusAwardPoints('');
@@ -5895,12 +5987,12 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
                         }}
                       >
                         {selectedSubmission?.missions?.slug === 'social_extra'
-                          ? '3 post = +1 điểm (max +5 điểm)'
+                          ? '3 bình luận / account = +1 điểm (max +5 điểm)'
                           : selectedSubmission?.missions?.slug === 'tiktok_extra'
                             ? '1 video = +2 điểm (max +10 điểm)'
-                            : selectedSubmission?.missions?.slug === 'itunes_extra'
-                              ? '2 redeem = +1 điểm (max +5 điểm)'
-                              : selectedSubmission?.missions?.slug === 'youtube_extra'
+                            : selectedSubmission?.missions?.slug === 'facebook_extra'
+                            ? '3 bài đăng = +1 điểm · tối đa 5 điểm'
+                            : selectedSubmission?.missions?.slug === 'youtube_extra'
                                 ? '1 Subscribe + 1 Like + 1 Comment = +2 điểm (max +10 điểm)'
                                 : ''}
                       </small>
@@ -5953,11 +6045,11 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
                       // to the evidence order so the image is still shown.
                       if (
                         itemEvidence.length === 0 &&
-                        (slug === 'spotify' || slug === 'spotify_extra' || slug === 'itunes_extra')
+                        (slug === 'spotify' || slug === 'spotify_extra' || slug === 'social_extra')
                       ) {
                         const fallbackEvidenceTypes =
-                          slug === 'itunes_extra'
-                            ? ['itunes_web_code_screenshot', 'redeem_screenshot']
+                          slug === 'social_extra'
+                            ? ['social_comment_screenshot']
                             : ['stream_screenshot'];
                         const orderedEvidence = (details.evidence || []).filter(
                           evidence => fallbackEvidenceTypes.includes(evidence.evidence_type)
@@ -5980,8 +6072,8 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
                                   ? `ACCOUNT SPOTIFY`
                                   : slug === 'spotify_extra'
                                     ? `ACCOUNT SPOTIFY`
-                                    : slug === 'itunes' || slug === 'itunes_extra'
-                                      ? `REDEEM ${item.item_no}`
+                                    : slug === 'itunes' || slug === 'social_extra'
+                                      ? `ACCOUNT SOCIAL ${item.item_no}`
                                       : `MỤC ${item.item_no}`;
 
                       return (
@@ -6216,18 +6308,18 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
                 ) : null}
 
                 {/*
-                 * Spotify Extra / iTunes Extra fallback:
+                 * Spotify Extra / Social Extra fallback:
                  * Some legacy item RPC rows may be missing or may not carry item_no.
                  * In that case, still render every uploaded proof in the Admin panel.
                  */}
                 {(() => {
                   const slug = selectedSubmission?.missions?.slug;
                   const isExtraEvidenceMission =
-                    slug === 'spotify_extra' || slug === 'itunes_extra';
+                    slug === 'spotify_extra' || slug === 'social_extra';
                   const hasItems = Boolean(details?.items?.length);
                   const evidenceTypes =
-                    slug === 'itunes_extra'
-                      ? ['itunes_web_code_screenshot', 'redeem_screenshot']
+                    slug === 'social_extra'
+                      ? ['social_comment_screenshot']
                       : ['stream_screenshot'];
                   const fallbackEvidence = (details?.evidence || []).filter(
                     evidence => evidenceTypes.includes(evidence.evidence_type)
@@ -6238,8 +6330,8 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
                   }
 
                   const label = index =>
-                    slug === 'itunes_extra'
-                      ? `REDEEM ${index + 1}`
+                    slug === 'social_extra'
+                      ? `ACCOUNT SOCIAL ${index + 1}`
                       : `ACCOUNT SPOTIFY ${index + 1}`;
 
                   return (
@@ -6367,7 +6459,7 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
                   );
 
                   const slug = selectedSubmission?.missions?.slug;
-                  if (slug === 'spotify_extra' || slug === 'itunes_extra') return null;
+                  if (slug === 'spotify_extra' || slug === 'social_extra') return null;
                   if (!unassignedEvidence.length) return null;
 
                   return (
@@ -6730,10 +6822,13 @@ function MissionModal({
     [...MISSIONS, ...BONUS_MISSIONS].find(m => m.id === mission.id) ||
     mission;
 
+  // Map each mandatory mission to its matching Round-2 Bonus.
+  // `itunes` is the legacy DB slug for the mandatory SOCIAL mission.
+  // FACEBOOK has its own FACEBOOK EXTRA; SOCIAL EXTRA is for Like/Comment interactions.
   const bonusMissionMap = {
-    itunes: 'itunes_extra',
+    itunes: 'social_extra',
     youtube: 'youtube_extra',
-    facebook: 'social_extra',
+    facebook: 'facebook_extra',
     tiktok: 'tiktok_extra',
     spotify: 'spotify_extra',
   };
@@ -6750,8 +6845,7 @@ function MissionModal({
   // Chặng 02 Bonus starts with ZERO items. It must never inherit Chặng 01 items/progress.
   const [bonusItems, setBonusItems] = useState([]);
   const [bonusFiles, setBonusFiles] = useState([]);
-  const [bonusSpotifyProofFiles, setBonusSpotifyProofFiles] = useState({});
-  const [bonusItunesProofFiles, setBonusItunesProofFiles] = useState({});
+  const [bonusSocialProofFiles, setBonusSocialProofFiles] = useState({});
   const [bonusYoutubeProofFiles, setBonusYoutubeProofFiles] = useState({});
 
   const [postUrl, setPostUrl] = useState(
@@ -6761,7 +6855,7 @@ function MissionModal({
   );
   const [note, setNote] = useState('');
   const [files, setFiles] = useState([]);
-  const [itunesProofFiles, setItunesProofFiles] = useState({});
+  const [socialProofFiles, setSocialProofFiles] = useState({});
   const [youtubeProofFiles, setYoutubeProofFiles] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [accountId, setAccountId] = useState(
@@ -6784,13 +6878,18 @@ function MissionModal({
 
   const getInitialItems = () => {
     if (mission.id === 'itunes') {
-      return Array.from({ length: 3 }, () => ({
+      return [{
         accountId: '',
         redeemCode: '',
         contentUrl: '',
-        platform: 'itunes',
-        metadata: { proof_source: 'web_code' }
-      }));
+        platform: 'facebook',
+        quantity: 3,
+        metadata: {
+          proof_source: 'social_comment',
+          social_platform: 'facebook',
+          comment_count: 3
+        }
+      }];
     }
 
     if (mission.id === 'youtube') {
@@ -6824,12 +6923,25 @@ function MissionModal({
       }));
     }
 
-    if (mission.id === 'social_extra') {
+    if (mission.id === 'facebook_extra') {
       return Array.from({ length: 3 }, () => ({
         accountId: '',
         contentUrl: '',
         platform: 'facebook',
         metadata: {}
+      }));
+    }
+
+    if (mission.id === 'social_extra') {
+      return Array.from({ length: 3 }, () => ({
+        accountId: '',
+        contentUrl: '',
+        platform: 'facebook',
+        metadata: {
+          interaction_count: 3,
+          proof_source: 'social_comment',
+          social_platform: 'facebook'
+        }
       }));
     }
 
@@ -6900,8 +7012,8 @@ function MissionModal({
       type:
         mission.id === 'spotify' || mission.id === 'spotify_extra'
           ? 'stream_screenshot'
-          : mission.id === 'itunes' || mission.id === 'itunes_extra'
-            ? 'redeem_screenshot'
+          : mission.id === 'itunes' || mission.id === 'social_extra'
+            ? 'social_comment_screenshot'
             : 'post_screenshot'
     }));
 
@@ -6941,28 +7053,28 @@ function MissionModal({
     setFiles(prev => prev.filter((_, i) => i !== index));
   };
 
-  const handleItunesProofFile = (index, event) => {
+  const handleSocialProofFile = (index, event) => {
     const file = event.target.files?.[0] || null;
     event.currentTarget.value = '';
 
     if (!file) return;
     if (!file.type.startsWith('image/')) {
-      notify('iTunes: chỉ nhận file ảnh minh chứng.');
+      notify('SOCIAL: chỉ nhận file ảnh minh chứng.');
       return;
     }
     if (file.size > 10 * 1024 * 1024) {
-      notify('iTunes: mỗi ảnh tối đa 10MB.');
+      notify('SOCIAL: mỗi ảnh tối đa 10MB.');
       return;
     }
 
-    setItunesProofFiles(prev => ({
+    setSocialProofFiles(prev => ({
       ...prev,
       [index]: file
     }));
   };
 
-  const removeItunesProofFile = index => {
-    setItunesProofFiles(prev => {
+  const removeSocialProofFile = index => {
+    setSocialProofFiles(prev => {
       const next = { ...prev };
       delete next[index];
       return next;
@@ -7085,9 +7197,17 @@ function MissionModal({
     }
 
     if (mission.id === 'itunes') {
-      if (items.length !== 3) { notify('iTunes cần đúng 3 minh chứng.'); return false; }
-      for (let i = 0; i < 3; i++) {
-        if (!itunesProofFiles[i]) { notify(`iTunes lượt ${i + 1}: cần upload ảnh minh chứng.`); return false; }
+      if (!accountId.trim()) {
+        notify('SOCIAL: hãy nhập 1 account / username.');
+        return false;
+      }
+      if (!['facebook', 'instagram'].includes(items[0]?.platform)) {
+        notify('SOCIAL: hãy chọn Facebook hoặc Instagram.');
+        return false;
+      }
+      if (!socialProofFiles[0]) {
+        notify('SOCIAL: cần 1 ảnh minh chứng chứa đủ 3 bình luận.');
+        return false;
       }
     }
     if (mission.id === 'youtube') {
@@ -7106,9 +7226,10 @@ function MissionModal({
       notify('Hãy nhập đủ 3 link video.'); return false;
     }
     if (mission.id === 'spotify') {
-      if (!accountId.trim()) { notify('Hãy nhập account Spotify.'); return false; }
-      if (Number(quantity) < 1) { notify('Hãy nhập số stream lớn hơn 0.'); return false; }
-      if (!activityDate) { notify('Hãy chọn ngày stream.'); return false; }
+      if (!postUrl.trim()) {
+        notify('Hãy nhập link stats.fm để Admin kiểm tra 10 streams trong ngày.');
+        return false;
+      }
     }
     return true;
   };
@@ -7127,11 +7248,7 @@ function MissionModal({
     const max =
       bonusMission.id === 'spotify_extra'
         ? 3
-        : bonusMission.id === 'social_extra'
-          ? 15
-          : bonusMission.id === 'itunes_extra'
-            ? 10
-            : 5;
+        : 5;
 
     if (bonusItems.length >= max) return;
 
@@ -7142,10 +7259,10 @@ function MissionModal({
         {
           accountId: '',
           activityDate: today,
-          quantity: 15,
+          quantity: 10,
           contentUrl: '',
           platform: 'spotify',
-          metadata: { activity_date: today, quantity: 15 }
+          metadata: { activity_date: today, quantity: 10 }
         }
       ]);
       return;
@@ -7156,7 +7273,7 @@ function MissionModal({
         ? 'youtube'
         : bonusMission.id === 'tiktok_extra'
           ? 'tiktok'
-          : bonusMission.id === 'social_extra'
+          : (bonusMission.id === 'facebook_extra' || bonusMission.id === 'social_extra')
             ? 'facebook'
             : 'itunes';
 
@@ -7166,36 +7283,16 @@ function MissionModal({
         accountId: '',
         contentUrl: '',
         platform,
-        metadata: {}
+        quantity: bonusMission.id === 'social_extra' ? 3 : undefined,
+        metadata: bonusMission.id === 'social_extra'
+          ? { interaction_count: 3, proof_source: 'social_comment', social_platform: 'facebook' }
+          : {}
       }
     ]);
   };
 
   const removeBonusItem = index => {
     setBonusItems(prev => prev.filter((_, i) => i !== index));
-  };
-
-  const handleBonusSpotifyProofFile = (index, event) => {
-    const file = event.target.files?.[0] || null;
-    event.currentTarget.value = '';
-    if (!file) return;
-    if (!file.type.startsWith('image/')) {
-      notify('Spotify Extra: chỉ nhận file ảnh minh chứng.');
-      return;
-    }
-    if (file.size > 10 * 1024 * 1024) {
-      notify('Spotify Extra: mỗi ảnh tối đa 10MB.');
-      return;
-    }
-    setBonusSpotifyProofFiles(prev => ({ ...prev, [index]: file }));
-  };
-
-  const removeBonusSpotifyProofFile = index => {
-    setBonusSpotifyProofFiles(prev => {
-      const next = { ...prev };
-      delete next[index];
-      return next;
-    });
   };
 
   const handleBonusFile = event => {
@@ -7234,10 +7331,39 @@ function MissionModal({
   const validateBonus = () => {
     if (!bonusMission) return false;
 
-    if (bonusMission.id === 'itunes_extra') {
-      if (bonusItems.length < 1 || bonusItems.length > 10) { notify('iTunes Extra: bạn có thể gửi từ 1 đến 10 CODE.'); return false; }
+    if (bonusMission.id === 'facebook_extra') {
+      if (bonusItems.length < 1 || bonusItems.length > 5) {
+        notify('Facebook Extra: có thể gửi từ 1 đến 5 bài đăng. Mỗi 3 bài đăng = +1 điểm.');
+        return false;
+      }
       for (let i = 0; i < bonusItems.length; i++) {
-        if (!bonusItunesProofFiles[i]) { notify(`iTunes Extra CODE ${i + 1}: cần ảnh minh chứng.`); return false; }
+        const item = bonusItems[i];
+        if (!item?.contentUrl?.trim()) {
+          notify(`Facebook Extra bài đăng #${i + 1}: cần link bài đăng Facebook.`);
+          return false;
+        }
+      }
+    }
+
+    if (bonusMission.id === 'social_extra') {
+      if (bonusItems.length < 1 || bonusItems.length > 5) {
+        notify('Social Extra: có thể gửi từ 1 đến 5 account. Mỗi nhóm 3 tương tác Like/Comment = +1 điểm.');
+        return false;
+      }
+      for (let i = 0; i < bonusItems.length; i++) {
+        const item = bonusItems[i];
+        if (!item?.accountId?.trim()) {
+          notify(`Social Extra account #${i + 1}: cần account / username.`);
+          return false;
+        }
+        if (!['facebook', 'instagram'].includes(item.platform)) {
+          notify(`Social Extra account #${i + 1}: hãy chọn Facebook hoặc Instagram.`);
+          return false;
+        }
+        if (!bonusSocialProofFiles[i]) {
+          notify(`Social Extra account #${i + 1}: cần 1 ảnh chứa đủ 3 tương tác Like/Comment.`);
+          return false;
+        }
       }
     }
 
@@ -7251,18 +7377,13 @@ function MissionModal({
       }
     }
 
-    if (bonusMission.id === 'social_extra') {
-      if (bonusItems.length < 1 || bonusItems.length > 15) { notify('Social Extra: bạn có thể gửi từ 1 đến 15 bài. Chỉ các nhóm đủ 3 bài mới được tính điểm.'); return false; }
-      if (bonusItems.some(item => !item.contentUrl.trim())) { notify('Hãy nhập đủ link cho Social Extra.'); return false; }
-    }
-
     if (bonusMission.id === 'tiktok_extra') {
       if (bonusItems.length < 1 || bonusItems.length > 5 || bonusItems.some(item => !item.contentUrl.trim())) { notify('TikTok Extra: mỗi video hợp lệ = +2 điểm, tối đa 10 điểm.'); return false; }
     }
 
     if (bonusMission.id === 'spotify_extra') {
       if (bonusItems.length < 1 || bonusItems.length > 3) {
-        notify('Spotify Extra: thêm từ 1 đến 3 tài khoản. Mỗi tài khoản cần stream đủ 15 lần.');
+        notify('Spotify Extra: thêm từ 1 đến 3 tài khoản. Mỗi tài khoản cần stream đủ 10 lần.');
         return false;
       }
 
@@ -7275,16 +7396,16 @@ function MissionModal({
           return false;
         }
 
-        if (Number(item.quantity || 0) < 15) {
-          notify(`Spotify Extra tài khoản #${i + 1}: cần ít nhất 15 streams.`);
+        if (Number(item.quantity || 0) < 10) {
+          notify(`Spotify Extra tài khoản #${i + 1}: cần ít nhất 10 streams.`);
           return false;
         }
         if (!item.activityDate) {
           notify(`Spotify Extra tài khoản #${i + 1}: hãy chọn ngày stream.`);
           return false;
         }
-        if (!bonusSpotifyProofFiles[i]) {
-          notify(`Spotify Extra tài khoản #${i + 1}: cần ảnh minh chứng stats.fm.`);
+        if (!item.contentUrl?.trim()) {
+          notify(`Spotify Extra tài khoản #${i + 1}: cần link Google Drive video quay màn hình stats.fm.`);
           return false;
         }
       }
@@ -7383,38 +7504,34 @@ function MissionModal({
       }
 
       if (mission.id === 'itunes') {
-        for (let i = 0; i < items.length; i++) {
-          const file = itunesProofFiles[i];
-          if (!file) {
-            throw new Error(
-              `iTunes lượt ${i + 1}: thiếu ảnh minh chứng.`
-            );
-          }
-
-          const safeName = file.name.replace(
-            /[^a-zA-Z0-9._-]/g,
-            '_'
-          );
-
-          const storagePath =
-            `${user.id}/${mission.id}/${draftId}/item-${i + 1}-${Date.now()}-${safeName}`;
-
-          const { error: uploadError } = await supabase.storage
-            .from('mission-evidence')
-            .upload(storagePath, file, {
-              contentType: file.type,
-              upsert: false
-            });
-
-          if (uploadError) throw uploadError;
-
-          uploaded.push({
-            path: storagePath,
-            type: 'itunes_web_code_screenshot',
-            file,
-            itemNo: i + 1
-          });
+        const file = socialProofFiles[0];
+        if (!file) {
+          throw new Error('SOCIAL: thiếu 1 ảnh minh chứng chứa đủ 3 bình luận.');
         }
+
+        const safeName = file.name.replace(
+          /[^a-zA-Z0-9._-]/g,
+          '_'
+        );
+
+        const storagePath =
+          `${user.id}/${mission.id}/${draftId}/social-comments-3-${Date.now()}-${safeName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('mission-evidence')
+          .upload(storagePath, file, {
+            contentType: file.type,
+            upsert: false
+          });
+
+        if (uploadError) throw uploadError;
+
+        uploaded.push({
+          path: storagePath,
+          type: 'social_comment_screenshot',
+          file,
+          itemNo: 1
+        });
       }
 
       if (mission.id === 'youtube') {
@@ -7475,8 +7592,8 @@ function MissionModal({
       }
 
       // Chặng 02 Bonus proofs must be uploaded and linked to the submission later.
-      // TikTok/Social use links as their evidence; iTunes, Spotify and YouTube
-      // use per-item image evidence.
+      // TikTok/Social use links as their evidence; the mandatory SOCIAL slot,
+      // Spotify and YouTube use per-item image evidence.
       if (isBonus) {
         if (mission.id === 'youtube_extra') {
           const proofTypes = [
@@ -7496,25 +7613,15 @@ function MissionModal({
               bonusUploaded.push({ path: storagePath, type: evidenceType, file, itemNo: i + 1 });
             }
           }
-        } else if (mission.id === 'spotify_extra') {
+        } else if (mission.id === 'social_extra') {
           for (let i = 0; i < bonusItems.length; i++) {
-            const file = bonusSpotifyProofFiles[i];
-            if (!file) throw new Error(`Spotify Extra tài khoản ${i + 1}: thiếu ảnh minh chứng stats.fm.`);
+            const file = bonusSocialProofFiles[i];
+            if (!file) throw new Error(`Social Extra account ${i + 1}: thiếu ảnh minh chứng 3 bình luận.`);
             const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-            const storagePath = `${user.id}/${mission.id}/${draftId}/account-${i + 1}-stats-${Date.now()}-${safeName}`;
+            const storagePath = `${user.id}/${mission.id}/${draftId}/account-${i + 1}-social-comments-3-${Date.now()}-${safeName}`;
             const { error: uploadError } = await supabase.storage.from('mission-evidence').upload(storagePath, file, { contentType: file.type, upsert: false });
             if (uploadError) throw uploadError;
-            bonusUploaded.push({ path: storagePath, type: 'stream_screenshot', file, itemNo: i + 1 });
-          }
-        } else if (mission.id === 'itunes_extra') {
-          for (let i = 0; i < bonusItems.length; i++) {
-            const file = bonusItunesProofFiles[i];
-            if (!file) throw new Error(`iTunes Extra CODE ${i + 1}: thiếu ảnh minh chứng.`);
-            const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-            const storagePath = `${user.id}/${mission.id}/${draftId}/item-${i + 1}-code-${Date.now()}-${safeName}`;
-            const { error: uploadError } = await supabase.storage.from('mission-evidence').upload(storagePath, file, { contentType: file.type, upsert: false });
-            if (uploadError) throw uploadError;
-            bonusUploaded.push({ path: storagePath, type: 'itunes_web_code_screenshot', file, itemNo: i + 1 });
+            bonusUploaded.push({ path: storagePath, type: 'social_comment_screenshot', file, itemNo: i + 1 });
           }
         }
       }
@@ -7523,11 +7630,15 @@ function MissionModal({
         ? Number(
             mission.id === 'spotify_extra'
               ? bonusItems.reduce((sum, item) => sum + Number(item.quantity || 0), 0)
-              : bonusItems.length
+              : mission.id === 'social_extra'
+                ? bonusItems.length * 3
+                : bonusItems.length
           )
         : mission.id === 'spotify'
-          ? Number(quantity)
-          : (mission.target || items.length || 1);
+          ? 10
+          : mission.id === 'itunes'
+            ? 3
+            : (mission.target || items.length || 1);
 
       /*
        * Keep the existing submission RPC for all missions.
@@ -7595,17 +7706,22 @@ function MissionModal({
           mission.id === 'spotify_extra'
             ? Number(item.quantity || 0)
             : mission.id === 'spotify'
-              ? Number(quantity)
-              : item.quantity || 1;
+              ? 10
+              : mission.id === 'itunes' || mission.id === 'social_extra'
+                ? 3
+                : item.quantity || 1;
 
         const metadata = {
           ...(item.metadata || {}),
           activity_date:
             mission.id === 'spotify'
-              ? activityDate
+              ? new Date().toISOString().slice(0, 10)
               : mission.id === 'spotify_extra'
                 ? item.activityDate
-                : item.metadata?.activity_date
+                : item.metadata?.activity_date,
+          ...(mission.id === 'spotify'
+            ? { quantity: 10 }
+            : {})
         };
 
         const { error: itemError } = await supabase.rpc(
@@ -7614,21 +7730,26 @@ function MissionModal({
             p_submission_id: createdSubmissionId,
             p_item_no: i + 1,
             p_platform: item.platform || mission.id,
-            p_content_url: item.contentUrl?.trim() || null,
+            p_content_url:
+              mission.id === 'spotify'
+                ? postUrl.trim() || null
+                : item.contentUrl?.trim() || null,
             p_account_id:
               mission.id === 'spotify'
-                ? accountId.trim() || null
+                ? null
                 : mission.id === 'spotify_extra'
                   ? item.accountId?.trim() || null
-                  : item.accountId?.trim() || null,
+                  : mission.id === 'itunes'
+                    ? accountId.trim() || null
+                    : item.accountId?.trim() || null,
             p_redeem_code: item.redeemCode?.trim() || null,
             p_external_action_id:
               item.externalActionId?.trim() || null,
             p_quantity: itemQuantity,
             p_metadata: metadata,
             p_proof_source:
-              mission.id === 'itunes'
-                ? 'web_code'
+              mission.id === 'itunes' || mission.id === 'social_extra'
+                ? 'social_comment'
                 : null
           }
         );
@@ -7908,8 +8029,8 @@ function MissionModal({
                   lineHeight: 1.45
                 }}
               >
-                Sau khi tổng hợp, chụp ảnh màn hình phần thống kê lượt nghe của ngày đó
-                rồi tải ảnh chụp đó ở bên dưới. Ảnh minh họa phía trên không phải minh chứng.
+                Sau khi tổng hợp, hãy quay màn hình phần thống kê lượt nghe của ngày đó trên stats.fm
+                và gửi link video quay màn hình ở bên dưới. 
               </small>
             </div>
           </div>
@@ -7919,8 +8040,20 @@ function MissionModal({
           <div className="submissionForm">
             {!isBonus && (
               <>
-            {(mission.id === 'spotify' ||
-              mission.id === 'spotify_extra') && (
+            {mission.id === 'spotify' && (
+              <label>
+                <span>LINK QUAY MÀN HÌNH STATS.FM</span>
+                <input
+                  type="url"
+                  value={postUrl}
+                  onChange={e => setPostUrl(e.target.value)}
+                  placeholder="https://drive.google.com/..."
+                  disabled={submitting}
+                />
+              </label>
+            )}
+
+            {mission.id === 'spotify_extra' && (
               <>
                 <label>
                   <span>ACCOUNT SPOTIFY</span>
@@ -7943,9 +8076,7 @@ function MissionModal({
                 </label>
 
                 <label>
-                  <span>
-                    SỐ STREAM (tổng số stream trong ngày)
-                  </span>
+                  <span>SỐ STREAM (tổng số stream trong ngày)</span>
                   <input
                     type="number"
                     min={1}
@@ -7956,6 +8087,18 @@ function MissionModal({
                   />
                 </label>
               </>
+            )}
+
+            {mission.id === 'itunes' && (
+              <label>
+                <span>ACCOUNT / USERNAME (1 ACCOUNT)</span>
+                <input
+                  value={accountId}
+                  onChange={e => setAccountId(e.target.value)}
+                  placeholder="Facebook hoặc Instagram account"
+                  disabled={submitting}
+                />
+              </label>
             )}
 
             {mission.id !== 'spotify' &&
@@ -7988,15 +8131,9 @@ function MissionModal({
               </label>
             )}
 
-            {mission.id === 'itunes_extra' && (
-              <p style={{ marginTop: -6, opacity: .7 }}>
-                2 redeem = +1 điểm · tối đa 5 điểm. Mỗi CODE cần ảnh minh chứng.
-              </p>
-            )}
-
             {mission.id === 'social_extra' && (
               <p style={{ marginTop: -6, opacity: .7 }}>
-                Mỗi nhóm 3 post = +1 điểm, tối đa 5 điểm.
+                Mỗi account đủ 3 bình luận = +1 điểm, tối đa 5 điểm.
               </p>
             )}
 
@@ -8008,7 +8145,6 @@ function MissionModal({
               mission.id !== 'spotify_extra' &&
               mission.id !== 'tiktok_extra' &&
               mission.id !== 'youtube_extra' &&
-              mission.id !== 'itunes_extra' &&
               mission.id !== 'social_extra') && (
                 <label>
                   <span>
@@ -8031,7 +8167,6 @@ function MissionModal({
               mission.id === 'tiktok' ||
               mission.id === 'tiktok_extra' ||
               mission.id === 'youtube_extra' ||
-              mission.id === 'itunes_extra' ||
               mission.id === 'social_extra') && (
               <div
                 style={{
@@ -8054,7 +8189,7 @@ function MissionModal({
                 >
                   <b>
                     {mission.id === 'itunes'
-                      ? '3 MINH CHỨNG iTUNES'
+                      ? '3 TƯƠNG TÁC LIKE/COMMENT · 1 ACCOUNT'
                       : mission.id === 'youtube'
                         ? ''
                         : mission.id === 'facebook'
@@ -8064,74 +8199,12 @@ function MissionModal({
                           : 'SUBMISSION ITEMS'}
                   </b>
 
-                  {mission.id === 'facebook' && (
-                    <small style={{ display: 'block', marginTop: 4, opacity: .72 }}>
-                      Link thể hiện rõ người chia sẻ và người đăng bài là cùng một người.
-                    </small>
-                  )}
-
-                  {mission.id === 'tiktok' && (
-                    <small style={{ display: 'block', marginTop: 4, opacity: .72 }}>
-                      3 video · Sound Official + Hashtag . Link thể hiện rõ người chia sẻ và người đăng bài là 01.
-                    </small>
-                  )}
+                  
 
                   {mission.id === 'itunes' && (
-                    <div
-                      style={{
-                        display: 'grid',
-                        gap: 8,
-                        width: '100%',
-                        padding: 12,
-                        borderRadius: 14,
-                        background: '#fff7cf',
-                        border: '1px solid #e6c65a',
-                        boxSizing: 'border-box'
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          gap: 10,
-                          flexWrap: 'wrap'
-                        }}
-                      >
-                        <div style={{ minWidth: 0 }}>
-                          <b style={{ display: 'block', fontSize: 14 }}>
-                            LẤY CODE REDEEM
-                          </b>
-                          <small style={{ display: 'block', marginTop: 3, opacity: 0.72 }}>
-                            Nhấn nút để mở website, nhận 3 code free, chụp ảnh màn hình phần code đã đổi và upload.
-                          </small>
-                        </div>
-
-                        <button
-                          type="button"
-                          onClick={() =>
-                            window.open(
-                              localMission.resourceUrl,
-                              '_blank',
-                              'noopener,noreferrer'
-                            )
-                          }
-                          disabled={submitting}
-                          style={{
-                            flexShrink: 0,
-                            border: '2px solid #2c4738',
-                            borderRadius: 10,
-                            padding: '9px 13px',
-                            background: '#2f7d3d',
-                            color: '#fff',
-                            fontWeight: 900,
-                            cursor: submitting ? 'default' : 'pointer'
-                          }}
-                        >
-                          🔗 LẤY CODE REDEEM
-                        </button>
-                      </div>
-                    </div>
+                    <small style={{ display: 'block', marginTop: 4, opacity: .72 }}>
+                      Chọn Facebook hoặc Instagram và tải 1 ảnh minh chứng.
+                    </small>
                   )}
 
                   {(mission.id === 'tiktok_extra' ||
@@ -8159,7 +8232,7 @@ function MissionModal({
                   >
                     <b style={{ display: 'block', marginBottom: 8 }}>
                       {mission.id === 'itunes'
-                        ? `LƯỢT ${index + 1} · ẢNH CODE REDEEM`
+                        ? 'MINH CHỨNG'
                         : mission.id === 'youtube'
                           ? `TÀI KHOẢN ${index + 1}`
                           : mission.id === 'facebook'
@@ -8171,19 +8244,23 @@ function MissionModal({
 
                     {mission.id === 'itunes' && (
                       <div style={{ display: 'grid', gap: 8 }}>
-                        <small
-                          style={{
-                            color: '#657368',
-                            lineHeight: 1.4
+
+                        <select
+                          value={item.platform}
+                          onChange={e => {
+                            updateItem(0, 'platform', e.target.value);
+                            updateItemMetadata(0, 'social_platform', e.target.value);
                           }}
+                          disabled={submitting}
                         >
-                          Tải lên ảnh chụp rõ code redeem của lượt này.
-                        </small>
+                          <option value="facebook">FACEBOOK</option>
+                          <option value="instagram">INSTAGRAM</option>
+                        </select>
 
                         <input
                           type="file"
                           accept="image/*"
-                          onChange={e => handleItunesProofFile(index, e)}
+                          onChange={e => handleSocialProofFile(0, e)}
                           disabled={submitting}
                           style={{
                             width: '100%',
@@ -8191,7 +8268,7 @@ function MissionModal({
                           }}
                         />
 
-                        {itunesProofFiles[index] && (
+                        {socialProofFiles[0] && (
                           <div
                             style={{
                               display: 'flex',
@@ -8210,12 +8287,12 @@ function MissionModal({
                                 wordBreak: 'break-word'
                               }}
                             >
-                              ✓ {itunesProofFiles[index].name}
+                              ✓ {socialProofFiles[0].name}
                             </small>
 
                             <button
                               type="button"
-                              onClick={() => removeItunesProofFile(index)}
+                              onClick={() => removeSocialProofFile(0)}
                               disabled={submitting}
                               style={{
                                 flexShrink: 0,
@@ -8231,26 +8308,23 @@ function MissionModal({
                       </div>
                     )}
 
-                    {(mission.id === 'social_extra') && (
+                    {mission.id === 'social_extra' && (
                       <select
                         value={item.platform}
-                        onChange={e =>
-                          updateItem(
-                            index,
-                            'platform',
-                            e.target.value
-                          )
-                        }
+                        onChange={e => {
+                          updateItem(index, 'platform', e.target.value);
+                          updateItemMetadata(index, 'social_platform', e.target.value);
+                        }}
                         disabled={submitting}
                       >
                         <option value="facebook">FACEBOOK</option>
+                        <option value="instagram">INSTAGRAM</option>
                         <option value="tiktok">TIKTOK</option>
                       </select>
                     )}
 
                     {(mission.id === 'tiktok_extra' ||
                       mission.id === 'youtube_extra' ||
-                      mission.id === 'itunes_extra' ||
                       mission.id === 'social_extra') && (
                       <input
                         value={item.accountId}
@@ -8262,21 +8336,6 @@ function MissionModal({
                           )
                         }
                         placeholder="Account / username"
-                        disabled={submitting}
-                      />
-                    )}
-
-                    {mission.id === 'itunes_extra' && (
-                      <input
-                        value={item.redeemCode}
-                        onChange={e =>
-                          updateItem(
-                            index,
-                            'redeemCode',
-                            e.target.value
-                          )
-                        }
-                        placeholder="Redeem code"
                         disabled={submitting}
                       />
                     )}
@@ -8484,9 +8543,10 @@ function MissionModal({
             {mission.id !== 'itunes' &&
               mission.id !== 'youtube' &&
               mission.id !== 'facebook' &&
-              mission.id !== 'tiktok' && (
+              mission.id !== 'tiktok' &&
+              mission.id !== 'spotify' && (
                 <label>
-                  <span>ẢNH MINH CHỨNG STATS.FM</span>
+                  <span>ẢNH MINH CHỨNG</span>
 
                   <input
                     type="file"
@@ -8591,7 +8651,7 @@ function MissionModal({
                       <img src="/assets/icon_huongduong.png" alt="" aria-hidden="true" draggable="false" style={{ width: 18, height: 18, objectFit: 'contain' }} />
                       Bạn có muốn tham gia thêm {bonusMission?.name} không?
                     </b>
-                  <small style={{ display: 'block', marginTop: 5, opacity: .7 }}>{bonusMission?.id === 'spotify_extra' ? 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo. Spotify Extra cho phép thêm các account khác, mỗi account stream ít nhất 15 lần.' : bonusMission?.id === 'youtube_extra' ? 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo. YouTube Extra cho phép thêm các account khác, mỗi account cần đủ Subscribe + Like + Comment.' : bonusMission?.id === 'tiktok_extra' ? 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo. TikTok Extra cho phép gửi thêm các video hợp lệ.' : bonusMission?.id === 'social_extra' ? 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo. Social Extra cho phép gửi thêm các bài đăng hợp lệ.' : bonusMission?.id === 'itunes_extra' ? 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo. iTunes Extra cho phép gửi thêm các CODE hợp lệ.' : 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo.'}</small>
+                  <small style={{ display: 'block', marginTop: 5, opacity: .7 }}>{bonusMission?.id === 'spotify_extra' ? 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo. Spotify Extra cho phép thêm các account khác, mỗi account stream ít nhất 10 lần.' : bonusMission?.id === 'youtube_extra' ? 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo. YouTube Extra cho phép thêm các account khác, mỗi account cần đủ Subscribe + Like + Comment.' : bonusMission?.id === 'tiktok_extra' ? 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo. TikTok Extra cho phép gửi thêm các video hợp lệ.' : bonusMission?.id === 'social_extra' ? 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo. Social Extra cho phép thêm nhiều account; mỗi account cần đủ 3 bình luận.' : 'Bạn có thể thêm minh chứng ngay trong bước tiếp theo.'}</small>
                 </div>
                 <div className="bonusChoiceActions">
                   <button className="bonusChoiceYes" type="button" onClick={() => { setIncludeBonus(true); setSubmissionStep('bonus-form'); }}>
@@ -8626,11 +8686,15 @@ function MissionModal({
                     <small className="bonusRuleHint">
                       {bonusMission.id === 'tiktok_extra'
                         ? 'TikTok Bonus phải dùng account TikTok khác account đã dùng ở Mission TikTok bắt buộc.'
-                        : bonusMission.id === 'spotify_extra'
-                          ? 'Spotify Bonus phải dùng account Spotify khác account đã dùng ở Mission Spotify bắt buộc.'
-                          : bonusMission.id === 'youtube_extra'
-                            ? 'YouTube Bonus phải dùng account YouTube khác account đã dùng ở Mission YouTube bắt buộc.'
-                            : ''}
+                        : bonusMission.id === 'facebook_extra'
+                          ? 'Facebook Extra dành cho các bài đăng Facebook bổ sung.'
+                          : bonusMission.id === 'spotify_extra'
+                            ? 'Spotify Bonus phải dùng account Spotify khác account đã dùng ở Mission Spotify bắt buộc.'
+                            : bonusMission.id === 'youtube_extra'
+                              ? 'YouTube Bonus phải dùng account YouTube khác account đã dùng ở Mission YouTube bắt buộc.'
+                              : bonusMission.id === 'social_extra'
+                                ? 'Social Extra dành cho tương tác trên Facebook hoặc Instagram.'
+                                : ''}
                     </small>
                   </div>
                 </div>
@@ -8641,8 +8705,7 @@ function MissionModal({
                       <div>
                         <b>MINH CHỨNG SPOTIFY EXTRA</b>
                       </div>
-                      <div>                        <small> Admin sẽ tự kiểm tra account, ngày stream và ảnh stats.fm · mỗi account cần ít nhất 15 streams.</small>
-</div>
+                    
                       {bonusItems.length < 3 && (
                         <button
                           type="button"
@@ -8719,7 +8782,7 @@ function MissionModal({
                                     ? {
                                         ...row,
                                         activityDate: value,
-                                        metadata: { ...(row.metadata || {}), activity_date: value, quantity: 15 }
+                                        metadata: { ...(row.metadata || {}), activity_date: value, quantity: row.quantity || 10 }
                                       }
                                     : row
                                 ));
@@ -8732,7 +8795,7 @@ function MissionModal({
                             <span>SỐ STREAM</span>
                             <input
                               type="number"
-                              min={15}
+                              min={10}
                               value={item.quantity || ''}
                               onChange={e => {
                                 const value = Math.max(0, Number(e.target.value || 0));
@@ -8743,83 +8806,60 @@ function MissionModal({
                             />
                           </label>
 
-                          <div className="proofUploadBox">
-                            <span>📸 ẢNH MINH CHỨNG STATS.FM</span>
-                            <small>Chụp phần thống kê cho đúng account và đúng ngày stream.</small>
-                            {bonusSpotifyProofFiles[index] ? (
-                              <div className="selectedProofFile">
-                                <span>✓ {bonusSpotifyProofFiles[index].name}</span>
-                                <button
-                                  type="button"
-                                  onClick={() => removeBonusSpotifyProofFile(index)}
-                                  disabled={submitting}
-                                >
-                                  ×
-                                </button>
-                              </div>
-                            ) : (
-                              <input
-                                type="file"
-                                accept="image/*"
-                                onChange={e => handleBonusSpotifyProofFile(index, e)}
-                                disabled={submitting}
-                              />
-                            )}
-                          </div>
+                          <label style={{ display: 'grid', gap: 5, marginBottom: 8 }}>
+                            <span>LINK GOOGLE DRIVE · VIDEO QUAY MÀN HÌNH STATS.FM</span>
+                            <input
+                              type="url"
+                              value={item.contentUrl || ''}
+                              onChange={e => updateBonusItem(index, 'contentUrl', e.target.value)}
+                              placeholder="https://drive.google.com/..."
+                              disabled={submitting}
+                            />
+                            <small style={{ display: 'block', marginTop: 2, opacity: .72, lineHeight: 1.4 }}>
+                              Video cần thể hiện rõ account Spotify, đúng ngày stream và đủ số stream. Hãy bật quyền <b>Anyone with the link</b> để Admin có thể mở video.
+                            </small>
+                          </label>
                         </div>
                       ))}
                     </div>
                   </div>
                 )}
 
-                {bonusMission.id === 'itunes_extra' && (
-                  <div className="bonusSection bonusQuestSection bonusItunesSection">
-                    <div className="bonusSectionTop bonusQuestTop">
-                      {/*
-                      <div className="bonusQuestLead">
-                        <span className="bonusQuestBadge">
-                          <img src="/assets/icon_huongduong.png" alt="" aria-hidden="true" draggable="false" style={{ width: 16, height: 16, objectFit: 'contain', verticalAlign: 'middle', marginRight: 4 }} />
-                          BONUS QUEST
-                        </span>
-                        <b>MINH CHỨNG iTUNES</b>
-                        <small>2 redeem = +1 điểm · tối đa 5 điểm · mỗi CODE tương ứng 1 ảnh minh chứng.</small>
-                      </div>
-                      */}
-                      <button
-                        type="button"
-                        className="softActionButton bonusQuestAction"
-                        onClick={() => window.open('https://light-itunes-code.vercel.app/', '_blank', 'noopener,noreferrer')}
-                        disabled={submitting}
-                      >
-                        🔗 MỞ TRANG LẤY CODE
-                      </button>
-                    </div>
+                {bonusMission.id === 'facebook_extra' && (
+                  <div className="bonusSection bonusQuestSection bonusSocialSection">
+                    
 
                     <div className="bonusItemsHeader bonusItemsHeaderGame">
                       <div>
-                        <b>ẢNH MINH CHỨNG</b>
-                        <small> Mỗi CODE = 1 minh chứng · thêm CODE tùy số lượng bạn muốn gửi.</small>
+                        <b>LINK BÀI ĐĂNG</b>
+                       
                       </div>
-                      {bonusItems.length < 10 && (
+                      {bonusItems.length < 5 && (
                         <button
                           type="button"
                           className="addEvidenceButton addEvidenceButtonGame"
                           onClick={addBonusItem}
                           disabled={submitting}
                         >
-                          ＋ THÊM CODE
+                          ＋ THÊM BÀI
                         </button>
                       )}
                     </div>
 
                     <div className="bonusItemList bonusQuestList">
                       {bonusItems.map((item, index) => (
-                        <div className="bonusEvidenceCard bonusEvidenceCardGame" key={index}>
+                        <div
+                          className="bonusEvidenceCard bonusEvidenceCardGame"
+                          key={index}
+                        >
                           <div className="bonusEvidenceTitleRow bonusEvidenceTitleRowGame">
                             <div>
-                              <span className="bonusStepNo">{String(index + 1).padStart(2, '0')}</span>
-                              <b>CODE {index + 1}</b>
+                              <span className="bonusStepNo">
+                                {String(index + 1).padStart(2, '0')}
+                              </span>
+                              <b>BÀI ĐĂNG {index + 1}</b>
                             </div>
+
                             {index > 0 && (
                               <button
                                 type="button"
@@ -8832,20 +8872,115 @@ function MissionModal({
                             )}
                           </div>
 
-                          <div className="proofUploadBox bonusProofUploadGame">
-                            <div className="proofUploadTitle">
-                              <span>📸 ẢNH MINH CHỨNG CODE</span>
-                              <small>Chụp rõ phần code redeem đã nhận.</small>
+                          <label style={{ display: 'grid', gap: 5, marginBottom: 8 }}>
+                            <span>LINK BÀI ĐĂNG FACEBOOK</span>
+                            <input
+                              type="url"
+                              value={item.contentUrl || ''}
+                              onChange={e =>
+                                updateBonusItem(index, 'contentUrl', e.target.value)
+                              }
+                              placeholder="https://www.facebook.com/..."
+                              disabled={submitting}
+                            />
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {bonusMission.id === 'social_extra' && (
+                  <div className="bonusSection bonusQuestSection bonusSocialSection">
+                    
+
+                    <div className="bonusItemsHeader bonusItemsHeaderGame">
+                      <div>
+                        <b>ACCOUNT + MINH CHỨNG </b>
+                        <small>
+                          Mỗi account cần 1 ảnh duy nhất thể hiện đủ 3 bình luận.
+                        </small>
+                      </div>
+                      {bonusItems.length < 5 && (
+                        <button
+                          type="button"
+                          className="addEvidenceButton addEvidenceButtonGame"
+                          onClick={addBonusItem}
+                          disabled={submitting}
+                        >
+                          ＋ THÊM ACCOUNT
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="bonusItemList bonusQuestList">
+                      {bonusItems.map((item, index) => (
+                        <div
+                          className="bonusEvidenceCard bonusEvidenceCardGame"
+                          key={index}
+                        >
+                          <div className="bonusEvidenceTitleRow bonusEvidenceTitleRowGame">
+                            <div>
+                              <span className="bonusStepNo">
+                                {String(index + 1).padStart(2, '0')}
+                              </span>
+                              <b>ACCOUNT {index + 1}</b>
                             </div>
 
-                            {bonusItunesProofFiles[index] ? (
+                            {index > 0 && (
+                              <button
+                                type="button"
+                                className="removeEvidenceButton"
+                                onClick={() => removeBonusItem(index)}
+                                disabled={submitting}
+                              >
+                                × XÓA
+                              </button>
+                            )}
+                          </div>
+
+                          <label style={{ display: 'grid', gap: 5, marginBottom: 8 }}>
+                            <span>ACCOUNT / USERNAME</span>
+                            <input
+                              value={item.accountId || ''}
+                              onChange={e =>
+                                updateBonusItem(index, 'accountId', e.target.value)
+                              }
+                              placeholder="Facebook hoặc Instagram account"
+                              disabled={submitting}
+                            />
+                          </label>
+
+                          <label style={{ display: 'grid', gap: 5, marginBottom: 8 }}>
+                            <span>NỀN TẢNG</span>
+                            <select
+                              value={item.platform || 'facebook'}
+                              onChange={e =>
+                                updateBonusItem(index, 'platform', e.target.value)
+                              }
+                              disabled={submitting}
+                            >
+                              <option value="facebook">FACEBOOK</option>
+                              <option value="instagram">INSTAGRAM</option>
+                            </select>
+                          </label>
+
+                          <div className="proofUploadBox bonusProofUploadGame">
+                            <div className="proofUploadTitle">
+                              <span>📸 ẢNH 3 BÌNH LUẬN</span>
+                              <small>
+                                1 ảnh duy nhất · ảnh phải thể hiện đủ 3 bình luận của account này.
+                              </small>
+                            </div>
+
+                            {bonusSocialProofFiles[index] ? (
                               <div className="selectedProofFile selectedProofFileGame">
-                                <span>✓ {bonusItunesProofFiles[index].name}</span>
+                                <span>✓ {bonusSocialProofFiles[index].name}</span>
                                 <button
                                   type="button"
-                                  aria-label={`Xóa ảnh CODE ${index + 1}`}
+                                  aria-label={`Xóa ảnh minh chứng account ${index + 1}`}
                                   onClick={() =>
-                                    setBonusItunesProofFiles(prev => {
+                                    setBonusSocialProofFiles(prev => {
                                       const next = { ...prev };
                                       delete next[index];
                                       return next;
@@ -8865,20 +9000,28 @@ function MissionModal({
                                     const f = e.target.files?.[0] || null;
                                     e.currentTarget.value = '';
                                     if (!f) return;
+
                                     if (!f.type.startsWith('image/')) {
-                                      notify('Chỉ nhận file ảnh minh chứng.');
+                                      notify('Social Extra: chỉ nhận file ảnh minh chứng.');
                                       return;
                                     }
+
                                     if (f.size > 10 * 1024 * 1024) {
-                                      notify('Mỗi ảnh tối đa 10MB.');
+                                      notify('Social Extra: mỗi ảnh tối đa 10MB.');
                                       return;
                                     }
-                                    setBonusItunesProofFiles(prev => ({ ...prev, [index]: f }));
+
+                                    setBonusSocialProofFiles(prev => ({
+                                      ...prev,
+                                      [index]: f
+                                    }));
                                   }}
                                   disabled={submitting}
                                 />
                                 <span className="gameFilePickerButton">CHỌN ẢNH</span>
-                                <span className="gameFilePickerHint">JPG · PNG · WEBP · tối đa 10MB</span>
+                                <span className="gameFilePickerHint">
+                                  JPG · PNG · WEBP · tối đa 10MB
+                                </span>
                               </label>
                             )}
                           </div>
@@ -8894,8 +9037,7 @@ function MissionModal({
                       <div>
                         <b>MINH CHỨNG YOUTUBE</b>
                       </div>
-                      <div>                         <small>Admin sẽ tự kiểm tra account và minh chứng.</small>
-</div>
+                      
                       {bonusItems.length < 5 && (
                         <button type="button" className="addEvidenceButton" onClick={addBonusItem} disabled={submitting}>
                           ＋ THÊM TÀI KHOẢN
@@ -8962,50 +9104,13 @@ function MissionModal({
                   </div>
                 )}
 
-                {(bonusMission.id === 'facebook' || bonusMission.id === 'social_extra') && (
-                  <div className="bonusSection">
-                    <div className="bonusItemsHeader">
-                      <div>
-                        <b>LINK BÀI ĐĂNG</b>
-                       {/* <small> Giống phần chính: mỗi bài chỉ cần link bài đăng.</small>*/}
-                      </div>
-                      {bonusItems.length < 15 && (
-                        <button type="button" className="addEvidenceButton" onClick={addBonusItem} disabled={submitting}>
-                          ＋ THÊM BÀI
-                        </button>
-                      )}
-                    </div>
-                    <div className="bonusItemList">
-                      {bonusItems.map((item, index) => (
-                        <div className="bonusEvidenceCard" key={index}>
-                          <div className="bonusEvidenceTitleRow">
-                            <b>BÀI ĐĂNG {index + 1}</b>
-                            {index > 0 && (
-                              <button type="button" className="removeEvidenceButton" onClick={() => removeBonusItem(index)} disabled={submitting}>XÓA</button>
-                            )}
-                          </div>
-                          <input
-                            type="url"
-                            value={item.contentUrl}
-                            onChange={e => updateBonusItem(index, 'contentUrl', e.target.value)}
-                            placeholder={`Link bài đăng ${index + 1}`}
-                            disabled={submitting}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
                 {bonusMission.id === 'tiktok_extra' && (
                   <div className="bonusSection">
                     <div className="bonusItemsHeader">
                       <div>
                         <b>LINK VIDEO TIKTOK</b>
                       </div>
-                      <div>
-                                                <small>3 video · Sound Official + Hashtag . Link thể hiện rõ người chia sẻ và người đăng bài là 01</small>
-</div>
+                     
                       {bonusItems.length < 5 && (
                         <button type="button" className="addEvidenceButton" onClick={addBonusItem} disabled={submitting}>
                           ＋ THÊM VIDEO
