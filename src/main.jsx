@@ -364,40 +364,6 @@ function friendlyAuthError(error) {
 }
 
 /* =========================================================
-   GOOGLE ICON
-   ========================================================= */
-
-function GoogleIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      className="googleIcon"
-    >
-      <path
-        fill="#4285F4"
-        d="M21.35 12.27c0-.71-.06-1.4-.18-2.06H12v3.9h5.24a4.48 4.48 0 0 1-1.94 2.94v2.44h3.14c1.84-1.69 2.91-4.18 2.91-7.22Z"
-      />
-
-      <path
-        fill="#34A853"
-        d="M12 21.75c2.63 0 4.84-.87 6.45-2.36l-3.14-2.44c-.87.58-1.98.92-3.31.92-2.54 0-4.69-1.72-5.46-4.03H3.29v2.52A9.75 9.75 0 0 0 12 21.75Z"
-      />
-
-      <path
-        fill="#FBBC05"
-        d="M6.54 13.84A5.86 5.86 0 0 1 6.23 12c0-.64.11-1.26.31-1.84V7.64H3.29A9.75 9.75 0 0 0 2.25 12c0 1.57.38 3.06 1.04 4.36l3.25-2.52Z"
-      />
-
-      <path
-        fill="#EA4335"
-        d="M12 6.13c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.84 3.2 14.63 2.25 12 2.25a9.75 9.75 0 0 0-8.71 5.39l3.25 2.52C7.31 7.85 9.46 6.13 12 6.13Z"
-      />
-    </svg>
-  );
-}
-
-/* =========================================================
    AUTH CONFIG
    ========================================================= */
 
@@ -509,27 +475,6 @@ function AuthScreen() {
 
     setSubmitting(false);
     setMessage('Đăng nhập admin thành công. Đang mở bảng quản trị...');
-  };
-
-  const loginWithGoogle = async () => {
-    clearMessages();
-    setSubmitting(true);
-
-    const {
-      error: oauthError
-    } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: window.location.origin
-      }
-    });
-
-    if (oauthError) {
-      setError(
-        friendlyAuthError(oauthError)
-      );
-      setSubmitting(false);
-    }
   };
 
   const handleSubmit = async event => {
@@ -855,21 +800,6 @@ function AuthScreen() {
             </form>
           ) : (
             <>
-              {mode !== 'forgot' && mode !== 'update-password' && (
-                <>
-                  <button
-                    type="button"
-                    className="googleButton"
-                    onClick={loginWithGoogle}
-                    disabled={submitting}
-                  >
-                    <GoogleIcon />
-                    <span>{submitting ? 'ĐANG KẾT NỐI...' : 'Tiếp tục với Google'}</span>
-                  </button>
-                  <div className="authDivider"><span>HOẶC</span></div>
-                </>
-              )}
-
               <form className="authForm" onSubmit={handleSubmit}>
 
 
