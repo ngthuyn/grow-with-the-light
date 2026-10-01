@@ -156,7 +156,7 @@ const MISSIONS = [
     points: 10,
     logo: '/assets/facebook.png',
     color: '#4f8df7',
-    rule: '3 post · đủ Hashtag: #lighT, #DoMinhTan, #VETTHUONG, #SYE',
+    rule: '3 post · đủ Hashtag: #lighT, #DoMinhTan, #VETTHUONG, #DebutSingle, #xuhuong',
     hint: 'Gom những tia nắng nhỏ để cây lớn lên từng ngày.'
   },
   {
@@ -167,7 +167,7 @@ const MISSIONS = [
     points: 10,
     logo: '/assets/tiktok.png',
     color: '#141414',
-    rule: '3 video · Sound Official (Từ acc do.nathnim_) · Hashtag (#lighT #VETTHUONG #DoMinhTan)· Link thể hiện rõ người chia sẻ và người đăng bài là cùng một người.',
+    rule: '3 video · Sound Official (Từ acc do.nathnim_) · Hashtag (#lighT, #DoMinhTan, #VETTHUONG, #DebutSingle, #xuhuong)· Link thể hiện rõ người chia sẻ và người đăng bài là cùng một người.',
     hint: 'Thêm dinh dưỡng để cây vươn cao.'
   },
   {
@@ -210,7 +210,7 @@ const BONUS_MISSIONS = [
     max_points: 5,
     logo: '/assets/facebook.png',
     color: '#4f8df7',
-    rule: '3 bài đăng = +1 điểm · tối đa 5 điểm',
+    rule: '3 bài đăng = +1 điểm · tối đa 5 điểm · Các bài đăng có thể cùng 1 account nhưng phải khác account ở nhiệm vụ FACEBOOK chặng 1.',
     hint: 'Mỗi 3 bài đăng Facebook hợp lệ = +1 điểm.',
     mission_type: 'bonus'
   },
@@ -225,8 +225,8 @@ const BONUS_MISSIONS = [
     max_points: 5,
     logo: '/assets/social_media.png',
     color: '#4f8df7',
-    rule: '3 tương tác Like/Comment = +1 điểm · tối đa 5 điểm',
-    hint: 'Mỗi nhóm 3 tương tác Like/Comment hợp lệ = +1 điểm.',
+    rule: 'Đủ 3 Comment/ account = +1 điểm · Các account phải khác nhau và khác account ở nhiệm vụ SOCIAL chặng 1·',
+    hint: '3 Comment hợp lệ = +1 điểm.',
     mission_type: 'bonus'
   },
   {
@@ -240,7 +240,7 @@ const BONUS_MISSIONS = [
     max_points: 15,
     logo: '/assets/spotify.png',
     color: '#55e36b',
-    rule: '10 streams / account +5 điểm (max 15)· gửi link Drive video stats.fm ',
+    rule: 'Đủ 10 streams / account +5 điểm (max 15)· Các account phải khác nhau và khác account ở nhiệm vụ SPOTIFY chặng 1· gửi link Drive video stats.fm ',
     hint: 'Mỗi account cần ít nhất 10 streams; quay video stats.fm, upload Google Drive và gửi link để Admin kiểm tra.',
     mission_type: 'bonus'
   },
@@ -256,7 +256,7 @@ const BONUS_MISSIONS = [
     logo: '/assets/youtube.png',
     color: '#ff5757',
     rule: '1 Subscribe + 1 Like + 1 Comment = +2 điểm · tối đa 10 điểm',
-    hint: 'YouTube Bonus phải dùng account YouTube khác account đã dùng ở Mission YouTube bắt buộc.',
+    hint: 'Phải dùng account YOUTUBE khác account đã dùng ở nhiệm vụ YOUTUBE chặng 1.',
     mission_type: 'bonus'
   }
 ];
@@ -8120,7 +8120,7 @@ function MissionModal({
                 >
                   <b>
                     {mission.id === 'itunes'
-                      ? '3 TƯƠNG TÁC LIKE/COMMENT · 1 ACCOUNT'
+                      ? '3 COMMENT · 1 ACCOUNT'
                       : mission.id === 'youtube'
                         ? ''
                         : mission.id === 'facebook'
