@@ -156,8 +156,8 @@ const MISSIONS = [
     points: 10,
     logo: '/assets/facebook.png',
     color: '#4f8df7',
-    rule: '3 post · đủ Hashtag: lighT, DoMinhTan, VETTHUONG, SYE',
-    hint: 'Dọn sạch những chú sâu để cây khỏe mạnh.'
+    rule: '3 post · đủ Hashtag: #lighT, #DoMinhTan, #VETTHUONG, #SYE',
+    hint: 'Gom những tia nắng nhỏ để cây lớn lên từng ngày.'
   },
   {
     id: 'tiktok',
@@ -167,8 +167,8 @@ const MISSIONS = [
     points: 10,
     logo: '/assets/tiktok.png',
     color: '#141414',
-    rule: '3 video · Sound Official (Từ acc do.nathnim_) + Hashtag (#lighT #VETTHUONG #DoMinhTan). Link thể hiện rõ người chia sẻ và người đăng bài là cùng một người',
-    hint: 'Thêm dinh dưỡng để cây vươn cao và nhiều lá hơn.'
+    rule: '3 video · Sound Official (Từ acc do.nathnim_) · Hashtag (#lighT #VETTHUONG #DoMinhTan)· Link thể hiện rõ người chia sẻ và người đăng bài là cùng một người.',
+    hint: 'Thêm dinh dưỡng để cây vươn cao.'
   },
   {
     id: 'spotify',
@@ -179,7 +179,7 @@ const MISSIONS = [
     logo: '/assets/spotify.png',
     color: '#55e36b',
     rule: '10 streams / ngày / account. ',
-    hint: 'Hoàn thành chặng cuối để hướng dương nở rộ.'
+    hint: 'Hoàn thành nhiệm vụ để hướng dương nở rộ.'
   }
 ];
 
