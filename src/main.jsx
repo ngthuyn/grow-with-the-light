@@ -167,7 +167,7 @@ const MISSIONS = [
     points: 10,
     logo: '/assets/tiktok.png',
     color: '#141414',
-    rule: '3 video · Sound Official (Từ acc do.nathnim_) + Hashtag (#lighT #VETTHUONG #DoMinhTan #SYE #viral) . Link thể hiện rõ người chia sẻ và người đăng bài là cùng một người',
+    rule: '3 video · Sound Official (Từ acc do.nathnim_) + Hashtag (#lighT #VETTHUONG #DoMinhTan). Link thể hiện rõ người chia sẻ và người đăng bài là cùng một người',
     hint: 'Thêm dinh dưỡng để cây vươn cao và nhiều lá hơn.'
   },
   {
