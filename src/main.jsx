@@ -8325,7 +8325,7 @@ function MissionModal({
                         {[
                           ['subscribe', 'Ảnh tài khoản đã SUBSCRIBE kênh lighT_'],
                           ['like', 'Ảnh đã LIKE video'],
-                          ['comment', 'Ảnh đã COMMENT video']
+                          ['comment', 'Ảnh đã COMMENT video: Vào Cài đặt -> Quản lý toàn bộ nhật ký hoạt động -> tương tác -> Bình luận và trả lời -> Cap lịch sử 3 bình luận dưới MV Vết Thương - Phải có ngày bình luận']
                         ].map(([proofType, label]) => {
                           const proof = youtubeProofFiles[index]?.[proofType];
 
