@@ -143,7 +143,7 @@ const MISSIONS = [
     target: 3,
     points: 10,
     logo: '/assets/facebook.png',
-    color: '#4f8df7',
+    color: '#d76bd4',
     rule: '3 bình luận · cùng 1 account · dưới bài đăng mới nhất của lighT trên Facebook hoặc Instagram',
     proofNote: 'Dùng 1 account duy nhất để thực hiện đủ 3 bình luận. Mỗi bình luận cần 1 ảnh minh chứng dưới bài đăng mới nhất của lighT trên Facebook hoặc Instagram.',
     hint: 'Lan tỏa yêu thương để cây mau lớn'
@@ -167,7 +167,7 @@ const MISSIONS = [
     points: 10,
     logo: '/assets/tiktok.png',
     color: '#141414',
-    rule: '3 video · Sound Official + Hashtag . Link thể hiện rõ người chia sẻ và người đăng bài là cùng một người',
+    rule: '3 video · Sound Official (Từ acc do.nathnim_) + Hashtag (#lighT #VETTHUONG #DoMinhTan #SYE #viral) . Link thể hiện rõ người chia sẻ và người đăng bài là cùng một người',
     hint: 'Thêm dinh dưỡng để cây vươn cao và nhiều lá hơn.'
   },
   {
@@ -179,7 +179,7 @@ const MISSIONS = [
     logo: '/assets/spotify.png',
     color: '#55e36b',
     rule: '10 streams / ngày / account. ',
-    hint: 'Hoàn thành chặng cuối để đánh thức bông hướng dương.'
+    hint: 'Hoàn thành chặng cuối để hướng dương nở rộ.'
   }
 ];
 
@@ -7901,7 +7901,7 @@ function MissionModal({
             }}
           >
             <img
-              src="/assets/lastfm-guide.png"
+              src="/assets/statsfm.png"
               alt="Hướng dẫn minh chứng lượt nghe bằng stats.fm"
               style={{
                 display: 'block',
@@ -7959,8 +7959,9 @@ function MissionModal({
                   lineHeight: 1.45
                 }}
               >
-                Sau khi tổng hợp, hãy quay màn hình phần thống kê lượt nghe của ngày đó trên stats.fm
-                và gửi link video quay màn hình ở bên dưới. 
+                Đăng nhập stats.fm bằng tài khoản spotify. Hãy quay màn hình phần thống kê lượt nghe của ngày đó trên stats.fm
+                và gửi link video quay màn hình ở bên dưới. Lưu ý chọn đúng track "Vết Thương" của lighT và trong video phải hiển thị được acc của bạn và ngày stream, số stream (như ảnh minh họa).
+                
               </small>
             </div>
           </div>
