@@ -11694,3 +11694,129 @@ button, input, textarea, select {
   position: relative;
   z-index: 4;
 }
+
+/* ============================================================
+   FINAL MOBILE HUD FIX — KEEP ALL 4 BLOCKS ON ONE ROW
+   Order when NGÀY TIẾP THEO is visible:
+   NGÀY TIẾP THEO | CHẶNG | TINIE | TỔNG ĐIỂM
+
+   The bottomPanel has 4 children in this state. The previous
+   mobile rule only created 3 grid columns, so the total-score
+   box wrapped onto a second row.
+   ============================================================ */
+
+@media (max-width: 760px) {
+  .bottomPanel:has(.backButton) {
+    grid-template-columns:
+      78px
+      minmax(0, 1fr)
+      64px
+      78px !important;
+    gap: 6px !important;
+    align-items: center !important;
+  }
+
+  .bottomPanel:has(.backButton) .backButton,
+  .bottomPanel:has(.backButton) .currentBox,
+  .bottomPanel:has(.backButton) .totalBox {
+    min-width: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .bottomPanel:has(.backButton) .backButton {
+    height: 68px !important;
+    padding: 6px 4px !important;
+    font-size: 9px !important;
+    line-height: 1.2 !important;
+  }
+
+  .bottomPanel:has(.backButton) .currentBox,
+  .bottomPanel:has(.backButton) .totalBox {
+    min-height: 68px !important;
+    padding: 7px 5px !important;
+  }
+
+  .bottomPanel:has(.backButton) .currentBox small,
+  .bottomPanel:has(.backButton) .totalBox small {
+    font-size: 6.5px !important;
+    line-height: 1.25 !important;
+  }
+
+  .bottomPanel:has(.backButton) .currentBox strong {
+    font-size: 9px !important;
+    line-height: 1.25 !important;
+  }
+
+  .bottomPanel:has(.backButton) .currentBox span {
+    font-size: 8px !important;
+    line-height: 1.2 !important;
+  }
+
+  .bottomPanel:has(.backButton) .totalBox b {
+    margin-top: 4px !important;
+    font-size: 11px !important;
+    white-space: nowrap;
+  }
+
+  .bottomPanel:has(.backButton) .totalBox i {
+    font-size: 7px !important;
+  }
+
+  .bottomPanel:has(.backButton) .mascotBox {
+    width: 64px !important;
+    height: 78px !important;
+    margin: 0 auto !important;
+  }
+
+  .bottomPanel:has(.backButton) .mascotBox img {
+    width: 64px !important;
+    max-width: 64px !important;
+    max-height: 78px !important;
+    margin: 0 auto !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .bottomPanel:has(.backButton) {
+    grid-template-columns:
+      68px
+      minmax(0, 1fr)
+      54px
+      68px !important;
+    gap: 4px !important;
+    padding-inline: 5px !important;
+  }
+
+  .bottomPanel:has(.backButton) .backButton {
+    font-size: 8px !important;
+    padding-inline: 3px !important;
+  }
+
+  .bottomPanel:has(.backButton) .currentBox,
+  .bottomPanel:has(.backButton) .totalBox {
+    min-height: 64px !important;
+    padding: 6px 4px !important;
+  }
+
+  .bottomPanel:has(.backButton) .currentBox strong {
+    font-size: 8px !important;
+  }
+
+  .bottomPanel:has(.backButton) .currentBox span,
+  .bottomPanel:has(.backButton) .totalBox i {
+    font-size: 7px !important;
+  }
+
+  .bottomPanel:has(.backButton) .totalBox b {
+    font-size: 10px !important;
+  }
+
+  .bottomPanel:has(.backButton) .mascotBox,
+  .bottomPanel:has(.backButton) .mascotBox img {
+    width: 54px !important;
+    max-width: 54px !important;
+    max-height: 68px !important;
+  }
+}
+

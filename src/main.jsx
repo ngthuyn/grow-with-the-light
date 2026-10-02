@@ -185,20 +185,21 @@ const MISSIONS = [
 
 const BONUS_MISSIONS = [
   {
-    id: 'tiktok_extra',
-    name: 'TIKTOK EXTRA',
-    action: 'THÊM VIDEO',
+    id: 'youtube_extra',
+    name: 'YOUTUBE EXTRA',
+    action: 'THÊM TƯƠNG TÁC',
     target: 5,
     points: 2,
     points_per_unit: 2,
     unit_quantity: 1,
     max_points: 10,
-    logo: '/assets/tiktok.png',
-    color: '#141414',
-    rule: '1 video = +2 điểm · tối đa 10 điểm',
-    hint: 'Thêm 1 video hợp lệ = +2 điểm.',
+    logo: '/assets/youtube.png',
+    color: '#ff5757',
+    rule: '1 Subscribe + 1 Like + 1 Comment = +2 điểm · tối đa 10 điểm · Nếu nộp nhiều account thì các account phải khác nhau và khác account ở nhiệm vụ YOUTUBE chặng 1.',
+    hint: 'Phải dùng account YOUTUBE khác account đã dùng ở nhiệm vụ YOUTUBE chặng 1.',
     mission_type: 'bonus'
   },
+  
   {
     id: 'facebook_extra',
     name: 'FACEBOOK EXTRA',
@@ -224,9 +225,24 @@ const BONUS_MISSIONS = [
     unit_quantity: 3,
     max_points: 5,
     logo: '/assets/social_media.png',
-    color: '#4f8df7',
-    rule: 'Đủ 3 Comment/ account = +1 điểm · Các account phải khác nhau và khác account ở nhiệm vụ SOCIAL chặng 1·',
+    color: '#cf40e8',
+    rule: 'Đủ 3 Comment/ account = +1 điểm · Nếu nộp nhiều account thì các account phải khác nhau và khác account ở nhiệm vụ SOCIAL chặng 1·',
     hint: '3 Comment hợp lệ = +1 điểm.',
+    mission_type: 'bonus'
+  },
+  {
+    id: 'tiktok_extra',
+    name: 'TIKTOK EXTRA',
+    action: 'THÊM VIDEO',
+    target: 5,
+    points: 2,
+    points_per_unit: 2,
+    unit_quantity: 1,
+    max_points: 10,
+    logo: '/assets/tiktok.png',
+    color: '#141414',
+    rule: '1 video = +2 điểm · tối đa 10 điểm · Các bài đăng có thể cùng 1 account nhưng phải khác account ở nhiệm vụ TIKTOK chặng 1.',
+    hint: 'Thêm 1 video hợp lệ = +2 điểm.',
     mission_type: 'bonus'
   },
   {
@@ -240,25 +256,11 @@ const BONUS_MISSIONS = [
     max_points: 15,
     logo: '/assets/spotify.png',
     color: '#55e36b',
-    rule: 'Đủ 10 streams / account +5 điểm (max 15)· Các account phải khác nhau và khác account ở nhiệm vụ SPOTIFY chặng 1· gửi link Drive video stats.fm ',
+    rule: 'Đủ 10 streams / account +5 điểm · tối đa 15 điểm ·  Các account phải khác nhau và khác account ở nhiệm vụ SPOTIFY chặng 1· gửi link Drive video stats.fm ',
     hint: 'Mỗi account cần ít nhất 10 streams; quay video stats.fm, upload Google Drive và gửi link để Admin kiểm tra.',
     mission_type: 'bonus'
   },
-  {
-    id: 'youtube_extra',
-    name: 'YOUTUBE EXTRA',
-    action: 'THÊM TƯƠNG TÁC',
-    target: 5,
-    points: 2,
-    points_per_unit: 2,
-    unit_quantity: 1,
-    max_points: 10,
-    logo: '/assets/youtube.png',
-    color: '#ff5757',
-    rule: '1 Subscribe + 1 Like + 1 Comment = +2 điểm · tối đa 10 điểm',
-    hint: 'Phải dùng account YOUTUBE khác account đã dùng ở nhiệm vụ YOUTUBE chặng 1.',
-    mission_type: 'bonus'
-  }
+  
 ];
 
 const ALL_MISSIONS = [...MISSIONS, ...BONUS_MISSIONS];
@@ -1153,7 +1155,7 @@ function App() {
   const [audio] = useState(() => {
     const a = new Audio('/assets/vetthuong.mp3');
     a.loop = true;
-    a.volume = 0.35;
+    a.volume = 0.45;
     return a;
   });
 
@@ -8647,19 +8649,19 @@ function MissionModal({
                   <div>
                     <span className="bonusFormKicker">CHẶNG 02 · BONUS TỰ CHỌN</span>
                     <p>{bonusMission.rule}</p>
-                    <small className="bonusRuleHint">
+                    {/*<small className="bonusRuleHint">
                       {bonusMission.id === 'tiktok_extra'
-                        ? 'TikTok Bonus phải dùng account TikTok khác account đã dùng ở Mission TikTok bắt buộc.'
+                        ? 'Bạn phải dùng account TikTok khác account đã dùng ở nhiệm vụ TikTok chặng 1.'
                         : bonusMission.id === 'facebook_extra'
-                          ? 'Facebook Extra dành cho các bài đăng Facebook bổ sung.'
+                          ? 'Bạn phải dùng account Facebook khác account đã dùng ở nhiệm vụ Facebook chặng 1.'
                           : bonusMission.id === 'spotify_extra'
-                            ? 'Spotify Bonus phải dùng account Spotify khác account đã dùng ở Mission Spotify bắt buộc.'
+                            ? 'Bạn phải dùng account Spotify khác account đã dùng ở nhiệm vụ Spotify chặng 1.'
                             : bonusMission.id === 'youtube_extra'
-                              ? 'YouTube Bonus phải dùng account YouTube khác account đã dùng ở Mission YouTube bắt buộc.'
+                              ? 'Bạn phải dùng account YouTube khác account đã dùng ở nhiệm vụ Spotify chặng 1.'
                               : bonusMission.id === 'social_extra'
-                                ? 'Social Extra dành cho tương tác trên Facebook hoặc Instagram.'
+                                ? 'Bạn phải dùng account Social khác account đã dùng ở nhiệm vụ Social chặng 1.'
                                 : ''}
-                    </small>
+                    </small>*/}
                   </div>
                 </div>
 
