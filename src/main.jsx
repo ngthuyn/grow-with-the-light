@@ -378,8 +378,12 @@ const ADMIN_USERNAME = (import.meta.env.VITE_ADMIN_USERNAME || 'TINcredible').tr
    AUTH SCREEN
    ========================================================= */
 
-function AuthScreen() {
-  const [mode, setMode] = useState('login');
+function AuthScreen({ initialMode = 'login' }) {
+  const [mode, setMode] = useState(initialMode);
+
+  useEffect(() => {
+    setMode(initialMode);
+  }, [initialMode]);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -498,7 +502,7 @@ function AuthScreen() {
       } = await supabase.auth.resetPasswordForEmail(
         email.trim(),
         {
-          redirectTo: window.location.origin
+          redirectTo: `${window.location.origin}/?reset=1`
         }
       );
 
@@ -556,8 +560,14 @@ function AuthScreen() {
       setConfirmPassword('');
 
       setMessage(
-        'Đổi mật khẩu thành công.'
+        'Đổi mật khẩu thành công. Đang quay lại đăng nhập...'
       );
+
+      // End the temporary recovery session and reload on a clean URL.
+      // This also clears the recovery state so the user cannot fall through
+      // into the game after completing the reset.
+      await supabase.auth.signOut();
+      window.location.replace(window.location.origin);
 
       return;
     }
@@ -1126,6 +1136,15 @@ function App() {
   const [profile, setProfile] = useState(null);
   const [authUser, setAuthUser] = useState(null);
   const [authReady, setAuthReady] = useState(false);
+  const [passwordRecovery, setPasswordRecovery] = useState(() => {
+    try {
+      const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+      const query = new URLSearchParams(window.location.search);
+      return hash.get('type') === 'recovery' || query.get('type') === 'recovery';
+    } catch {
+      return false;
+    }
+  });
   const authEventRef = useRef(null);
   const [selected, setSelected] = useState(null);
   const [menu, setMenu] = useState(false);
@@ -1376,6 +1395,21 @@ function App() {
 
       if (error) console.error('getSession error:', error);
       const nextUser = data?.session?.user || null;
+      const isRecoveryUrl = (() => {
+        try {
+          const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+          const query = new URLSearchParams(window.location.search);
+          return hash.get('type') === 'recovery' || query.get('type') === 'recovery';
+        } catch {
+          return false;
+        }
+      })();
+
+      if (isRecoveryUrl) {
+        setPasswordRecovery(true);
+        setLoading(false);
+      }
+
       authEventRef.current = nextUser?.id || null;
       setProfile(null);
       setSelected(null);
@@ -1393,6 +1427,16 @@ function App() {
     const { data: listener } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (!active) return;
+
+        if (event === 'PASSWORD_RECOVERY') {
+          setPasswordRecovery(true);
+          setProfile(null);
+          setSelected(null);
+          setAdminOpen(false);
+          setLeaderboardOpen(false);
+          setMenu(false);
+          setLoading(false);
+        }
 
         const nextUser = session?.user || null;
         const nextId = nextUser?.id || null;
@@ -1943,7 +1987,7 @@ function App() {
   };
 
   useEffect(() => {
-    if (!authReady) return;
+    if (!authReady || passwordRecovery) return;
 
     if (!authUser) {
       setLoading(false);
@@ -1960,7 +2004,7 @@ function App() {
     }
 
     loadGame();
-  }, [authReady, authUser?.id]);
+  }, [authReady, authUser?.id, passwordRecovery]);
 
   useEffect(() => {
     if (!authUser?.id || profile?.role === 'admin') return undefined;
@@ -2102,6 +2146,13 @@ function App() {
 
   if (!authReady) {
     return <PixelLoadingScreen message="Đang mở cánh cửa khu vườn..." />;
+  }
+
+  // A password-recovery session must never enter the game.
+  // Supabase creates a temporary authenticated session for the reset link,
+  // so route this state to the password form before normal game routing.
+  if (passwordRecovery) {
+    return <AuthScreen initialMode="update-password" />;
   }
 
   if (!authUser) return <AuthScreen />;
