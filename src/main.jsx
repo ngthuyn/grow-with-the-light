@@ -1173,22 +1173,22 @@ function App() {
       return false;
     }
 
-    const todayKst = new Intl.DateTimeFormat('en-CA', {
-      timeZone: 'Asia/Seoul',
+    const todayVn = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Asia/Ho_Chi_Minh',
       year: 'numeric',
       month: '2-digit',
       day: '2-digit'
     }).format(new Date());
 
     const sameGameDay = latest.game_day != null && Number(latest.game_day) === Number(dayNumber);
-    const sameActivityDate = latest.activity_date === todayKst;
+    const sameActivityDate = latest.activity_date === todayVn;
     const sameSubmittedDate = latest.submitted_at
       ? new Intl.DateTimeFormat('en-CA', {
-          timeZone: 'Asia/Seoul',
+          timeZone: 'Asia/Ho_Chi_Minh',
           year: 'numeric',
           month: '2-digit',
           day: '2-digit'
-        }).format(new Date(latest.submitted_at)) === todayKst
+        }).format(new Date(latest.submitted_at)) === todayVn
       : false;
 
     return sameGameDay || sameActivityDate || sameSubmittedDate;
@@ -1590,8 +1590,8 @@ function App() {
       // Bonus progress is reconstructed only from submissions whose mission itself
       // is a bonus mission, for the current game day. This also repairs old rows
       // where bonus user_missions accidentally inherited Chặng 01 progress.
-      const todayKst = new Intl.DateTimeFormat('en-CA', {
-        timeZone: 'Asia/Seoul',
+      const todayVn = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Asia/Ho_Chi_Minh',
         year: 'numeric',
         month: '2-digit',
         day: '2-digit'
@@ -1644,8 +1644,8 @@ function App() {
         const slug = sub.mission?.slug;
         if (!slug || !MISSIONS.some(m => m.id === slug)) continue;
 
-        const submissionDateKst = new Intl.DateTimeFormat('en-CA', {
-          timeZone: 'Asia/Seoul',
+        const submissionDateVn = new Intl.DateTimeFormat('en-CA', {
+          timeZone: 'Asia/Ho_Chi_Minh',
           year: 'numeric',
           month: '2-digit',
           day: '2-digit'
@@ -1655,7 +1655,7 @@ function App() {
           sub.game_day != null && Number(sub.game_day) === currentGameDay;
         const sameLegacyDate =
           sub.game_day == null &&
-          (sub.activity_date === todayKst || submissionDateKst === todayKst);
+          (sub.activity_date === todayVn || submissionDateVn === todayVn);
 
         if (!sameGameDay && !sameLegacyDate) continue;
 
@@ -1709,13 +1709,13 @@ function App() {
         } else {
           const submissionDay = sub.activity_date ||
             new Intl.DateTimeFormat('en-CA', {
-              timeZone: 'Asia/Seoul',
+              timeZone: 'Asia/Ho_Chi_Minh',
               year: 'numeric',
               month: '2-digit',
               day: '2-digit'
             }).format(new Date(sub.submitted_at));
 
-          if (submissionDay !== todayKst) continue;
+          if (submissionDay !== todayVn) continue;
         }
 
         // game_day alone cannot separate Chặng 01 and Chặng 02 because both
@@ -1845,8 +1845,8 @@ function App() {
           if (sub.round2_harvest_id !== round1HarvestId) continue;
         } else if (MISSIONS.some(m => m.id === subSlug)) {
           // Mandatory submission shown in the UI must also belong to THIS day.
-          const submissionDateKst = new Intl.DateTimeFormat('en-CA', {
-            timeZone: 'Asia/Seoul',
+          const submissionDateVn = new Intl.DateTimeFormat('en-CA', {
+            timeZone: 'Asia/Ho_Chi_Minh',
             year: 'numeric',
             month: '2-digit',
             day: '2-digit'
@@ -1856,7 +1856,7 @@ function App() {
             sub.game_day != null && Number(sub.game_day) === currentGameDay;
           const sameLegacyDate =
             sub.game_day == null &&
-            (sub.activity_date === todayKst || submissionDateKst === todayKst);
+            (sub.activity_date === todayVn || submissionDateVn === todayVn);
 
           if (!sameGameDay && !sameLegacyDate) continue;
         } else {
@@ -2430,7 +2430,10 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
                               whiteSpace: 'nowrap'
                             }}
                           >
-                            {new Date(n.created_at).toLocaleString('vi-VN')}
+                            {new Date(n.created_at).toLocaleString('vi-VN', {
+                      timeZone: 'Asia/Ho_Chi_Minh',
+                      hour12: false
+                    })}
                           </span>
                         </span>
                       </button>
@@ -2561,7 +2564,10 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
                   >
                     {new Date(
                       selectedNotification.created_at
-                    ).toLocaleString('vi-VN')}
+                    ).toLocaleString('vi-VN', {
+                      timeZone: 'Asia/Ho_Chi_Minh',
+                      hour12: false
+                    })}
                   </small>
                 </div>
               </div>
@@ -3817,7 +3823,7 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
                     alt=""
                     aria-hidden="true"
                     draggable="false"
-                    style={{ width: 20, height: 20, objectFit: 'contain', verticalAlign: 'middle', marginRight: 5 }}
+                    style={{ width: 15, height: 15, objectFit: 'contain', verticalAlign: 'middle', marginRight: 5 }}
                   />
                   CHẶNG 02
                 </div>
@@ -4020,7 +4026,10 @@ function LeaderboardModal({ onClose }) {
                   <b>{row.username || 'PLAYER'}</b>
                   {row.score_reached_at && (
                     <small style={{ display: 'block', opacity: .55 }}>
-                      {new Date(row.score_reached_at).toLocaleString('vi-VN')}
+                      {new Date(row.score_reached_at).toLocaleString('vi-VN', {
+                        timeZone: 'Asia/Ho_Chi_Minh',
+                        hour12: false
+                      })}
                     </small>
                   )}
                 </div>
@@ -4742,13 +4751,22 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
           'Activity Date': s.activity_date || '',
           'User Note': s.note || '',
           'Submitted At': s.submitted_at
-            ? new Date(s.submitted_at).toLocaleString('vi-VN')
+            ? new Date(s.submitted_at).toLocaleString('vi-VN', {
+                      timeZone: 'Asia/Ho_Chi_Minh',
+                      hour12: false
+                    })
             : '',
           'Reviewed At': s.reviewed_at
-            ? new Date(s.reviewed_at).toLocaleString('vi-VN')
+            ? new Date(s.reviewed_at).toLocaleString('vi-VN', {
+                      timeZone: 'Asia/Ho_Chi_Minh',
+                      hour12: false
+                    })
             : '',
           'Verified At': s.verified_at
-            ? new Date(s.verified_at).toLocaleString('vi-VN')
+            ? new Date(s.verified_at).toLocaleString('vi-VN', {
+                      timeZone: 'Asia/Ho_Chi_Minh',
+                      hour12: false
+                    })
             : '',
           'Points Awarded': s.points_awarded || 0,
           'Admin Comment': s.admin_comment || '',
@@ -4874,7 +4892,10 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
             'Reason': row.reason,
             'Admin ID': row.admin_id || '',
             'Created At': row.created_at
-              ? new Date(row.created_at).toLocaleString('vi-VN')
+              ? new Date(row.created_at).toLocaleString('vi-VN', {
+                      timeZone: 'Asia/Ho_Chi_Minh',
+                      hour12: false
+                    })
               : ''
           };
         });
@@ -4885,7 +4906,10 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
         Role: p.role,
         'Total Points': p.total_points,
         'Created At': p.created_at
-          ? new Date(p.created_at).toLocaleString('vi-VN')
+          ? new Date(p.created_at).toLocaleString('vi-VN', {
+                      timeZone: 'Asia/Ho_Chi_Minh',
+                      hour12: false
+                    })
           : ''
       }));
 
@@ -5464,7 +5488,10 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
 
                       <small style={{ display: 'block', marginTop: 4, opacity: .6 }}>
 
-                        {new Date(s.submitted_at).toLocaleString('vi-VN')}
+                        {new Date(s.submitted_at).toLocaleString('vi-VN', {
+                      timeZone: 'Asia/Ho_Chi_Minh',
+                      hour12: false
+                    })}
 
                       </small>
 
@@ -5550,7 +5577,10 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
                     </small>
                   </div>
                   <small style={{ opacity: .55 }}>
-                    {new Date(item.created_at).toLocaleString('vi-VN')}
+                    {new Date(item.created_at).toLocaleString('vi-VN', {
+                      timeZone: 'Asia/Ho_Chi_Minh',
+                      hour12: false
+                    })}
                   </small>
                 </div>
               ))}
@@ -5606,7 +5636,10 @@ function AdminDashboard({ onClose, notify, fullScreen = false }) {
                   <b>{n.title}</b>
                   <div>{n.message}</div>
                   <small style={{ opacity: .5 }}>
-                    {new Date(n.created_at).toLocaleString('vi-VN')}
+                    {new Date(n.created_at).toLocaleString('vi-VN', {
+                      timeZone: 'Asia/Ho_Chi_Minh',
+                      hour12: false
+                    })}
                   </small>
                 </button>
               ))}
@@ -9144,7 +9177,10 @@ function MissionModal({
                 Đã review:{' '}
                 {new Date(
                   latestSubmission.reviewed_at
-                ).toLocaleString('vi-VN')}
+                ).toLocaleString('vi-VN', {
+                      timeZone: 'Asia/Ho_Chi_Minh',
+                      hour12: false
+                    })}
               </em>
             )}
           </div>
