@@ -156,7 +156,7 @@ const MISSIONS = [
     points: 10,
     logo: '/assets/facebook.png',
     color: '#4f8df7',
-    rule: '3 post · đủ Hashtag: #lighT, #DoMinhTan, #VETTHUONG, #DebutSingle, #xuhuong',
+    rule: 'Đăng/chia sẻ 3 bài (có thể cùng 1 acc) · đủ Hashtag: #lighT, #DoMinhTan, #VETTHUONG, #DebutSingle, #xuhuong',
     hint: 'Gom những tia nắng nhỏ để cây lớn lên từng ngày.'
   },
   {
@@ -167,7 +167,7 @@ const MISSIONS = [
     points: 10,
     logo: '/assets/tiktok.png',
     color: '#141414',
-    rule: '3 video · Sound Official (Từ acc do.nathnim_) · Hashtag (#lighT, #DoMinhTan, #VETTHUONG, #DebutSingle, #xuhuong)· Link thể hiện rõ người chia sẻ và người đăng bài là cùng một người.',
+    rule: '3 video (có thể cùng 1 acc)· Sound Official (Từ acc do.nathnim_) · Hashtag (#lighT, #DoMinhTan, #VETTHUONG, #DebutSingle, #xuhuong)· Link thể hiện rõ người chia sẻ và người đăng bài là cùng một người.',
     hint: 'Thêm dinh dưỡng để cây vươn cao.'
   },
   {
@@ -195,7 +195,7 @@ const BONUS_MISSIONS = [
     max_points: 10,
     logo: '/assets/youtube.png',
     color: '#ff5757',
-    rule: '1 Subscribe + 1 Like + 1 Comment = +2 điểm · tối đa 10 điểm · Nếu nộp nhiều account thì các account phải khác nhau và khác account ở nhiệm vụ YOUTUBE chặng 1.',
+    rule: 'Mỗi acc đủ 1 Subscribe + 1 Like + 1 Comment = +2 điểm · tối đa 10 điểm (5 acc) · Nếu nộp nhiều account thì các account phải khác nhau và khác account ở nhiệm vụ YOUTUBE chặng 1.',
     hint: 'Phải dùng account YOUTUBE khác account đã dùng ở nhiệm vụ YOUTUBE chặng 1.',
     mission_type: 'bonus'
   },
@@ -211,7 +211,7 @@ const BONUS_MISSIONS = [
     max_points: 5,
     logo: '/assets/facebook.png',
     color: '#4f8df7',
-    rule: '3 bài đăng = +1 điểm · tối đa 5 điểm · Các bài đăng có thể cùng 1 account nhưng phải khác account ở nhiệm vụ FACEBOOK chặng 1.',
+    rule: '3 lượt chia sẻ bài viết mới nhất trên page LighT LighT về trang cá nhân (1 acc) + đủ Hashtag: #lighT, #DoMinhTan, #VETTHUONG, #DebutSingle, #xuhuong = +1 điểm · tối đa 5 điểm (tương ứng 5 acc) · Các account phải khác account ở nhiệm vụ FACEBOOK chặng 1.',
     hint: 'Mỗi 3 bài đăng Facebook hợp lệ = +1 điểm.',
     mission_type: 'bonus'
   },
@@ -241,7 +241,7 @@ const BONUS_MISSIONS = [
     max_points: 10,
     logo: '/assets/tiktok.png',
     color: '#141414',
-    rule: '1 video = +2 điểm · tối đa 10 điểm · Các bài đăng có thể cùng 1 account nhưng phải khác account ở nhiệm vụ TIKTOK chặng 1.',
+    rule: '1 video · Sound Official (Từ acc do.nathnim_) · Hashtag (#lighT, #DoMinhTan, #VETTHUONG, #DebutSingle, #xuhuong) +2 điểm · tối đa 10 điểm · Các bài đăng có thể cùng 1 account nhưng phải khác account ở nhiệm vụ TIKTOK chặng 1. · Link thể hiện rõ người chia sẻ và người đăng bài là cùng một người',
     hint: 'Thêm 1 video hợp lệ = +2 điểm.',
     mission_type: 'bonus'
   },
@@ -256,7 +256,7 @@ const BONUS_MISSIONS = [
     max_points: 15,
     logo: '/assets/spotify.png',
     color: '#55e36b',
-    rule: 'Đủ 10 streams / account +5 điểm · tối đa 15 điểm ·  Các account phải khác nhau và khác account ở nhiệm vụ SPOTIFY chặng 1· gửi link Drive video stats.fm ',
+    rule: 'Đủ 10 streams / account +5 điểm · tối đa 15 điểm (3 acc khác nhau) ·  Các account phải khác nhau và khác account ở nhiệm vụ SPOTIFY chặng 1· gửi link Drive video stats.fm ',
     hint: 'Mỗi account cần ít nhất 10 streams; quay video stats.fm, upload Google Drive và gửi link để Admin kiểm tra.',
     mission_type: 'bonus'
   },
@@ -2734,7 +2734,7 @@ maxHeight: 'min(430px, calc(100dvh - 72px))',
                   ? '🌻tinie ơiii, góp thêm thật nhiều tia nắng và kiếm thêm điểm nhé!'
 
                   : finished
-                    ? 'Chặng 01 đã hoàn thành · Bấm Chặng 02 để làm Bonus (không xem lại điều kiện Chặng 01)'
+                    ? 'Chặng 01 đã hoàn thành · Bấm Chặng 02 để làm Bonus'
                     : 'Hoàn thành 5 nhiệm vụ chính theo thứ tự bất kỳ để nhận về một bông hoa hướng dương'}
               </small>
             </div>
