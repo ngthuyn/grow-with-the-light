@@ -378,14 +378,15 @@ const ADMIN_USERNAME = (import.meta.env.VITE_ADMIN_USERNAME || 'TINcredible').tr
    AUTH SCREEN
    ========================================================= */
 
-function AuthScreen({ initialMode = 'login' }) {
+function AuthScreen({ initialMode = 'login', initialEmail = '' }) {
   const [mode, setMode] = useState(initialMode);
 
   useEffect(() => {
     setMode(initialMode);
-  }, [initialMode]);
+    if (initialEmail) setEmail(initialEmail);
+  }, [initialMode, initialEmail]);
 
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] =
     useState('');
@@ -487,7 +488,7 @@ function AuthScreen({ initialMode = 'login' }) {
     event.preventDefault();
     clearMessages();
 
-    if (!email.trim()) {
+    if (mode !== 'update-password' && !email.trim()) {
       setError('Vui lòng nhập email.');
       return;
     }
@@ -2152,7 +2153,12 @@ function App() {
   // Supabase creates a temporary authenticated session for the reset link,
   // so route this state to the password form before normal game routing.
   if (passwordRecovery) {
-    return <AuthScreen initialMode="update-password" />;
+    return (
+      <AuthScreen
+        initialMode="update-password"
+        initialEmail={authUser?.email || ''}
+      />
+    );
   }
 
   if (!authUser) return <AuthScreen />;
