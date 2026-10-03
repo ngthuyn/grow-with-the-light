@@ -7268,9 +7268,11 @@ function MissionModal({
     if (!bonusMission) return;
 
     const max =
-      bonusMission.id === 'spotify_extra'
-        ? 3
-        : 5;
+  bonusMission.id === 'spotify_extra'
+    ? 3
+    : bonusMission.id === 'facebook_extra'
+      ? 15
+      : 5;
 
     if (bonusItems.length >= max) return;
 
@@ -7354,8 +7356,8 @@ function MissionModal({
     if (!bonusMission) return false;
 
     if (bonusMission.id === 'facebook_extra') {
-      if (bonusItems.length < 1 || bonusItems.length > 5) {
-        notify('Facebook Extra: có thể gửi từ 1 đến 5 bài đăng. Mỗi 3 bài đăng = +1 điểm.');
+      if (bonusItems.length < 3 || bonusItems.length > 15) {
+        notify('Facebook Extra: có thể gửi từ 3 đến 15 bài đăng. Mỗi 3 bài đăng = +1 điểm.');
         return false;
       }
       for (let i = 0; i < bonusItems.length; i++) {
@@ -8857,7 +8859,7 @@ function MissionModal({
                         <b>LINK BÀI ĐĂNG</b>
                        
                       </div>
-                      {bonusItems.length < 5 && (
+                      {bonusItems.length < 15 && (
                         <button
                           type="button"
                           className="addEvidenceButton addEvidenceButtonGame"
