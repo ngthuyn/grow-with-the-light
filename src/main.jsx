@@ -211,7 +211,7 @@ const BONUS_MISSIONS = [
     max_points: 5,
     logo: '/assets/facebook.png',
     color: '#4f8df7',
-    rule: '3 lượt chia sẻ bài viết mới nhất trên page LighT LighT về trang cá nhân (1 acc) + đủ Hashtag: #lighT, #DoMinhTan, #VETTHUONG, #DebutSingle, #xuhuong = +1 điểm · tối đa 5 điểm (tương ứng 5 acc) · Các account phải khác account ở nhiệm vụ FACEBOOK chặng 1.',
+    rule: '3 lượt chia sẻ bài viết mới nhất trên page LighT LighT về trang cá nhân/group gieo hạt (1 acc) + đủ Hashtag: #lighT, #DoMinhTan, #VETTHUONG, #DebutSingle, #xuhuong = +1 điểm · tối đa 5 điểm (tương ứng 5 acc) · Các account phải khác account ở nhiệm vụ FACEBOOK chặng 1.',
     hint: 'Mỗi 3 bài đăng Facebook hợp lệ = +1 điểm.',
     mission_type: 'bonus'
   },
